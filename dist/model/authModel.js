@@ -28,6 +28,9 @@ const authModel = new mongoose_1.Schema({
     userName: {
         type: String,
     },
+    code: {
+        type: String,
+    },
     firstName: {
         type: String,
     },

@@ -5,6 +5,7 @@ interface iAuth {
   lastName: string;
   firstName: string;
   email: string;
+  code: string;
   password: string;
   avatarID: string;
   avatar: string;
@@ -19,6 +20,9 @@ interface iAuthData extends iAuth, Document {}
 const authModel = new Schema<iAuthData>(
   {
     userName: {
+      type: String,
+    },
+    code: {
       type: String,
     },
     firstName: {

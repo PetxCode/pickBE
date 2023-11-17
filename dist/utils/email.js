@@ -50,6 +50,7 @@ const verifiedEmail = (user) => __awaiter(void 0, void 0, void 0, function* () {
         const html = yield ejs_1.default.renderFile(myPath, {
             link: myURL,
             userName: user.firstName,
+            code: user.code,
         });
         const mailerOption = {
             from: "Pick a Studio🚀🚀🚀 <codelabbest@gmail.com>",

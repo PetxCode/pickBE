@@ -53,6 +53,7 @@ export const verifiedEmail = async (user: any) => {
     const html = await ejs.renderFile(myPath, {
       link: myURL,
       userName: user.firstName,
+      code: user.code,
     });
 
     const mailerOption = {

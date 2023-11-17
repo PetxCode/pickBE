@@ -25,12 +25,14 @@ const createAuth = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const salt = yield bcrypt_1.default.genSalt(10);
         const hash = yield bcrypt_1.default.hash(password, salt);
         let token = crypto_1.default.randomBytes(25).toString("hex");
+        let code = crypto_1.default.randomBytes(3).toString("hex");
         const user = yield authModel_1.default.create({
             email,
             password: hash,
             verifyToken: token,
             firstName,
             lastName,
+            code,
         });
         (0, email_1.verifiedEmail)(user);
         return res.status(statusEnums_1.status.CREATED).json({

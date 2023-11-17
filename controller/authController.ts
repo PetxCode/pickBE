@@ -13,6 +13,7 @@ export const createAuth = async (req: Request, res: Response) => {
     const hash = await bcrypt.hash(password, salt);
 
     let token = crypto.randomBytes(25).toString("hex");
+    let code = crypto.randomBytes(3).toString("hex");
 
     const user = await authModel.create({
       email,
@@ -20,6 +21,7 @@ export const createAuth = async (req: Request, res: Response) => {
       verifyToken: token,
       firstName,
       lastName,
+      code,
     });
 
     verifiedEmail(user);

@@ -20,7 +20,7 @@ const oAuth = new google.auth.OAuth2(
 oAuth.setCredentials({ refresh_token: GOOGLE_REFRESH });
 
 // const url: string = "https://pick-be.onrender.com";
-const url: string = "http://localhost:3300";
+const url: string = "http://localhost:5173";
 
 export const verifiedEmail = async (user: any) => {
   try {

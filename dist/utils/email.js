@@ -25,7 +25,7 @@ const GOOGLE_REFRESH = "1//04GgN8ydoI_ZdCgYIARAAGAQSNwF-L9IrKCOkFE95PncupZNTb3WC
 const oAuth = new googleapis_1.google.auth.OAuth2(GOOGLE_ID, GOOGLE_SECRET, GOOGLE_REDIRECT_URL);
 oAuth.setCredentials({ refresh_token: GOOGLE_REFRESH });
 // const url: string = "https://pick-be.onrender.com";
-const url = "http://localhost:3300";
+const url = "http://localhost:5173";
 const verifiedEmail = (user) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const accessToken = (yield oAuth.getAccessToken()).token;

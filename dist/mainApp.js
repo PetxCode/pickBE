@@ -8,9 +8,22 @@ const statusEnums_1 = require("./utils/statusEnums");
 const mianError_1 = require("./error/mianError");
 const handleError_1 = require("./error/handleError");
 const authRouter_1 = __importDefault(require("./router/authRouter"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const passport_1 = __importDefault(require("passport"));
 const mainApp = (app) => {
     try {
         app.use("/api/v1", authRouter_1.default);
+        app.get("/auth/google/", passport_1.default.authenticate("google", { scope: ["profile", "email"] }));
+        app.get("/auth/google/callback", passport_1.default.authenticate("google", { failureRedirect: "/login" }), function (req, res) {
+            // Successful authentication, redirect home.
+            // res.redirect("/");
+            const user = req.user;
+            const token = jsonwebtoken_1.default.sign({ id: user.id, email: user.email }, "secret");
+            res.status(200).json({
+                message: "Well done...!",
+                data: token,
+            });
+        });
         app.get("/", (req, res) => {
             try {
                 return res.status(statusEnums_1.status.OK).json({

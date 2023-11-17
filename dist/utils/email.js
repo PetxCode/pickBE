@@ -24,8 +24,8 @@ const GOOGLE_REDIRECT_URL = "https://developers.google.com/oauthplayground";
 const GOOGLE_REFRESH = "1//04GgN8ydoI_ZdCgYIARAAGAQSNwF-L9IrKCOkFE95PncupZNTb3WCiygNcFb1vp20oW-1SMJTKzSWxnWw2B6nf4S85GXSTpgR44M";
 const oAuth = new googleapis_1.google.auth.OAuth2(GOOGLE_ID, GOOGLE_SECRET, GOOGLE_REDIRECT_URL);
 oAuth.setCredentials({ refresh_token: GOOGLE_REFRESH });
-// const url: string = "https://codelab-hack.web.app";
-const url = "http://localhost:3300";
+const url = "https://pick-be.onrender.com";
+// const url: string = "http://localhost:3300";
 const verifiedEmail = (user) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const accessToken = (yield oAuth.getAccessToken()).token;
@@ -40,15 +40,6 @@ const verifiedEmail = (user) => __awaiter(void 0, void 0, void 0, function* () {
                 accessToken,
             },
         });
-        const myTransport = nodemailer_1.default.createTransport({
-            host: `mail.openjavascript.info`,
-            port: 465,
-            secure: true,
-            auth: {
-                user: "test@openjavascript.info",
-                pass: "NodeMailer123",
-            },
-        });
         const token = jsonwebtoken_1.default.sign({
             id: user._id,
             email: user.email,
@@ -60,12 +51,12 @@ const verifiedEmail = (user) => __awaiter(void 0, void 0, void 0, function* () {
             userName: user.userName,
         });
         const mailerOption = {
-            from: "Tech Hack🚀🚀🚀 <codelabbest@gmail.com>",
+            from: "Pick a Studio🚀🚀🚀 <codelabbest@gmail.com>",
             to: user.email,
             subject: "Account Verification",
-            html: `<p>Hello </p>`,
+            html,
         };
-        yield myTransport.sendMail(mailerOption);
+        yield transporter.sendMail(mailerOption);
         console.log("done", user);
     }
     catch (error) {

@@ -11,7 +11,6 @@ const dbConfig_1 = require("./utils/dbConfig");
 const cookie_session_1 = __importDefault(require("cookie-session"));
 const passport_1 = __importDefault(require("passport"));
 require("./utils/socialAuth");
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const mainApp_1 = require("./mainApp");
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3300;
@@ -50,17 +49,10 @@ app
     .use(passport_1.default.initialize())
     .use(passport_1.default.session());
 (0, mainApp_1.mainApp)(app);
-app.get("/auth/google", passport_1.default.authenticate("google", { scope: ["profile", "email"] }));
-app.get("/auth/google/callback", passport_1.default.authenticate("google", { failureRedirect: "/login" }), function (req, res) {
-    // Successful authentication, redirect home.
-    // res.redirect("/");
-    const user = req.user;
-    const token = jsonwebtoken_1.default.sign({ id: user.id, email: user.email }, "secret");
-    res.status(200).json({
-        message: "Well done...!",
-        data: token,
-    });
-});
+// app.get(
+//   "/api/auth/google/",
+//   passport.authenticate("google", { scope: ["profile", "email"] })
+// );
 app.listen(port, () => {
     console.clear();
     (0, dbConfig_1.dbConfig)();

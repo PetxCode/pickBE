@@ -14,22 +14,16 @@ export const createAuth = async (req: Request, res: Response) => {
 
     let token = crypto.randomBytes(25).toString("hex");
 
-    // const user = await authModel.create({
-    //   email,
-    //   password: hash,
-    //   verifyToken: token,
-    // });
+    const user = await authModel.create({
+      email,
+      password: hash,
+      verifyToken: token,
+    });
 
-    let user = {
-      _id: Math.floor(Math.random() * 999),
-      email: "shecodesaj@gmail.com",
-      userName: "Peter",
-    };
-    //
     verifiedEmail(user);
 
     return res.status(status.CREATED).json({
-      message: "user created but check your email for further verification",
+      message: "account created but check your email for further verification",
     });
   } catch (error: any) {
     return res.status(status.BAD).json({

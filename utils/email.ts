@@ -19,8 +19,8 @@ const oAuth = new google.auth.OAuth2(
 
 oAuth.setCredentials({ refresh_token: GOOGLE_REFRESH });
 
-// const url: string = "https://codelab-hack.web.app";
-const url: string = "http://localhost:3300";
+const url: string = "https://pick-be.onrender.com";
+// const url: string = "http://localhost:3300";
 
 export const verifiedEmail = async (user: any) => {
   try {
@@ -35,16 +35,6 @@ export const verifiedEmail = async (user: any) => {
         clientId: GOOGLE_ID,
         refreshToken: GOOGLE_REFRESH,
         accessToken,
-      },
-    });
-
-    const myTransport = nodemail.createTransport({
-      host: `mail.openjavascript.info`,
-      port: 465,
-      secure: true,
-      auth: {
-        user: "test@openjavascript.info",
-        pass: "NodeMailer123",
       },
     });
 
@@ -65,13 +55,13 @@ export const verifiedEmail = async (user: any) => {
     });
 
     const mailerOption = {
-      from: "Tech Hack🚀🚀🚀 <codelabbest@gmail.com>",
+      from: "Pick a Studio🚀🚀🚀 <codelabbest@gmail.com>",
       to: user.email,
       subject: "Account Verification",
-      html: `<p>Hello </p>`,
+      html,
     };
 
-    await myTransport.sendMail(mailerOption);
+    await transporter.sendMail(mailerOption);
 
     console.log("done", user);
   } catch (error) {

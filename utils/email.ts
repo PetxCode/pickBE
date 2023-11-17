@@ -42,6 +42,7 @@ export const verifiedEmail = async (user: any) => {
       {
         id: user._id,
         email: user.email,
+        name: user.firstName,
       },
       "secretCode"
     );
@@ -51,7 +52,7 @@ export const verifiedEmail = async (user: any) => {
     const myPath = path.join(__dirname, "../views/index.ejs");
     const html = await ejs.renderFile(myPath, {
       link: myURL,
-      userName: user.userName,
+      userName: user.firstName,
     });
 
     const mailerOption = {

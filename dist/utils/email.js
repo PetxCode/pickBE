@@ -43,12 +43,13 @@ const verifiedEmail = (user) => __awaiter(void 0, void 0, void 0, function* () {
         const token = jsonwebtoken_1.default.sign({
             id: user._id,
             email: user.email,
+            name: user.firstName,
         }, "secretCode");
         let myURL = `${url}/${token}/sign-in`;
         const myPath = path_1.default.join(__dirname, "../views/index.ejs");
         const html = yield ejs_1.default.renderFile(myPath, {
             link: myURL,
-            userName: user.userName,
+            userName: user.firstName,
         });
         const mailerOption = {
             from: "Pick a Studio🚀🚀🚀 <codelabbest@gmail.com>",

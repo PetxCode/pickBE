@@ -26,7 +26,7 @@ export const createAuth = async (req: Request, res: Response) => {
 
     console.log(user);
 
-    // verifiedEmail(user);
+    verifiedEmail(user);
 
     return res.status(status.CREATED).json({
       message: "account created but check your email for further verification",

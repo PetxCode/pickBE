@@ -24,8 +24,6 @@ export const createAuth = async (req: Request, res: Response) => {
       code,
     });
 
-    console.log(user);
-
     verifiedEmail(user);
 
     return res.status(status.CREATED).json({

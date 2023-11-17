@@ -17,7 +17,6 @@ const statusEnums_1 = require("../utils/statusEnums");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const crypto_1 = __importDefault(require("crypto"));
 const authModel_1 = __importDefault(require("../model/authModel"));
-const email_1 = require("../utils/email");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const createAuth = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -34,7 +33,8 @@ const createAuth = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             lastName,
             code,
         });
-        (0, email_1.verifiedEmail)(user);
+        console.log(user);
+        // verifiedEmail(user);
         return res.status(statusEnums_1.status.CREATED).json({
             message: "account created but check your email for further verification",
         });

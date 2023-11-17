@@ -2,7 +2,8 @@ import mongoose, { Document, Schema, model } from "mongoose";
 
 interface iAuth {
   userName: string;
-  fullName: string;
+  lastName: string;
+  firstName: string;
   email: string;
   password: string;
   avatarID: string;
@@ -20,7 +21,10 @@ const authModel = new Schema<iAuthData>(
     userName: {
       type: String,
     },
-    fullName: {
+    firstName: {
+      type: String,
+    },
+    lastName: {
       type: String,
     },
     email: {

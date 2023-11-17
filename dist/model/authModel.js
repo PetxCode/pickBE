@@ -28,7 +28,10 @@ const authModel = new mongoose_1.Schema({
     userName: {
         type: String,
     },
-    fullName: {
+    firstName: {
+        type: String,
+    },
+    lastName: {
         type: String,
     },
     email: {

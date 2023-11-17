@@ -8,7 +8,7 @@ import jwt from "jsonwebtoken";
 
 export const createAuth = async (req: Request, res: Response) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, firstName, lastName } = req.body;
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
 
@@ -18,6 +18,8 @@ export const createAuth = async (req: Request, res: Response) => {
       email,
       password: hash,
       verifyToken: token,
+      firstName,
+      lastName,
     });
 
     verifiedEmail(user);

@@ -21,7 +21,7 @@ const email_1 = require("../utils/email");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const createAuth = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { email, password } = req.body;
+        const { email, password, firstName, lastName } = req.body;
         const salt = yield bcrypt_1.default.genSalt(10);
         const hash = yield bcrypt_1.default.hash(password, salt);
         let token = crypto_1.default.randomBytes(25).toString("hex");
@@ -29,6 +29,8 @@ const createAuth = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             email,
             password: hash,
             verifyToken: token,
+            firstName,
+            lastName,
         });
         (0, email_1.verifiedEmail)(user);
         return res.status(statusEnums_1.status.CREATED).json({

@@ -3,12 +3,16 @@ import { status } from "./utils/statusEnums";
 import { HTTP, mainError } from "./error/mianError";
 import { handleError } from "./error/handleError";
 import auth from "./router/authRouter";
+import studio from "./router/studioRouter";
+import rating from "./router/studioRatingRouter";
 import jwt from "jsonwebtoken";
 import passport from "passport";
 
 export const mainApp = (app: Application) => {
   try {
     app.use("/api/v1", auth);
+    app.use("/api/v1", studio);
+    app.use("/api/v1", rating);
 
     app.get(
       "/auth/google/",

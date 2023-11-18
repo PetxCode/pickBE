@@ -4,6 +4,13 @@ import path from "path";
 import ejs from "ejs";
 import jwt from "jsonwebtoken";
 
+// const GOOGLE_ID =
+//   "199704572461-g84htr0if8p5ej23l2ukvsgtq2rh288g.apps.googleusercontent.com";
+// const GOOGLE_SECRET = "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";
+// const GOOGLE_REDIRECT_URL = "https://developers.google.com/oauthplayground";
+// const GOOGLE_REFRESH =
+//   "1//04YjCKwj61rd0CgYIARAAGAQSNwF-L9Ir3vxuuMwtJOuDWBxTPBmmcxcX1F6FWMEYBtSPx-_aU6N5_dXKT4zarEfisB5XRHVkz2c";
+
 const GOOGLE_ID =
   "848542784186-9os7noa7qvcg3nckfu38s3bhob8u6oga.apps.googleusercontent.com";
 const GOOGLE_SECRET = "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";

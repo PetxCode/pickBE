@@ -24,48 +24,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
-const authModel = new mongoose_1.Schema({
-    accountHolderID: {
+const studioLikeModel = new mongoose_1.Schema({
+    accountLikerID: {
         type: String,
     },
-    studioRate: {
-        type: Number,
-        default: 0,
-    },
-    studioCost: {
-        type: Number,
-    },
-    studioName: {
-        type: String,
-    },
-    studioLocation: {
-        type: String,
-    },
-    studioContact: {
-        type: String,
-    },
-    studioImages: [
-        {
-            type: String,
-        },
-    ],
-    user: {
+    studio: {
         type: mongoose_1.default.Types.ObjectId,
-        ref: "auths",
+        ref: "studioes",
     },
-    studioRating: [
-        {
-            type: mongoose_1.default.Types.ObjectId,
-            ref: "ratings",
-        },
-    ],
-    studioLikes: [
-        {
-            type: mongoose_1.default.Types.ObjectId,
-            ref: "likes",
-        },
-    ],
 }, {
     timestamps: true,
 });
-exports.default = (0, mongoose_1.model)("studioes", authModel);
+exports.default = (0, mongoose_1.model)("likes", studioLikeModel);

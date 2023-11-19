@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.streamUpload = void 0;
+exports.multiStreamifier = exports.streamUpload = void 0;
 const cloudinary_1 = __importDefault(require("./cloudinary"));
 const streamifier_1 = __importDefault(require("streamifier"));
 const streamUpload = (req) => __awaiter(void 0, void 0, void 0, function* () {
@@ -29,3 +29,26 @@ const streamUpload = (req) => __awaiter(void 0, void 0, void 0, function* () {
     }));
 });
 exports.streamUpload = streamUpload;
+const multiStreamifier = (req) => __awaiter(void 0, void 0, void 0, function* () {
+    let image = [];
+    for (let i of req.files) {
+        console.log(i);
+        const streamUpload = (req) => __awaiter(void 0, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => __awaiter(void 0, void 0, void 0, function* () {
+                let stream = cloudinary_1.default.uploader.upload_stream((error, result) => {
+                    if (result) {
+                        return resolve(result);
+                    }
+                    else {
+                        return reject(error);
+                    }
+                });
+                streamifier_1.default.createReadStream(i.buffer).pipe(stream);
+            }));
+        });
+        const { secure_url } = yield streamUpload(req);
+        image.push(secure_url);
+    }
+    return image;
+});
+exports.multiStreamifier = multiStreamifier;

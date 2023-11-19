@@ -6,9 +6,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 import decode from "jwt-decode";
 import authModel from "../model/authModel";
 
-// const GOOGLE_CLIENT_ID =
-//   "199704572461-mqftjmpvtc6k62t49ki4mshaocr0e6hf.apps.googleusercontent.com";
-// const GOOGLE_CLIENT_SECRET = "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";
+// const GOOGLE_CLIENT_ID = -9MB4kcUdrtNYjLGMqDNoPAWm1-yf";
 
 const GOOGLE_CLIENT_ID =
   "199704572461-g84htr0if8p5ej23l2ukvsgtq2rh288g.apps.googleusercontent.com";
@@ -22,7 +20,7 @@ passport.use(
     {
       clientID: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
-      callbackURL: "/auth/google/callback",
+      callbackURL: "https://pick-be.onrender.com/auth/google/callback",
       scope: ["profile", "email"],
     },
     async function (

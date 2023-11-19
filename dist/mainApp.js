@@ -8,11 +8,15 @@ const statusEnums_1 = require("./utils/statusEnums");
 const mianError_1 = require("./error/mianError");
 const handleError_1 = require("./error/handleError");
 const authRouter_1 = __importDefault(require("./router/authRouter"));
+const studioRouter_1 = __importDefault(require("./router/studioRouter"));
+const studioRatingRouter_1 = __importDefault(require("./router/studioRatingRouter"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const passport_1 = __importDefault(require("passport"));
 const mainApp = (app) => {
     try {
         app.use("/api/v1", authRouter_1.default);
+        app.use("/api/v1", studioRouter_1.default);
+        app.use("/api/v1", studioRatingRouter_1.default);
         app.get("/auth/google/", passport_1.default.authenticate("google", { scope: ["profile", "email"] }));
         app.get("/auth/google/callback", passport_1.default.authenticate("google", { failureRedirect: "/login" }), function (req, res) {
             // Successful authentication, redirect home.

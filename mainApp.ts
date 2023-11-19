@@ -19,7 +19,7 @@ export const mainApp = (app: Application) => {
     app.use("/api/v1", social);
 
     app.get(
-      "/auth/google/",
+      "/api/v1/auth/google/",
       passport.authenticate("google", { scope: ["profile", "email"] })
     );
 

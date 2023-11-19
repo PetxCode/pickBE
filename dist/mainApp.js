@@ -20,7 +20,7 @@ const mainApp = (app) => {
         app.use("/api/v1", studioRouter_1.default);
         app.use("/api/v1", studioRatingRouter_1.default);
         app.use("/api/v1", socialRouter_1.default);
-        app.get("/auth/google/", passport_1.default.authenticate("google", { scope: ["profile", "email"] }));
+        app.get("/api/v1/auth/google/", passport_1.default.authenticate("google", { scope: ["profile", "email"] }));
         app.get("/api/v1/sign-in/success", (req, res) => {
             if (req.user) {
                 const user = req.user;

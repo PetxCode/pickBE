@@ -32,28 +32,49 @@ passport_1.default.use(new GoogleStrategy({
 }, function (accessToken, refreshToken, profile, callback) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            console.log(profile);
-            console.log(profile.email);
-            let email = profile.email;
-            const user = yield authModel_1.default.findOne(email);
-            if (user !== null) {
-                console.log(profile);
-                return callback(null, user);
+            if (profile.email) {
+                let email = profile.email;
+                const user = yield authModel_1.default.findOne(email);
+                if (user !== null) {
+                    return callback(null, user);
+                }
+                else {
+                    const newUser = yield authModel_1.default.create({
+                        email: profile.emails[0].value,
+                        firstName: profile.name.givenName,
+                        lastName: profile.name.familyName,
+                        fullName: profile.displayName,
+                        userName: profile.name.familyName,
+                        avatar: profile.photos[0].value,
+                        password: "",
+                        verifyToken: "",
+                        verify: true,
+                        studio: [],
+                    });
+                    return callback(null, newUser);
+                }
             }
-            else {
-                const newUser = yield authModel_1.default.create({
-                    email: profile.emails[0].value,
-                    firstName: profile.name.givenName,
-                    lastName: profile.name.familyName,
-                    fullName: profile.displayName,
-                    userName: profile.name.familyName,
-                    avatar: profile.photos[0].value,
-                    password: "",
-                    verifyToken: "",
-                    verify: true,
-                    studio: [],
-                });
-                return callback(null, newUser);
+            else if (profile._json.email) {
+                const user = yield authModel_1.default.findOne({ email: profile._json.email });
+                if (user !== null) {
+                    console.log(profile);
+                    return callback(null, user);
+                }
+                else {
+                    const newUser = yield authModel_1.default.create({
+                        email: profile.emails[0].value,
+                        firstName: profile.name.givenName,
+                        lastName: profile.name.familyName,
+                        fullName: profile.displayName,
+                        userName: profile.name.familyName,
+                        avatar: profile.photos[0].value,
+                        password: "",
+                        verifyToken: "",
+                        verify: true,
+                        studio: [],
+                    });
+                    return callback(null, newUser);
+                }
             }
         }
         catch (error) {

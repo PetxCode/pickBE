@@ -34,31 +34,51 @@ passport.use(
       callback: any
     ) {
       try {
-        console.log(profile);
-        console.log(profile.email);
+        if (profile.email) {
+          let email = profile.email;
 
-        let email = profile.email;
+          const user = await authModel.findOne(email);
 
-        const user = await authModel.findOne(email);
+          if (user !== null) {
+            return callback(null, user);
+          } else {
+            const newUser = await authModel.create({
+              email: profile.emails[0].value,
+              firstName: profile.name.givenName,
+              lastName: profile.name.familyName,
+              fullName: profile.displayName,
+              userName: profile.name.familyName,
+              avatar: profile.photos[0].value,
+              password: "",
+              verifyToken: "",
+              verify: true,
+              studio: [],
+            });
 
-        if (user !== null) {
-          console.log(profile);
-          return callback(null, user);
-        } else {
-          const newUser = await authModel.create({
-            email: profile.emails[0].value,
-            firstName: profile.name.givenName,
-            lastName: profile.name.familyName,
-            fullName: profile.displayName,
-            userName: profile.name.familyName,
-            avatar: profile.photos[0].value,
-            password: "",
-            verifyToken: "",
-            verify: true,
-            studio: [],
-          });
+            return callback(null, newUser);
+          }
+        } else if (profile._json.email) {
+          const user = await authModel.findOne({ email: profile._json.email });
 
-          return callback(null, newUser);
+          if (user !== null) {
+            console.log(profile);
+            return callback(null, user);
+          } else {
+            const newUser = await authModel.create({
+              email: profile.emails[0].value,
+              firstName: profile.name.givenName,
+              lastName: profile.name.familyName,
+              fullName: profile.displayName,
+              userName: profile.name.familyName,
+              avatar: profile.photos[0].value,
+              password: "",
+              verifyToken: "",
+              verify: true,
+              studio: [],
+            });
+
+            return callback(null, newUser);
+          }
         }
       } catch (error) {
         console.log(error);

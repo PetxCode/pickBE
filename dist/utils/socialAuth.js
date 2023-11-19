@@ -27,7 +27,7 @@ const GOOGLE_CLIENT_SECRET = "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";
 passport_1.default.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "/auth/google/callback",
+    callbackURL: "https://pick-be.onrender.com/auth/google/callback",
     scope: ["profile", "email"],
 }, function (accessToken, refreshToken, profile, callback) {
     return __awaiter(this, void 0, void 0, function* () {

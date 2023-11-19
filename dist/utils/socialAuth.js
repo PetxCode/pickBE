@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const passport_1 = __importDefault(require("passport"));
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const authModel_1 = __importDefault(require("../model/authModel"));
-// const GOOGLE_CLIENT_ID = -9MB4kcUdrtNYjLGMqDNoPAWm1-yf";
 const GOOGLE_CLIENT_ID = "199704572461-g84htr0if8p5ej23l2ukvsgtq2rh288g.apps.googleusercontent.com";
 const GOOGLE_CLIENT_SECRET = "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";
 // http://localhost:3300/auth/google
@@ -33,6 +32,7 @@ passport_1.default.use(new GoogleStrategy({
             let email = profile.email;
             const user = yield authModel_1.default.findOne(email);
             if (user !== null) {
+                console.log(profile);
                 return callback(null, user);
             }
             else {

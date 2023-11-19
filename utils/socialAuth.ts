@@ -6,8 +6,6 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 import decode from "jwt-decode";
 import authModel from "../model/authModel";
 
-// const GOOGLE_CLIENT_ID = -9MB4kcUdrtNYjLGMqDNoPAWm1-yf";
-
 const GOOGLE_CLIENT_ID =
   "199704572461-g84htr0if8p5ej23l2ukvsgtq2rh288g.apps.googleusercontent.com";
 const GOOGLE_CLIENT_SECRET = "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";
@@ -38,6 +36,7 @@ passport.use(
         const user = await authModel.findOne(email);
 
         if (user !== null) {
+          console.log(profile);
           return callback(null, user);
         } else {
           const newUser = await authModel.create({

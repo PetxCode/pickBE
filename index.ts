@@ -46,8 +46,8 @@ app.use("/docs", swaggerUI.serve, swaggerUI.setup(spec));
 app.use(express.json());
 app.use(
   cors({
-    origin: "*",
-    methods: ["GET", "POST", "PATCH", "DELETE"],
+    origin: "http://localhost:5173, *",
+    // methods: ["GET", "POST", "PATCH", "DELETE"],
   })
 );
 

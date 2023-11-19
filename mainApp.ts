@@ -9,6 +9,8 @@ import rating from "./router/studioRatingRouter";
 import jwt from "jsonwebtoken";
 import passport from "passport";
 
+const CLIENT_URL = "http://localhost:5173/";
+
 export const mainApp = (app: Application) => {
   try {
     app.use("/api/v1", auth);
@@ -45,6 +47,7 @@ export const mainApp = (app: Application) => {
       "/auth/google/callback",
       passport.authenticate("google", {
         failureRedirect: "/api/v1/sign-in/failed",
+        successRedirect: CLIENT_URL,
       }),
       function (req, res) {
         res.redirect("/api/v1/sign-in/success");

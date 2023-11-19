@@ -47,7 +47,9 @@ app.use("/docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.defaul
 app.use(express_1.default.json());
 app.use((0, cors_1.default)({
     origin: "*",
-    // methods: ["GET", "POST", "PATCH", "DELETE"],
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true,
+    allowedHeaders: "Content-Type",
 }));
 app.use((0, helmet_1.default)());
 app.use((0, morgan_1.default)("dev"));

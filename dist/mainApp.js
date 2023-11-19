@@ -13,6 +13,7 @@ const socialRouter_1 = __importDefault(require("./router/socialRouter"));
 const studioRatingRouter_1 = __importDefault(require("./router/studioRatingRouter"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const passport_1 = __importDefault(require("passport"));
+const CLIENT_URL = "http://localhost:5173/";
 const mainApp = (app) => {
     try {
         app.use("/api/v1", authRouter_1.default);
@@ -38,6 +39,7 @@ const mainApp = (app) => {
         });
         app.get("/auth/google/callback", passport_1.default.authenticate("google", {
             failureRedirect: "/api/v1/sign-in/failed",
+            successRedirect: CLIENT_URL,
         }), function (req, res) {
             res.redirect("/api/v1/sign-in/success");
         });

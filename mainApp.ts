@@ -4,6 +4,7 @@ import { HTTP, mainError } from "./error/mianError";
 import { handleError } from "./error/handleError";
 import auth from "./router/authRouter";
 import studio from "./router/studioRouter";
+import social from "./router/socialRouter";
 import rating from "./router/studioRatingRouter";
 import jwt from "jsonwebtoken";
 import passport from "passport";
@@ -13,18 +14,15 @@ export const mainApp = (app: Application) => {
     app.use("/api/v1", auth);
     app.use("/api/v1", studio);
     app.use("/api/v1", rating);
+    app.use("/api/v1", social);
 
     app.get(
       "/auth/google/",
       passport.authenticate("google", { scope: ["profile", "email"] })
     );
 
-    app.get(
-      "/auth/google/callback",
-      passport.authenticate("google", { failureRedirect: "/login" }),
-      function (req, res) {
-        // Successful authentication, redirect home.
-        // res.redirect("/");
+    app.get("/api/v1/sign-in/success", (req, res) => {
+      if (req.user) {
         const user: any = req.user;
 
         const token = jwt.sign({ id: user.id, email: user.email }, "secret");
@@ -33,6 +31,14 @@ export const mainApp = (app: Application) => {
           message: "Well done...!",
           data: token,
         });
+      }
+    });
+
+    app.get(
+      "/auth/google/callback",
+      passport.authenticate("google", { failureRedirect: "/login" }),
+      function (req, res) {
+        res.redirect("/success");
       }
     );
 

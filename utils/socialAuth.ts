@@ -10,6 +10,10 @@ const GOOGLE_CLIENT_ID =
   "199704572461-g84htr0if8p5ej23l2ukvsgtq2rh288g.apps.googleusercontent.com";
 const GOOGLE_CLIENT_SECRET = "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";
 
+// const GOOGLE_CLIENT_ID =
+//   "199704572461-mqftjmpvtc6k62t49ki4mshaocr0e6hf.apps.googleusercontent.com";
+// const GOOGLE_CLIENT_SECRET = "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";
+
 // http://localhost:3300/auth/google
 // https://pick-be.onrender.com/auth/google/callback
 
@@ -41,6 +45,8 @@ passport.use(
         } else {
           const newUser = await authModel.create({
             email: profile.emails[0].value,
+            firstName: profile.name.givenName,
+            lastName: profile.name.familyName,
             fullName: profile.displayName,
             userName: profile.name.familyName,
             avatar: profile.photos[0].value,

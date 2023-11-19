@@ -9,6 +9,7 @@ const mianError_1 = require("./error/mianError");
 const handleError_1 = require("./error/handleError");
 const authRouter_1 = __importDefault(require("./router/authRouter"));
 const studioRouter_1 = __importDefault(require("./router/studioRouter"));
+const socialRouter_1 = __importDefault(require("./router/socialRouter"));
 const studioRatingRouter_1 = __importDefault(require("./router/studioRatingRouter"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const passport_1 = __importDefault(require("passport"));
@@ -17,16 +18,20 @@ const mainApp = (app) => {
         app.use("/api/v1", authRouter_1.default);
         app.use("/api/v1", studioRouter_1.default);
         app.use("/api/v1", studioRatingRouter_1.default);
+        app.use("/api/v1", socialRouter_1.default);
         app.get("/auth/google/", passport_1.default.authenticate("google", { scope: ["profile", "email"] }));
+        app.get("/api/v1/sign-in/success", (req, res) => {
+            if (req.user) {
+                const user = req.user;
+                const token = jsonwebtoken_1.default.sign({ id: user.id, email: user.email }, "secret");
+                res.status(200).json({
+                    message: "Well done...!",
+                    data: token,
+                });
+            }
+        });
         app.get("/auth/google/callback", passport_1.default.authenticate("google", { failureRedirect: "/login" }), function (req, res) {
-            // Successful authentication, redirect home.
-            // res.redirect("/");
-            const user = req.user;
-            const token = jsonwebtoken_1.default.sign({ id: user.id, email: user.email }, "secret");
-            res.status(200).json({
-                message: "Well done...!",
-                data: token,
-            });
+            res.redirect("/success");
         });
         app.get("/", (req, res) => {
             try {

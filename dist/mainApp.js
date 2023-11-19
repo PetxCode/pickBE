@@ -30,8 +30,16 @@ const mainApp = (app) => {
                 });
             }
         });
-        app.get("/auth/google/callback", passport_1.default.authenticate("google", { failureRedirect: "/login" }), function (req, res) {
-            res.redirect("/success");
+        app.get("/api/v1/sign-in/failed", (req, res) => {
+            res.status(401).json({
+                success: false,
+                message: "failure",
+            });
+        });
+        app.get("/auth/google/callback", passport_1.default.authenticate("google", {
+            failureRedirect: "/api/v1/sign-in/failed",
+        }), function (req, res) {
+            res.redirect("/api/v1/sign-in/success");
         });
         app.get("/", (req, res) => {
             try {

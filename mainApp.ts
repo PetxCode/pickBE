@@ -34,11 +34,20 @@ export const mainApp = (app: Application) => {
       }
     });
 
+    app.get("/api/v1/sign-in/failed", (req, res) => {
+      res.status(401).json({
+        success: false,
+        message: "failure",
+      });
+    });
+
     app.get(
       "/auth/google/callback",
-      passport.authenticate("google", { failureRedirect: "/login" }),
+      passport.authenticate("google", {
+        failureRedirect: "/api/v1/sign-in/failed",
+      }),
       function (req, res) {
-        res.redirect("/success");
+        res.redirect("/api/v1/sign-in/success");
       }
     );
 

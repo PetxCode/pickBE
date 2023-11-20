@@ -63,37 +63,31 @@ passport.deserializeUser((user, done) => {
   done(null, user!);
 });
 
-app
-  .use(
-    cookieSession({
-      name: `pickStudio`,
-      keys: ["pickStudio"],
-      maxAge: 2 * 60 * 60 * 100,
-    })
-  )
-
-  .use((req: any, res: Response, next: NextFunction) => {
-    if (req.session && !req.session.regenerate) {
-      req.session.regenerate = (cb: any) => {
-        cb();
-      };
-    }
-    if (req.session && !req.session.save) {
-      req.session.save = (cb: any) => {
-        cb();
-      };
-    }
-    next();
+app.use(
+  cookieSession({
+    name: `pickStudio`,
+    keys: ["pickStudio"],
+    maxAge: 2 * 60 * 60 * 100,
   })
-  .use(passport.initialize())
-  .use(passport.session());
+);
+
+// .use((req: any, res: Response, next: NextFunction) => {
+//   if (req.session && !req.session.regenerate) {
+//     req.session.regenerate = (cb: any) => {
+//       cb();
+//     };
+//   }
+//   if (req.session && !req.session.save) {
+//     req.session.save = (cb: any) => {
+//       cb();
+//     };
+//   }
+//   next();
+// })
+app.use(passport.initialize());
+app.use(passport.session());
 
 mainApp(app);
-
-// app.get(
-//   "/api/auth/google/",
-//   passport.authenticate("google", { scope: ["profile", "email"] })
-// );
 
 app.listen(port, () => {
   console.clear();

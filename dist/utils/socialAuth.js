@@ -24,6 +24,10 @@ const GOOGLE_CLIENT_SECRET = "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";
 // const GOOGLE_CLIENT_SECRET = "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";
 // http://localhost:3300/auth/google
 // https://pick-be.onrender.com/auth/google/callback
+// http://localhost:3300/auth/google
+// https://pick-be.onrender.com/auth/google/callback
+// http://localhost:3300/auth/google
+// https://pick-be.onrender.com/auth/google/callback
 passport_1.default.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,

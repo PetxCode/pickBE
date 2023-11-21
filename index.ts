@@ -71,19 +71,19 @@ app.use(
   })
 );
 
-// .use((req: any, res: Response, next: NextFunction) => {
-//   if (req.session && !req.session.regenerate) {
-//     req.session.regenerate = (cb: any) => {
-//       cb();
-//     };
-//   }
-//   if (req.session && !req.session.save) {
-//     req.session.save = (cb: any) => {
-//       cb();
-//     };
-//   }
-//   next();
-// })
+app.use((req: any, res: Response, next: NextFunction) => {
+  if (req.session && !req.session.regenerate) {
+    req.session.regenerate = (cb: any) => {
+      cb();
+    };
+  }
+  if (req.session && !req.session.save) {
+    req.session.save = (cb: any) => {
+      cb();
+    };
+  }
+  next();
+});
 app.use(passport.initialize());
 app.use(passport.session());
 

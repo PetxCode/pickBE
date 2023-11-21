@@ -64,19 +64,19 @@ app.use((0, cookie_session_1.default)({
     keys: ["pickStudio"],
     maxAge: 2 * 60 * 60 * 100,
 }));
-// .use((req: any, res: Response, next: NextFunction) => {
-//   if (req.session && !req.session.regenerate) {
-//     req.session.regenerate = (cb: any) => {
-//       cb();
-//     };
-//   }
-//   if (req.session && !req.session.save) {
-//     req.session.save = (cb: any) => {
-//       cb();
-//     };
-//   }
-//   next();
-// })
+app.use((req, res, next) => {
+    if (req.session && !req.session.regenerate) {
+        req.session.regenerate = (cb) => {
+            cb();
+        };
+    }
+    if (req.session && !req.session.save) {
+        req.session.save = (cb) => {
+            cb();
+        };
+    }
+    next();
+});
 app.use(passport_1.default.initialize());
 app.use(passport_1.default.session());
 (0, mainApp_1.mainApp)(app);

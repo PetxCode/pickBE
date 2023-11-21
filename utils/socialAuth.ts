@@ -1,7 +1,5 @@
 import passport from "passport";
-
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-
 import authModel from "../model/authModel";
 
 // running deployed

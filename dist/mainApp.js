@@ -13,7 +13,8 @@ const socialRouter_1 = __importDefault(require("./router/socialRouter"));
 const studioRatingRouter_1 = __importDefault(require("./router/studioRatingRouter"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const passport_1 = __importDefault(require("passport"));
-const CLIENT_URL = "http://localhost:5173";
+// const CLIENT_URL = "http://localhost:5173";
+const CLIENT_URL = "https://pickstudio.netlify.app";
 const mainApp = (app) => {
     try {
         app.use("/api/v1", authRouter_1.default);
@@ -42,6 +43,12 @@ const mainApp = (app) => {
             successRedirect: CLIENT_URL,
         }), function (req, res) {
             res.redirect("/api/v1/sign-in/success");
+            const user = req.user;
+            const token = jsonwebtoken_1.default.sign({ id: user.id, email: user.email }, "secret");
+            res.status(200).json({
+                message: "Well done...!",
+                data: token,
+            });
         });
         app.get("/", (req, res) => {
             try {

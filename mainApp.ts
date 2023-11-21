@@ -9,7 +9,8 @@ import rating from "./router/studioRatingRouter";
 import jwt from "jsonwebtoken";
 import passport from "passport";
 
-const CLIENT_URL = "http://localhost:5173";
+// const CLIENT_URL = "http://localhost:5173";
+const CLIENT_URL = "https://pickstudio.netlify.app";
 
 export const mainApp = (app: Application) => {
   try {
@@ -51,6 +52,13 @@ export const mainApp = (app: Application) => {
       }),
       function (req, res) {
         res.redirect("/api/v1/sign-in/success");
+        const user: any = req.user;
+        const token = jwt.sign({ id: user.id, email: user.email }, "secret");
+
+        res.status(200).json({
+          message: "Well done...!",
+          data: token,
+        });
       }
     );
 

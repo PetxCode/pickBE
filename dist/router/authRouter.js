@@ -72,7 +72,7 @@ router.route("/sign-user").post(authController_1.signInUser);
  *
  */
 router.route("/create-user").post(authController_1.createAuth);
-router.route("/verify-user").get(authController_1.verifyUser);
+router.route("/verify-user").post(authController_1.verifyUser);
 router.route("/update-one-user/:userID").patch(upload, authController_1.updateOneAuthAvatar);
 router.route("/update-one-user-info/:userID").patch(authController_1.updateOneAuthInfo);
 exports.default = router;

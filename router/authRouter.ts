@@ -83,7 +83,7 @@ router.route("/sign-user").post(signInUser);
  */
 
 router.route("/create-user").post(createAuth);
-router.route("/verify-user/:userID").get(verifyUser);
+router.route("/verify-user").get(verifyUser);
 
 router.route("/update-one-user/:userID").patch(upload, updateOneAuthAvatar);
 router.route("/update-one-user-info/:userID").patch(updateOneAuthInfo);

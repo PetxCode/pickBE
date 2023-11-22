@@ -122,14 +122,14 @@ export const verifyUser = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const { userID } = req.params;
+    const { code } = req.body;
 
-    const user = await authModel.findById(userID);
+    const user: any = await authModel.findOne({ code });
 
     if (user) {
       if (user.verifyToken !== "") {
         await authModel.findByIdAndUpdate(
-          userID,
+          user._id,
           {
             verifyToken: "",
             verify: true,

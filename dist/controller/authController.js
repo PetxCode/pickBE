@@ -120,11 +120,11 @@ const updateOneAuthAvatar = (req, res) => __awaiter(void 0, void 0, void 0, func
 exports.updateOneAuthAvatar = updateOneAuthAvatar;
 const verifyUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { userID } = req.params;
-        const user = yield authModel_1.default.findById(userID);
+        const { code } = req.body;
+        const user = yield authModel_1.default.findOne({ code });
         if (user) {
             if (user.verifyToken !== "") {
-                yield authModel_1.default.findByIdAndUpdate(userID, {
+                yield authModel_1.default.findByIdAndUpdate(user._id, {
                     verifyToken: "",
                     verify: true,
                 }, { new: true });

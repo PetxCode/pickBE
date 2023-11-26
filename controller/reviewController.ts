@@ -54,10 +54,8 @@ export const createStudioReview = async (req: Request, res: Response) => {
 
 export const getStudioReview = async (req: Request, res: Response) => {
   try {
-    const { accountID, studioID } = req.params;
+    const { studioID } = req.params;
     const { review } = req.body;
-
-    const account = await authModel.findById(accountID);
 
     const studio = await studioModel
       .findById(studioID)

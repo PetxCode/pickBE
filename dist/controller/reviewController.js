@@ -61,9 +61,8 @@ const createStudioReview = (req, res) => __awaiter(void 0, void 0, void 0, funct
 exports.createStudioReview = createStudioReview;
 const getStudioReview = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { accountID, studioID } = req.params;
+        const { studioID } = req.params;
         const { review } = req.body;
-        const account = yield authModel_1.default.findById(accountID);
         const studio = yield studioModel_1.default
             .findById(studioID)
             .populate({ path: "studioReview" });

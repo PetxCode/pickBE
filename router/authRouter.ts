@@ -9,6 +9,11 @@ import {
   signInUser,
   updateOneAuthInfo,
   verifyUser,
+  updateOneAuthInfoLang,
+  updateOneAuthInfoBio,
+  updateOneAuthInfoPhone,
+  updateOneAuthInfoProfession,
+  updateOneAuthInfoContact,
 } from "../controller/authController";
 const upload = multer().single("avatar");
 
@@ -87,5 +92,15 @@ router.route("/verify-user").post(verifyUser);
 
 router.route("/update-one-user/:userID").patch(upload, updateOneAuthAvatar);
 router.route("/update-one-user-info/:userID").patch(updateOneAuthInfo);
+
+router.route("/update-one-user-lang/:userID").patch(updateOneAuthInfoLang);
+router.route("/update-one-user-bio/:userID").patch(updateOneAuthInfoBio);
+router
+  .route("/update-one-user-contact/:userID")
+  .patch(updateOneAuthInfoContact);
+router
+  .route("/update-one-user-profession/:userID")
+  .patch(updateOneAuthInfoProfession);
+router.route("/update-one-user-phone/:userID").patch(updateOneAuthInfoPhone);
 
 export default router;

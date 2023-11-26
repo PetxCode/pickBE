@@ -21,13 +21,21 @@ const streamifier_1 = require("../utils/streamifier");
 const createStudio = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { accountID } = req.params;
-        const { studioContact, studioLocation, studioName } = req.body;
+        const { studioContact, studioCategory, studioAddress, studioDescription, studioFeatures, studioPrice, numberOfGuess, includeDiscount, discountPercent, studioName, } = req.body;
         const account = yield authModel_1.default.findById(accountID);
         if (account) {
             const studio = yield studioModel_1.default.create({
                 accountHolderID: account._id,
                 studioContact,
-                studioLocation,
+                studioCategory,
+                studioAddress,
+                studioDescription,
+                studioFeatures,
+                studioImages: (0, streamifier_1.multiStreamifier)(req),
+                studioPrice,
+                numberOfGuess,
+                includeDiscount,
+                discountPercent,
                 studioName,
             });
             account.studio.push(new mongoose_1.Types.ObjectId(studio._id));

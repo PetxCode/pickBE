@@ -8,7 +8,6 @@ import {
   viewAccountStudio,
   viewAllStudio,
 } from "../controller/studioController";
-
 const upload = multer().array("avatar", 12);
 
 const router = Router();

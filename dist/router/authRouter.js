@@ -75,4 +75,13 @@ router.route("/create-user").post(authController_1.createAuth);
 router.route("/verify-user").post(authController_1.verifyUser);
 router.route("/update-one-user/:userID").patch(upload, authController_1.updateOneAuthAvatar);
 router.route("/update-one-user-info/:userID").patch(authController_1.updateOneAuthInfo);
+router.route("/update-one-user-lang/:userID").patch(authController_1.updateOneAuthInfoLang);
+router.route("/update-one-user-bio/:userID").patch(authController_1.updateOneAuthInfoBio);
+router
+    .route("/update-one-user-contact/:userID")
+    .patch(authController_1.updateOneAuthInfoContact);
+router
+    .route("/update-one-user-profession/:userID")
+    .patch(authController_1.updateOneAuthInfoProfession);
+router.route("/update-one-user-phone/:userID").patch(authController_1.updateOneAuthInfoPhone);
 exports.default = router;

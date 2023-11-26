@@ -8,7 +8,18 @@ import { multiStreamifier } from "../utils/streamifier";
 export const createStudio = async (req: Request, res: Response) => {
   try {
     const { accountID } = req.params;
-    const { studioContact, studioLocation, studioName } = req.body;
+    const {
+      studioContact,
+      studioCategory,
+      studioAddress,
+      studioDescription,
+      studioFeatures,
+      studioPrice,
+      numberOfGuess,
+      includeDiscount,
+      discountPercent,
+      studioName,
+    } = req.body;
 
     const account = await authModel.findById(accountID);
 
@@ -16,7 +27,15 @@ export const createStudio = async (req: Request, res: Response) => {
       const studio = await studioModel.create({
         accountHolderID: account._id,
         studioContact,
-        studioLocation,
+        studioCategory,
+        studioAddress,
+        studioDescription,
+        studioFeatures,
+        studioImages: multiStreamifier(req),
+        studioPrice,
+        numberOfGuess,
+        includeDiscount,
+        discountPercent,
         studioName,
       });
 

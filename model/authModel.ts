@@ -4,6 +4,14 @@ interface iAuth {
   userName: string;
   lastName: string;
   firstName: string;
+
+  contact: string;
+  phone: string;
+  bio: string;
+  profession: string;
+  lang: string;
+  // category: string;
+
   email: string;
   code: string;
   password: string;
@@ -22,9 +30,31 @@ const authModel = new Schema<iAuthData>(
     userName: {
       type: String,
     },
+
     code: {
       type: String,
     },
+
+    lang: {
+      type: String,
+    },
+
+    phone: {
+      type: String,
+    },
+
+    profession: {
+      type: String,
+    },
+
+    bio: {
+      type: String,
+    },
+
+    contact: {
+      type: String,
+    },
+
     firstName: {
       type: String,
     },

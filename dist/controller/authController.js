@@ -12,13 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.signInUser = exports.verifyUser = exports.updateOneAuthAvatar = exports.updateOneAuthInfo = exports.readOneAuth = exports.readAllAuth = exports.createAuth = void 0;
+exports.signInUser = exports.verifyUser = exports.updateOneAuthAvatar = exports.updateOneAuthInfoLang = exports.updateOneAuthInfoBio = exports.updateOneAuthInfoProfession = exports.updateOneAuthInfoPhone = exports.updateOneAuthInfoContact = exports.updateOneAuthInfo = exports.readOneAuth = exports.readAllAuth = exports.createAuth = void 0;
 const statusEnums_1 = require("../utils/statusEnums");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const crypto_1 = __importDefault(require("crypto"));
 const authModel_1 = __importDefault(require("../model/authModel"));
 const email_1 = require("../utils/email");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const streamifier_1 = require("../utils/streamifier");
 const createAuth = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password, firstName, lastName } = req.body;
@@ -98,13 +99,106 @@ const updateOneAuthInfo = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.updateOneAuthInfo = updateOneAuthInfo;
+const updateOneAuthInfoContact = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userID } = req.params;
+        const { contact } = req.body;
+        const user = yield authModel_1.default.findByIdAndUpdate(userID, {
+            contact,
+        }, { new: true });
+        return res.status(statusEnums_1.status.OK).json({
+            message: "one users read",
+            data: user,
+        });
+    }
+    catch (error) {
+        return res.status(statusEnums_1.status.BAD).json({
+            message: "Error creating user",
+        });
+    }
+});
+exports.updateOneAuthInfoContact = updateOneAuthInfoContact;
+const updateOneAuthInfoPhone = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userID } = req.params;
+        const { phone } = req.body;
+        const user = yield authModel_1.default.findByIdAndUpdate(userID, {
+            phone,
+        }, { new: true });
+        return res.status(statusEnums_1.status.OK).json({
+            message: "one users read",
+            data: user,
+        });
+    }
+    catch (error) {
+        return res.status(statusEnums_1.status.BAD).json({
+            message: "Error creating user",
+        });
+    }
+});
+exports.updateOneAuthInfoPhone = updateOneAuthInfoPhone;
+const updateOneAuthInfoProfession = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userID } = req.params;
+        const { profession } = req.body;
+        const user = yield authModel_1.default.findByIdAndUpdate(userID, {
+            profession,
+        }, { new: true });
+        return res.status(statusEnums_1.status.OK).json({
+            message: "one users read",
+            data: user,
+        });
+    }
+    catch (error) {
+        return res.status(statusEnums_1.status.BAD).json({
+            message: "Error creating user",
+        });
+    }
+});
+exports.updateOneAuthInfoProfession = updateOneAuthInfoProfession;
+const updateOneAuthInfoBio = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userID } = req.params;
+        const { bio } = req.body;
+        const user = yield authModel_1.default.findByIdAndUpdate(userID, {
+            bio,
+        }, { new: true });
+        return res.status(statusEnums_1.status.OK).json({
+            message: "one users read",
+            data: user,
+        });
+    }
+    catch (error) {
+        return res.status(statusEnums_1.status.BAD).json({
+            message: "Error creating user",
+        });
+    }
+});
+exports.updateOneAuthInfoBio = updateOneAuthInfoBio;
+const updateOneAuthInfoLang = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userID } = req.params;
+        const { lang } = req.body;
+        const user = yield authModel_1.default.findByIdAndUpdate(userID, {
+            lang,
+        }, { new: true });
+        return res.status(statusEnums_1.status.OK).json({
+            message: "one users read",
+            data: user,
+        });
+    }
+    catch (error) {
+        return res.status(statusEnums_1.status.BAD).json({
+            message: "Error creating user",
+        });
+    }
+});
+exports.updateOneAuthInfoLang = updateOneAuthInfoLang;
 const updateOneAuthAvatar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userID } = req.params;
-        const { userName, fullName } = req.body;
         const user = yield authModel_1.default.findByIdAndUpdate(userID, {
-            userName,
-            fullName,
+            avatar: (0, streamifier_1.streamUpload)(req),
         }, { new: true });
         return res.status(statusEnums_1.status.OK).json({
             message: "one users read",

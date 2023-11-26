@@ -2,12 +2,21 @@ import mongoose, { Document, Schema, model } from "mongoose";
 
 interface iAuth {
   accountHolderID: string;
+
   studioName: string;
-  studioCost: number;
-  studioRate: number;
-  studioLocation: string;
+  studioPrice: number;
+  studioAddress: string;
   studioContact: string;
   studioImages: Array<{}>;
+
+  studioDescription: string;
+  studioCategory: string;
+  discountPercent: number;
+  numberOfGuess: number;
+  includeDiscount: boolean;
+  studioFeatures: Array<string>;
+
+  studioRate: number;
   studioRating: Array<{}>;
   studioLikes: Array<{}>;
 
@@ -21,20 +30,45 @@ const authModel = new Schema<iAuthData>(
     accountHolderID: {
       type: String,
     },
+    studioCategory: {
+      type: String,
+    },
 
     studioRate: {
       type: Number,
       default: 0,
     },
 
-    studioCost: {
+    studioPrice: {
+      type: Number,
+    },
+
+    discountPercent: {
       type: Number,
     },
 
     studioName: {
       type: String,
     },
-    studioLocation: {
+
+    studioDescription: {
+      type: String,
+    },
+
+    numberOfGuess: {
+      type: Number,
+    },
+
+    studioFeatures: {
+      type: [],
+    },
+
+    includeDiscount: {
+      type: Boolean,
+      default: false,
+    },
+
+    studioAddress: {
       type: String,
     },
     studioContact: {

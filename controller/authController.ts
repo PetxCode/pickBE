@@ -5,6 +5,7 @@ import crypto from "crypto";
 import authModel from "../model/authModel";
 import { verifiedEmail } from "../utils/email";
 import jwt from "jsonwebtoken";
+import { streamUpload } from "../utils/streamifier";
 
 export const createAuth = async (req: Request, res: Response) => {
   try {
@@ -92,16 +93,132 @@ export const updateOneAuthInfo = async (req: Request, res: Response) => {
   }
 };
 
+export const updateOneAuthInfoContact = async (req: Request, res: Response) => {
+  try {
+    const { userID } = req.params;
+    const { contact } = req.body;
+    const user = await authModel.findByIdAndUpdate(
+      userID,
+      {
+        contact,
+      },
+      { new: true }
+    );
+
+    return res.status(status.OK).json({
+      message: "one users read",
+      data: user,
+    });
+  } catch (error) {
+    return res.status(status.BAD).json({
+      message: "Error creating user",
+    });
+  }
+};
+
+export const updateOneAuthInfoPhone = async (req: Request, res: Response) => {
+  try {
+    const { userID } = req.params;
+    const { phone } = req.body;
+    const user = await authModel.findByIdAndUpdate(
+      userID,
+      {
+        phone,
+      },
+      { new: true }
+    );
+
+    return res.status(status.OK).json({
+      message: "one users read",
+      data: user,
+    });
+  } catch (error) {
+    return res.status(status.BAD).json({
+      message: "Error creating user",
+    });
+  }
+};
+
+export const updateOneAuthInfoProfession = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { userID } = req.params;
+    const { profession } = req.body;
+    const user = await authModel.findByIdAndUpdate(
+      userID,
+      {
+        profession,
+      },
+      { new: true }
+    );
+
+    return res.status(status.OK).json({
+      message: "one users read",
+      data: user,
+    });
+  } catch (error) {
+    return res.status(status.BAD).json({
+      message: "Error creating user",
+    });
+  }
+};
+
+export const updateOneAuthInfoBio = async (req: Request, res: Response) => {
+  try {
+    const { userID } = req.params;
+    const { bio } = req.body;
+    const user = await authModel.findByIdAndUpdate(
+      userID,
+      {
+        bio,
+      },
+      { new: true }
+    );
+
+    return res.status(status.OK).json({
+      message: "one users read",
+      data: user,
+    });
+  } catch (error) {
+    return res.status(status.BAD).json({
+      message: "Error creating user",
+    });
+  }
+};
+
+export const updateOneAuthInfoLang = async (req: Request, res: Response) => {
+  try {
+    const { userID } = req.params;
+    const { lang } = req.body;
+    const user = await authModel.findByIdAndUpdate(
+      userID,
+      {
+        lang,
+      },
+      { new: true }
+    );
+
+    return res.status(status.OK).json({
+      message: "one users read",
+      data: user,
+    });
+  } catch (error) {
+    return res.status(status.BAD).json({
+      message: "Error creating user",
+    });
+  }
+};
+
 export const updateOneAuthAvatar = async (req: Request, res: Response) => {
   try {
     const { userID } = req.params;
-    const { userName, fullName } = req.body;
 
     const user = await authModel.findByIdAndUpdate(
       userID,
       {
-        userName,
-        fullName,
+        avatar: streamUpload(req),
       },
       { new: true }
     );

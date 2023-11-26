@@ -28,17 +28,36 @@ const authModel = new mongoose_1.Schema({
     accountHolderID: {
         type: String,
     },
+    studioCategory: {
+        type: String,
+    },
     studioRate: {
         type: Number,
         default: 0,
     },
-    studioCost: {
+    studioPrice: {
+        type: Number,
+    },
+    discountPercent: {
         type: Number,
     },
     studioName: {
         type: String,
     },
-    studioLocation: {
+    studioDescription: {
+        type: String,
+    },
+    numberOfGuess: {
+        type: Number,
+    },
+    studioFeatures: {
+        type: [],
+    },
+    includeDiscount: {
+        type: Boolean,
+        default: false,
+    },
+    studioAddress: {
         type: String,
     },
     studioContact: {

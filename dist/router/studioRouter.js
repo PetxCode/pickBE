@@ -10,7 +10,7 @@ const upload = (0, multer_1.default)().array("avatar", 12);
 const router = (0, express_1.Router)();
 router.route("/view-all-studio/").get(studioController_1.viewAllStudio);
 router.route("/view-studio/:accountID").get(studioController_1.viewAccountStudio);
-router.route("/create-studio/:accountID").post(studioController_1.createStudio);
+router.route("/create-studio/:accountID").post(upload, studioController_1.createStudio);
 router
     .route("/add-studio-image/:accountID/:studioID")
     .post(upload, studioController_1.addStudioImages);

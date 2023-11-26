@@ -15,7 +15,7 @@ const router = Router();
 router.route("/view-all-studio/").get(viewAllStudio);
 router.route("/view-studio/:accountID").get(viewAccountStudio);
 
-router.route("/create-studio/:accountID").post(createStudio);
+router.route("/create-studio/:accountID").post(upload, createStudio);
 router
   .route("/add-studio-image/:accountID/:studioID")
   .post(upload, addStudioImages);

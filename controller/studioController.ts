@@ -31,7 +31,7 @@ export const createStudio = async (req: Request, res: Response) => {
         studioAddress,
         studioDescription,
         studioFeatures,
-        studioImages: multiStreamifier(req),
+        studioImages: await multiStreamifier(req),
         studioPrice,
         numberOfGuess,
         includeDiscount,

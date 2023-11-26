@@ -31,7 +31,7 @@ const createStudio = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 studioAddress,
                 studioDescription,
                 studioFeatures,
-                studioImages: (0, streamifier_1.multiStreamifier)(req),
+                studioImages: yield (0, streamifier_1.multiStreamifier)(req),
                 studioPrice,
                 numberOfGuess,
                 includeDiscount,

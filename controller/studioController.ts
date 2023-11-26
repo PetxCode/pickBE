@@ -61,14 +61,7 @@ export const createStudio = async (req: Request, res: Response) => {
 export const viewAccountStudio = async (req: Request, res: Response) => {
   try {
     const { accountID } = req.params;
-    const account = await authModel.findById(accountID).populate({
-      path: "studio",
-      options: {
-        sort: {
-          createdAt: -1,
-        },
-      },
-    });
+    const account = await studioModel.findById(accountID);
 
     return res.status(status.OK).json({
       message: `viewing studio`,

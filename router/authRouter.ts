@@ -1,6 +1,4 @@
 import { Router } from "express";
-
-import multer from "multer";
 import {
   createAuth,
   updateOneAuthAvatar,
@@ -15,6 +13,7 @@ import {
   updateOneAuthInfoProfession,
   updateOneAuthInfoContact,
 } from "../controller/authController";
+import multer from "multer";
 const upload = multer().single("avatar");
 
 const router = Router();

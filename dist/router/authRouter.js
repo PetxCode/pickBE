@@ -4,8 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const multer_1 = __importDefault(require("multer"));
 const authController_1 = require("../controller/authController");
+const multer_1 = __importDefault(require("multer"));
 const upload = (0, multer_1.default)().single("avatar");
 const router = (0, express_1.Router)();
 router.route("/one-user/:userID").get(authController_1.readOneAuth);

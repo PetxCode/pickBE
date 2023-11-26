@@ -61,14 +61,7 @@ exports.createStudio = createStudio;
 const viewAccountStudio = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { accountID } = req.params;
-        const account = yield authModel_1.default.findById(accountID).populate({
-            path: "studio",
-            options: {
-                sort: {
-                    createdAt: -1,
-                },
-            },
-        });
+        const account = yield studioModel_1.default.findById(accountID);
         return res.status(statusEnums_1.status.OK).json({
             message: `viewing studio`,
             data: account,

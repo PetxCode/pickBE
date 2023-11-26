@@ -19,6 +19,7 @@ interface iAuth {
   studioRate: number;
   studioRating: Array<{}>;
   studioLikes: Array<{}>;
+  studioReview: Array<{}>;
 
   user: {};
 }
@@ -96,6 +97,13 @@ const authModel = new Schema<iAuthData>(
       {
         type: mongoose.Types.ObjectId,
         ref: "likes",
+      },
+    ],
+
+    studioReview: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "reviews",
       },
     ],
   },

@@ -158,3 +158,19 @@ export const removeStudioImages = async (req: any, res: Response) => {
     });
   }
 };
+
+export const searchStudio = async (req: Request, res: Response) => {
+  try {
+    const { studioCategory } = req.body;
+    const account = await studioModel.find({ studioCategory });
+
+    return res.status(status.OK).json({
+      message: `viewing studio`,
+      data: account,
+    });
+  } catch (error: any) {
+    return res.status(status.BAD).json({
+      message: error.message,
+    });
+  }
+};

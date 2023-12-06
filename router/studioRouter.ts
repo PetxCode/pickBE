@@ -5,6 +5,7 @@ import {
   addStudioImages,
   createStudio,
   removeStudioImages,
+  searchStudio,
   viewAccountStudio,
   viewAllStudio,
 } from "../controller/studioController";
@@ -14,6 +15,7 @@ const uploadOne = multer().single("avatar");
 const router = Router();
 
 router.route("/view-all-studio/").get(viewAllStudio);
+router.route("/view-studio-category/").get(searchStudio);
 router.route("/view-studio/:accountID").get(viewAccountStudio);
 
 router.route("/create-studio/:accountID").post(upload, createStudio);

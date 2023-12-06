@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeStudioImages = exports.addStudioImages = exports.viewAllStudio = exports.viewAccountStudio = exports.createStudio = void 0;
+exports.searchStudio = exports.removeStudioImages = exports.addStudioImages = exports.viewAllStudio = exports.viewAccountStudio = exports.createStudio = void 0;
 const statusEnums_1 = require("../utils/statusEnums");
 const authModel_1 = __importDefault(require("../model/authModel"));
 const studioModel_1 = __importDefault(require("../model/studioModel"));
@@ -148,3 +148,19 @@ const removeStudioImages = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.removeStudioImages = removeStudioImages;
+const searchStudio = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { studioCategory } = req.body;
+        const account = yield studioModel_1.default.find({ studioCategory });
+        return res.status(statusEnums_1.status.OK).json({
+            message: `viewing studio`,
+            data: account,
+        });
+    }
+    catch (error) {
+        return res.status(statusEnums_1.status.BAD).json({
+            message: error.message,
+        });
+    }
+});
+exports.searchStudio = searchStudio;

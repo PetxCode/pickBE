@@ -94,12 +94,12 @@ const addStudioImages = (req, res) => __awaiter(void 0, void 0, void 0, function
         const { accountID, studioID } = req.params;
         const account = yield authModel_1.default.findById(accountID);
         const studio = yield studioModel_1.default.findById(studioID);
+        // const { secure_url }: any = await streamUpload(req);
         if (account && studio) {
             let imagesAdded = yield studioModel_1.default.findByIdAndUpdate(studioID, {
-                studioImages: [
-                    ...studio.studioImages,
-                    ...(yield (0, streamifier_1.multiStreamifier)(req)),
-                ],
+                studioImages: 
+                // [...studio.studioImages, secure_url],
+                [...studio.studioImages, ...(yield (0, streamifier_1.multiStreamifier)(req))],
             }, { new: true });
             return res.status(statusEnums_1.status.OK).json({
                 message: `studio images has been added`,

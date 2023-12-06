@@ -49,6 +49,7 @@ const multiStreamifier = (req) => __awaiter(void 0, void 0, void 0, function* ()
         const { secure_url } = yield streamUpload(req);
         image.push(secure_url);
     }
+    console.log(image);
     return image;
 });
 exports.multiStreamifier = multiStreamifier;

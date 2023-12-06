@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.signInUser = exports.verifyUser = exports.updateOneAuthAvatar = exports.updateOneAuthInfoLang = exports.updateOneAuthInfoBio = exports.updateOneAuthInfoProfession = exports.updateOneAuthInfoPhone = exports.updateOneAuthInfoContact = exports.updateOneAuthInfo = exports.readOneAuth = exports.readAllAuth = exports.createAuth = void 0;
+exports.signInUser = exports.verifyUser = exports.updateOneAuthAvatar = exports.updateOneAuthInfoLang = exports.updateOneAuthInfoBio = exports.updateOneAuthInfoProfession = exports.updateOneAuthInfoPhone = exports.updateOneAuthInfoContact = exports.updateOneAuthInfo = exports.readOneAuth = exports.readAllAuth = exports.createArtistAuth = exports.createAdminAuth = exports.createUserAuth = void 0;
 const statusEnums_1 = require("../utils/statusEnums");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const crypto_1 = __importDefault(require("crypto"));
@@ -20,7 +20,7 @@ const authModel_1 = __importDefault(require("../model/authModel"));
 const email_1 = require("../utils/email");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const streamifier_1 = require("../utils/streamifier");
-const createAuth = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const createUserAuth = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password, firstName, lastName } = req.body;
         const salt = yield bcrypt_1.default.genSalt(10);
@@ -34,6 +34,7 @@ const createAuth = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             firstName,
             lastName,
             code,
+            status: "user",
         });
         (0, email_1.verifiedEmail)(user);
         return res.status(statusEnums_1.status.CREATED).json({
@@ -47,7 +48,65 @@ const createAuth = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         });
     }
 });
-exports.createAuth = createAuth;
+exports.createUserAuth = createUserAuth;
+const createAdminAuth = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { email, password, firstName, lastName } = req.body;
+        const salt = yield bcrypt_1.default.genSalt(10);
+        const hash = yield bcrypt_1.default.hash(password, salt);
+        let token = crypto_1.default.randomBytes(25).toString("hex");
+        let code = crypto_1.default.randomBytes(3).toString("hex");
+        const user = yield authModel_1.default.create({
+            email,
+            password: hash,
+            verifyToken: token,
+            firstName,
+            lastName,
+            code,
+            status: "admin",
+        });
+        (0, email_1.verifiedEmail)(user);
+        return res.status(statusEnums_1.status.CREATED).json({
+            message: "account created but check your email for further verification",
+        });
+    }
+    catch (error) {
+        return res.status(statusEnums_1.status.BAD).json({
+            message: "Error creating user",
+            data: error.message,
+        });
+    }
+});
+exports.createAdminAuth = createAdminAuth;
+const createArtistAuth = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { email, password, firstName, lastName } = req.body;
+        const salt = yield bcrypt_1.default.genSalt(10);
+        const hash = yield bcrypt_1.default.hash(password, salt);
+        let token = crypto_1.default.randomBytes(25).toString("hex");
+        let code = crypto_1.default.randomBytes(3).toString("hex");
+        const user = yield authModel_1.default.create({
+            email,
+            password: hash,
+            verifyToken: token,
+            firstName,
+            lastName,
+            code,
+            status: "artist",
+        });
+        (0, email_1.verifiedEmail)(user);
+        return res.status(statusEnums_1.status.CREATED).json({
+            message: "account created but check your email for further verification",
+        });
+    }
+    catch (error) {
+        return res.status(statusEnums_1.status.BAD).json({
+            message: "Error creating user",
+            data: error.message,
+        });
+    }
+});
+exports.createArtistAuth = createArtistAuth;
 const readAllAuth = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const user = yield authModel_1.default.find();

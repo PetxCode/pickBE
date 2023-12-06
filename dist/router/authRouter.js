@@ -71,7 +71,9 @@ router.route("/sign-user").post(authController_1.signInUser);
  *         description: Success
  *
  */
-router.route("/create-user").post(authController_1.createAuth);
+router.route("/create-admin").post(authController_1.createAdminAuth);
+router.route("/create-artist").post(authController_1.createArtistAuth);
+router.route("/create-user").post(authController_1.createUserAuth);
 router.route("/verify-user").post(authController_1.verifyUser);
 router.route("/update-one-user/:userID").patch(upload, authController_1.updateOneAuthAvatar);
 router.route("/update-one-user-info/:userID").patch(authController_1.updateOneAuthInfo);

@@ -12,6 +12,7 @@ interface iAuth {
   lang: string;
   // category: string;
 
+  status: string;
   email: string;
   code: string;
   password: string;
@@ -21,6 +22,7 @@ interface iAuth {
   verifyToken: string;
   accessStatus: string;
   studio: Array<{}>;
+  history: Array<{}>;
 }
 
 interface iAuthData extends iAuth, Document {}
@@ -32,6 +34,10 @@ const authModel = new Schema<iAuthData>(
     },
 
     code: {
+      type: String,
+    },
+
+    status: {
       type: String,
     },
 
@@ -90,6 +96,13 @@ const authModel = new Schema<iAuthData>(
       {
         type: mongoose.Types.ObjectId,
         ref: "studioes",
+      },
+    ],
+
+    history: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "histories",
       },
     ],
   },

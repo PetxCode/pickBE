@@ -24,79 +24,28 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
-const authModel = new mongoose_1.Schema({
-    accountHolderID: {
+const historyModel = new mongoose_1.Schema({
+    accountID: {
         type: String,
     },
-    studioCategory: {
+    studioID: {
         type: String,
     },
-    studioRate: {
-        type: Number,
-        default: 0,
-    },
-    studioPrice: {
+    cost: {
         type: Number,
     },
-    discountPercent: {
-        type: Number,
-    },
-    studioName: {
+    bookedDate: {
         type: String,
     },
-    studioDescription: {
-        type: String,
+    studio: {
+        type: mongoose_1.default.Types.ObjectId,
+        ref: "studioes",
     },
-    numberOfGuess: {
-        type: Number,
-    },
-    studioFeatures: {
-        type: [],
-    },
-    includeDiscount: {
-        type: Boolean,
-        default: false,
-    },
-    studioAddress: {
-        type: String,
-    },
-    studioContact: {
-        type: String,
-    },
-    studioImages: [
-        {
-            type: String,
-        },
-    ],
     user: {
         type: mongoose_1.default.Types.ObjectId,
-        ref: "auths",
+        ref: "users",
     },
-    studioRating: [
-        {
-            type: mongoose_1.default.Types.ObjectId,
-            ref: "ratings",
-        },
-    ],
-    studioLikes: [
-        {
-            type: mongoose_1.default.Types.ObjectId,
-            ref: "likes",
-        },
-    ],
-    studioReview: [
-        {
-            type: mongoose_1.default.Types.ObjectId,
-            ref: "reviews",
-        },
-    ],
-    history: [
-        {
-            type: mongoose_1.default.Types.ObjectId,
-            ref: "histories",
-        },
-    ],
 }, {
     timestamps: true,
 });
-exports.default = (0, mongoose_1.model)("studioes", authModel);
+exports.default = (0, mongoose_1.model)("histories", historyModel);

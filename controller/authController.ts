@@ -7,7 +7,7 @@ import { verifiedEmail } from "../utils/email";
 import jwt from "jsonwebtoken";
 import { streamUpload } from "../utils/streamifier";
 
-export const createAuth = async (req: Request, res: Response) => {
+export const createUserAuth = async (req: Request, res: Response) => {
   try {
     const { email, password, firstName, lastName } = req.body;
     const salt = await bcrypt.genSalt(10);
@@ -23,6 +23,71 @@ export const createAuth = async (req: Request, res: Response) => {
       firstName,
       lastName,
       code,
+      status: "user",
+    });
+
+    verifiedEmail(user);
+
+    return res.status(status.CREATED).json({
+      message: "account created but check your email for further verification",
+    });
+  } catch (error: any) {
+    return res.status(status.BAD).json({
+      message: "Error creating user",
+      data: error.message,
+    });
+  }
+};
+
+export const createAdminAuth = async (req: Request, res: Response) => {
+  try {
+    const { email, password, firstName, lastName } = req.body;
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
+
+    let token = crypto.randomBytes(25).toString("hex");
+    let code = crypto.randomBytes(3).toString("hex");
+
+    const user = await authModel.create({
+      email,
+      password: hash,
+      verifyToken: token,
+      firstName,
+      lastName,
+      code,
+      status: "admin",
+    });
+
+    verifiedEmail(user);
+
+    return res.status(status.CREATED).json({
+      message: "account created but check your email for further verification",
+    });
+  } catch (error: any) {
+    return res.status(status.BAD).json({
+      message: "Error creating user",
+      data: error.message,
+    });
+  }
+};
+
+export const createArtistAuth = async (req: Request, res: Response) => {
+  try {
+    const { email, password, firstName, lastName } = req.body;
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
+
+    let token = crypto.randomBytes(25).toString("hex");
+    let code = crypto.randomBytes(3).toString("hex");
+
+    const user = await authModel.create({
+      email,
+      password: hash,
+      verifyToken: token,
+      firstName,
+      lastName,
+      code,
+      status: "artist",
     });
 
     verifiedEmail(user);

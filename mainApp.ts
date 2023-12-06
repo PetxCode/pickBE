@@ -7,6 +7,7 @@ import studio from "./router/studioRouter";
 import social from "./router/socialRouter";
 import rating from "./router/studioRatingRouter";
 import review from "./router/reviewRouter";
+import booking from "./router/bookingsRouter";
 import jwt from "jsonwebtoken";
 import passport from "passport";
 
@@ -20,6 +21,7 @@ export const mainApp = (app: Application) => {
     app.use("/api/v1", rating);
     app.use("/api/v1", social);
     app.use("/api/v1", review);
+    app.use("/api/v1", booking);
 
     app.get(
       "/api/v1/auth/google/",

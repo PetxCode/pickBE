@@ -31,6 +31,9 @@ const authModel = new mongoose_1.Schema({
     code: {
         type: String,
     },
+    status: {
+        type: String,
+    },
     lang: {
         type: String,
     },
@@ -80,6 +83,12 @@ const authModel = new mongoose_1.Schema({
         {
             type: mongoose_1.default.Types.ObjectId,
             ref: "studioes",
+        },
+    ],
+    history: [
+        {
+            type: mongoose_1.default.Types.ObjectId,
+            ref: "histories",
         },
     ],
 }, {

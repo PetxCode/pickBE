@@ -9,6 +9,7 @@ import {
   viewAllStudio,
 } from "../controller/studioController";
 const upload = multer().array("avatar", 12);
+const uploadOne = multer().single("avatar");
 
 const router = Router();
 

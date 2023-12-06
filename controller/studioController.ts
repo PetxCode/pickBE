@@ -3,7 +3,7 @@ import { status } from "../utils/statusEnums";
 import authModel from "../model/authModel";
 import studioModel from "../model/studioModel";
 import { Types } from "mongoose";
-import { multiStreamifier } from "../utils/streamifier";
+import { multiStreamifier, streamUpload } from "../utils/streamifier";
 
 export const createStudio = async (req: Request, res: Response) => {
   try {
@@ -95,15 +95,15 @@ export const addStudioImages = async (req: any, res: Response) => {
 
     const account = await authModel.findById(accountID);
     const studio = await studioModel.findById(studioID);
+    // const { secure_url }: any = await streamUpload(req);
 
     if (account && studio) {
       let imagesAdded = await studioModel.findByIdAndUpdate(
         studioID,
         {
-          studioImages: [
-            ...studio.studioImages,
-            ...(await multiStreamifier(req)),
-          ],
+          studioImages:
+            // [...studio.studioImages, secure_url],
+            [...studio.studioImages, ...(await multiStreamifier(req))],
         },
         { new: true }
       );

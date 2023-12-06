@@ -42,6 +42,6 @@ export const multiStreamifier = async (req: any) => {
 
     image.push(secure_url);
   }
-
+  console.log(image);
   return image;
 };

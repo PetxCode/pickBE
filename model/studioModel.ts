@@ -20,6 +20,7 @@ interface iAuth {
   studioRating: Array<{}>;
   studioLikes: Array<{}>;
   studioReview: Array<{}>;
+  history: Array<{}>;
 
   user: {};
 }
@@ -72,9 +73,11 @@ const authModel = new Schema<iAuthData>(
     studioAddress: {
       type: String,
     },
+
     studioContact: {
       type: String,
     },
+
     studioImages: [
       {
         type: String,
@@ -104,6 +107,13 @@ const authModel = new Schema<iAuthData>(
       {
         type: mongoose.Types.ObjectId,
         ref: "reviews",
+      },
+    ],
+
+    history: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "histories",
       },
     ],
   },

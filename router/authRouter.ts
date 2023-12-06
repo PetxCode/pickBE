@@ -1,6 +1,8 @@
 import { Router } from "express";
 import {
-  createAuth,
+  createUserAuth,
+  createAdminAuth,
+  createArtistAuth,
   updateOneAuthAvatar,
   readAllAuth,
   readOneAuth,
@@ -86,10 +88,13 @@ router.route("/sign-user").post(signInUser);
  *
  */
 
-router.route("/create-user").post(createAuth);
+router.route("/create-admin").post(createAdminAuth);
+router.route("/create-artist").post(createArtistAuth);
+router.route("/create-user").post(createUserAuth);
 router.route("/verify-user").post(verifyUser);
 
 router.route("/update-one-user/:userID").patch(upload, updateOneAuthAvatar);
+
 router.route("/update-one-user-info/:userID").patch(updateOneAuthInfo);
 
 router.route("/update-one-user-lang/:userID").patch(updateOneAuthInfoLang);

@@ -17,7 +17,7 @@ export const makeBookings = async (req: Request, res: Response) => {
       if (getStudio) {
         const bookings = await historyModel.create({
           bookedDate,
-          cost: getStudio?.studioPrice * parseFloat(bookedDate),
+          cost: getStudio?.studioPrice * parseFloat(bookedDate) + 500,
           accountID: userID,
           studioID,
         });

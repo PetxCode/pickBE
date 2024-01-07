@@ -37,6 +37,9 @@ const historyModel = new mongoose_1.Schema({
     bookedDate: {
         type: String,
     },
+    calendarDate: {
+        type: String,
+    },
     studio: {
         type: mongoose_1.default.Types.ObjectId,
         ref: "studioes",

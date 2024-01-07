@@ -21,12 +21,13 @@ const studioModel_1 = __importDefault(require("../model/studioModel"));
 const makeBookings = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userID, studioID } = req.params;
-        const { bookedDate } = req.body;
+        const { bookedDate, calendarDate } = req.body;
         const getUser = yield authModel_1.default.findById(userID);
         const getStudio = yield studioModel_1.default.findById(studioID);
         if (getUser) {
             if (getStudio) {
                 const bookings = yield historyModel_1.default.create({
+                    calendarDate,
                     bookedDate,
                     cost: (getStudio === null || getStudio === void 0 ? void 0 : getStudio.studioPrice) * parseFloat(bookedDate) + 500,
                     accountID: userID,

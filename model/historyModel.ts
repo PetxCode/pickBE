@@ -3,6 +3,7 @@ import mongoose, { Document, Schema, model } from "mongoose";
 interface iStudio {
   accountID: string;
   studioID: string;
+  calendarDate: string;
   bookedDate: string;
   cost: number;
   studio: {};
@@ -25,6 +26,10 @@ const historyModel = new Schema<iStudioData>(
     },
 
     bookedDate: {
+      type: String,
+    },
+
+    calendarDate: {
       type: String,
     },
 

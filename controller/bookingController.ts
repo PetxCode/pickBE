@@ -8,7 +8,7 @@ import studioModel from "../model/studioModel";
 export const makeBookings = async (req: Request, res: Response) => {
   try {
     const { userID, studioID } = req.params;
-    const { bookedDate } = req.body;
+    const { bookedDate, calendarDate } = req.body;
 
     const getUser = await authModel.findById(userID);
     const getStudio: any = await studioModel.findById(studioID);
@@ -16,6 +16,7 @@ export const makeBookings = async (req: Request, res: Response) => {
     if (getUser) {
       if (getStudio) {
         const bookings = await historyModel.create({
+          calendarDate,
           bookedDate,
           cost: getStudio?.studioPrice * parseFloat(bookedDate) + 500,
           accountID: userID,

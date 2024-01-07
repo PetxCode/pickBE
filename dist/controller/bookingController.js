@@ -28,7 +28,7 @@ const makeBookings = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             if (getStudio) {
                 const bookings = yield historyModel_1.default.create({
                     bookedDate,
-                    cost: (getStudio === null || getStudio === void 0 ? void 0 : getStudio.studioPrice) * parseFloat(bookedDate),
+                    cost: (getStudio === null || getStudio === void 0 ? void 0 : getStudio.studioPrice) * parseFloat(bookedDate) + 500,
                     accountID: userID,
                     studioID,
                 });

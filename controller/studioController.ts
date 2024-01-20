@@ -16,9 +16,9 @@ export const createStudio = async (req: Request, res: Response) => {
       studioFeatures,
       studioPrice,
       numberOfGuess,
-      includeDiscount,
       discountPercent,
       studioName,
+      // includeDiscount,
     } = req.body;
 
     const account = await authModel.findById(accountID);
@@ -34,7 +34,7 @@ export const createStudio = async (req: Request, res: Response) => {
         studioImages: await multiStreamifier(req),
         studioPrice,
         numberOfGuess,
-        includeDiscount,
+        includeDiscount: true,
         discountPercent,
         studioName,
       });

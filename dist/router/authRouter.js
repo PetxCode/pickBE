@@ -77,6 +77,7 @@ router.route("/create-user").post(authController_1.createUserAuth);
 router.route("/verify-user").post(authController_1.verifyUser);
 router.route("/update-one-user/:userID").patch(upload, authController_1.updateOneAuthAvatar);
 router.route("/update-one-user-info/:userID").patch(authController_1.updateOneAuthInfo);
+router.route("/delete-user/:userID").delete(authController_1.deleteOneAuth);
 router.route("/update-one-user-lang/:userID").patch(authController_1.updateOneAuthInfoLang);
 router.route("/update-one-user-bio/:userID").patch(authController_1.updateOneAuthInfoBio);
 router

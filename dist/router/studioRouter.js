@@ -11,6 +11,7 @@ const uploadOne = (0, multer_1.default)().single("avatar");
 const router = (0, express_1.Router)();
 router.route("/view-all-studio/").get(studioController_1.viewAllStudio);
 router.route("/view-studio/:accountID").get(studioController_1.viewAccountStudio);
+router.route("/view-studio-one/:studioName").get(studioController_1.viewAccountStudioByName);
 router.route("/view-studio-category/").post(studioController_1.searchStudio);
 router.route("/create-studio/:accountID").post(upload, studioController_1.createStudio);
 router

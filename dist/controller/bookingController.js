@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.viewStudioHistory = exports.viewUserHistory = exports.makeBookings = void 0;
+exports.viewAllStudioHBook = exports.viewStudioHistory = exports.viewUserHistory = exports.makeBookings = void 0;
 const authModel_1 = __importDefault(require("../model/authModel"));
 const historyModel_1 = __importDefault(require("../model/historyModel"));
 const mongoose_1 = require("mongoose");
@@ -112,3 +112,18 @@ const viewStudioHistory = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.viewStudioHistory = viewStudioHistory;
+const viewAllStudioHBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const history = yield historyModel_1.default.find({}).sort({ createdAt: -1 });
+        return res.status(statusEnums_1.status.OK).json({
+            message: `viewing all studio bookings`,
+            data: history,
+        });
+    }
+    catch (error) {
+        return res.status(statusEnums_1.status.BAD).json({
+            message: error.message,
+        });
+    }
+});
+exports.viewAllStudioHBook = viewAllStudioHBook;

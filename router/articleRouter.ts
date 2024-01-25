@@ -12,6 +12,6 @@ const router: Router = Router();
 
 router.route("/create-article").post(upload, createArticle);
 router.route("/read-article").get(viewArticles);
-router.route("/read-one-article").get(viewOneArticle);
+router.route("/read-one-article/:articleID").get(viewOneArticle);
 
 export default router;

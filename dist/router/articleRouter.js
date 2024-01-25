@@ -10,5 +10,5 @@ const upload = (0, multer_1.default)().single("articleImage");
 const router = (0, express_1.Router)();
 router.route("/create-article").post(upload, articleControlling_1.createArticle);
 router.route("/read-article").get(articleControlling_1.viewArticles);
-router.route("/read-one-article").get(articleControlling_1.viewOneArticle);
+router.route("/read-one-article/:articleID").get(articleControlling_1.viewOneArticle);
 exports.default = router;

@@ -74,9 +74,25 @@ export const viewAccountStudio = async (req: Request, res: Response) => {
   }
 };
 
+export const viewAccountStudioByName = async (req: Request, res: Response) => {
+  try {
+    const { studioName } = req.params;
+    const account = await studioModel.findOne({ studioName });
+
+    return res.status(status.OK).json({
+      message: `viewing studio`,
+      data: account,
+    });
+  } catch (error: any) {
+    return res.status(status.BAD).json({
+      message: error.message,
+    });
+  }
+};
+
 export const viewAllStudio = async (req: Request, res: Response) => {
   try {
-    const account = await studioModel.find();
+    const account = await studioModel.find().sort({ createdAt: -1 });
 
     return res.status(status.OK).json({
       message: `viewing studio`,

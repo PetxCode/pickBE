@@ -100,3 +100,17 @@ export const viewStudioHistory = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const viewAllStudioHBook = async (req: Request, res: Response) => {
+  try {
+    const history = await historyModel.find({}).sort({ createdAt: -1 });
+    return res.status(status.OK).json({
+      message: `viewing all studio bookings`,
+      data: history,
+    });
+  } catch (error: any) {
+    return res.status(status.BAD).json({
+      message: error.message,
+    });
+  }
+};

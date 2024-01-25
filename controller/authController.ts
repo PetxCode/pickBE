@@ -383,3 +383,20 @@ export const signInUser = async (
     });
   }
 };
+
+export const deleteOneAuth = async (req: Request, res: Response) => {
+  try {
+    const { userID } = req.params;
+
+    const user = await authModel.findByIdAndDelete(userID);
+
+    return res.status(status.OK).json({
+      message: "this users has been deleted",
+      data: user,
+    });
+  } catch (error) {
+    return res.status(status.BAD).json({
+      message: "Error creating user",
+    });
+  }
+};

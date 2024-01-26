@@ -46,6 +46,10 @@ const authModel = new Schema<iAuthData>(
       type: Number,
     },
 
+    studioPriceDaily: {
+      type: Number,
+    },
+
     discountPercent: {
       type: Number,
     },

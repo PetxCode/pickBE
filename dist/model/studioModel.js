@@ -38,6 +38,9 @@ const authModel = new mongoose_1.Schema({
     studioPrice: {
         type: Number,
     },
+    studioPriceDaily: {
+        type: Number,
+    },
     discountPercent: {
         type: Number,
     },

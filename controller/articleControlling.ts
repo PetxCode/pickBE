@@ -31,7 +31,7 @@ export const createArticle = async (req: any, res: Response) => {
 
 export const viewArticles = async (req: Request, res: Response) => {
   try {
-    const article = await articleModel.find();
+    const article = await articleModel.find().sort({ createdAt: -1 });
 
     return res.status(status.OK).json({
       message: "aerticle has found",

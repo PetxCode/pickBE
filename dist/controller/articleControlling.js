@@ -42,7 +42,7 @@ const createArticle = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 exports.createArticle = createArticle;
 const viewArticles = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const article = yield articleModel_1.default.find();
+        const article = yield articleModel_1.default.find().sort({ createdAt: -1 });
         return res.status(statusEnums_1.status.OK).json({
             message: "aerticle has found",
             status: 200,

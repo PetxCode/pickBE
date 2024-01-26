@@ -43,7 +43,7 @@ const options = {
 const spec = swaggerDoc(options);
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(spec));
 
-app.use(express.json());
+app.use(express.json({ limit: "10m" }));
 app.use(
   cors({
     origin: "*",

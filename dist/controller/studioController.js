@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchStudio = exports.removeStudioImages = exports.addStudioImages = exports.viewAllStudio = exports.viewAccountStudioByName = exports.viewAccountStudio = exports.createStudio = void 0;
+exports.searchStudio = exports.removeStudioImages = exports.addStudioImages = exports.viewAllStudio = exports.viewAccountStudioByName = exports.viewUserStudios = exports.viewAccountStudio = exports.createStudio = void 0;
 const statusEnums_1 = require("../utils/statusEnums");
 const authModel_1 = __importDefault(require("../model/authModel"));
 const studioModel_1 = __importDefault(require("../model/studioModel"));
@@ -77,6 +77,27 @@ const viewAccountStudio = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.viewAccountStudio = viewAccountStudio;
+const viewUserStudios = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { accountID } = req.params;
+        const account = yield studioModel_1.default.findById(accountID).populate({
+            path: "studio",
+            options: {
+                createdAt: -1,
+            },
+        });
+        return res.status(statusEnums_1.status.OK).json({
+            message: `viewing studio`,
+            data: account,
+        });
+    }
+    catch (error) {
+        return res.status(statusEnums_1.status.BAD).json({
+            message: error.message,
+        });
+    }
+});
+exports.viewUserStudios = viewUserStudios;
 const viewAccountStudioByName = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { studioName } = req.params;

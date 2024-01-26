@@ -9,6 +9,7 @@ import {
   viewAccountStudio,
   viewAccountStudioByName,
   viewAllStudio,
+  viewUserStudios,
 } from "../controller/studioController";
 const upload = multer().array("avatar", 12);
 const uploadOne = multer().single("avatar");
@@ -17,6 +18,7 @@ const router = Router();
 
 router.route("/view-all-studio/").get(viewAllStudio);
 router.route("/view-studio/:accountID").get(viewAccountStudio);
+router.route("/view-user-studio/:accountID").get(viewUserStudios);
 router.route("/view-studio-one/:studioName").get(viewAccountStudioByName);
 
 router.route("/view-studio-category/").post(searchStudio);

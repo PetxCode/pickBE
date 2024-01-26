@@ -76,6 +76,27 @@ export const viewAccountStudio = async (req: Request, res: Response) => {
   }
 };
 
+export const viewUserStudios = async (req: Request, res: Response) => {
+  try {
+    const { accountID } = req.params;
+    const account = await studioModel.findById(accountID).populate({
+      path: "studio",
+      options: {
+        createdAt: -1,
+      },
+    });
+
+    return res.status(status.OK).json({
+      message: `viewing studio`,
+      data: account,
+    });
+  } catch (error: any) {
+    return res.status(status.BAD).json({
+      message: error.message,
+    });
+  }
+};
+
 export const viewAccountStudioByName = async (req: Request, res: Response) => {
   try {
     const { studioName } = req.params;
@@ -151,7 +172,7 @@ export const removeStudioImages = async (req: any, res: Response) => {
     const studio = await studioModel.findById(studioID);
 
     if (account && studio) {
-      let newImage = studio.studioImages.filter((el: any) => el !== i);
+      let newImage: any = studio.studioImages.filter((el: any) => el !== i);
 
       let imagesAdded = await studioModel.findByIdAndUpdate(
         studioID,

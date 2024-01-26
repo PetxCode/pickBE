@@ -43,11 +43,19 @@ const options = {
 const spec = swaggerDoc(options);
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(spec));
 
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Methods", "GET, PUT, PATCH, POST, DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  next();
+});
+
 app.use(express.json({ limit: "10m" }));
 app.use(
   cors({
     origin: "*",
-    methods: "GET,POST,PUT,DELETE",
+    methods: "GET,POST,PUT, PATCH,DELETE",
     credentials: true,
     allowedHeaders: "Content-Type",
   })

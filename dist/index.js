@@ -51,7 +51,7 @@ app.use((req, res, next) => {
     res.header("Access-Control-Allow-Headers", "Content-Type");
     next();
 });
-app.use(express_1.default.json({ limit: "10m" }));
+app.use(express_1.default.json());
 app.use((0, cors_1.default)({
     origin: "*",
     methods: "GET,POST,PUT, PATCH,DELETE",

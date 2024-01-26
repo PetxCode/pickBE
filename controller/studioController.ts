@@ -18,6 +18,7 @@ export const createStudio = async (req: Request, res: Response) => {
       numberOfGuess,
       discountPercent,
       studioName,
+      studioPriceDaily,
       // includeDiscount,
     } = req.body;
 
@@ -33,6 +34,7 @@ export const createStudio = async (req: Request, res: Response) => {
         studioFeatures,
         studioImages: await multiStreamifier(req),
         studioPrice,
+        studioPriceDaily,
         numberOfGuess,
         includeDiscount: true,
         discountPercent,

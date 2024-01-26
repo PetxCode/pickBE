@@ -5,6 +5,7 @@ interface iAuth {
 
   studioName: string;
   studioPrice: number;
+  studioPriceDaily: number;
   studioAddress: string;
   studioContact: string;
   studioImages: Array<{}>;

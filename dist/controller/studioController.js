@@ -21,7 +21,7 @@ const streamifier_1 = require("../utils/streamifier");
 const createStudio = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { accountID } = req.params;
-        const { studioContact, studioCategory, studioAddress, studioDescription, studioFeatures, studioPrice, numberOfGuess, discountPercent, studioName,
+        const { studioContact, studioCategory, studioAddress, studioDescription, studioFeatures, studioPrice, numberOfGuess, discountPercent, studioName, studioPriceDaily,
         // includeDiscount,
          } = req.body;
         const account = yield authModel_1.default.findById(accountID);
@@ -35,6 +35,7 @@ const createStudio = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 studioFeatures,
                 studioImages: yield (0, streamifier_1.multiStreamifier)(req),
                 studioPrice,
+                studioPriceDaily,
                 numberOfGuess,
                 includeDiscount: true,
                 discountPercent,

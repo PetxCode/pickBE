@@ -80,7 +80,7 @@ exports.viewAccountStudio = viewAccountStudio;
 const viewUserStudios = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { accountID } = req.params;
-        const account = yield studioModel_1.default.findById(accountID).populate({
+        const account = yield authModel_1.default.findById(accountID).populate({
             path: "studio",
             options: {
                 createdAt: -1,

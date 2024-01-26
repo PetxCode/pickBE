@@ -79,7 +79,7 @@ export const viewAccountStudio = async (req: Request, res: Response) => {
 export const viewUserStudios = async (req: Request, res: Response) => {
   try {
     const { accountID } = req.params;
-    const account = await studioModel.findById(accountID).populate({
+    const account = await authModel.findById(accountID).populate({
       path: "studio",
       options: {
         createdAt: -1,

@@ -30,6 +30,7 @@ export const createUserAuth = async (req: Request, res: Response) => {
 
     return res.status(status.CREATED).json({
       message: "account created but check your email for further verification",
+      status: 201,
     });
   } catch (error: any) {
     return res.status(status.BAD).json({
@@ -361,6 +362,7 @@ export const signInUser = async (
           return res.status(status.CREATED).json({
             message: "welcome back",
             data: token,
+            status: 201,
           });
         } else {
           return res.status(status.BAD).json({

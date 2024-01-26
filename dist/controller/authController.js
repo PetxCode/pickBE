@@ -39,6 +39,7 @@ const createUserAuth = (req, res) => __awaiter(void 0, void 0, void 0, function*
         (0, email_1.verifiedEmail)(user);
         return res.status(statusEnums_1.status.CREATED).json({
             message: "account created but check your email for further verification",
+            status: 201,
         });
     }
     catch (error) {
@@ -316,6 +317,7 @@ const signInUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                     return res.status(statusEnums_1.status.CREATED).json({
                         message: "welcome back",
                         data: token,
+                        status: 201,
                     });
                 }
                 else {

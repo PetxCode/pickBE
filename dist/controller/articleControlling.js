@@ -75,19 +75,3 @@ const viewOneArticle = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.viewOneArticle = viewOneArticle;
-// export const viewOneArticle = async (req: Request, res: Response) => {
-//   try {
-//     const { articleID } = req.params;
-//     const article = await articleModel.findById(articleID);
-//     return res.status(status.OK).json({
-//       message: "aerticle has found",
-//       status: 200,
-//       data: article,
-//     });
-//   } catch (error: any) {
-//     return res.status(status.BAD).json({
-//       message: "Error founding article",
-//       data: error.message,
-//     });
-//   }
-// };

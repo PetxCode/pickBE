@@ -27,6 +27,7 @@
     "@types/streamifier": "^0.1.2",
     "@types/swagger-jsdoc": "^6.0.3",
     "@types/swagger-ui-express": "^4.1.6",
+    "axios": "^1.6.7",
     "bcrypt": "^5.1.1",
     "cloudinary": "^1.41.0",
     "cookie-session": "^2.0.0",

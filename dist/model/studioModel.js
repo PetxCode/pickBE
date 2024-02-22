@@ -43,6 +43,7 @@ const authModel = new mongoose_1.Schema({
     },
     discountPercent: {
         type: Number,
+        default: 0,
     },
     studioName: {
         type: String,

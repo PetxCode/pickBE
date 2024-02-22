@@ -52,6 +52,7 @@ const authModel = new Schema<iAuthData>(
 
     discountPercent: {
       type: Number,
+      default: 0,
     },
 
     studioName: {

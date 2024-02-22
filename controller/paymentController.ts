@@ -46,9 +46,9 @@ export const makePayment = async (req: Request, res: Response) => {
     const params = JSON.stringify({
       email,
       amount: (parseInt(amount) * 100).toString(),
-      callback_url: "http://localhost:5173/payment/successful",
+      callback_url: "https://pickastudionow.web.app/payment/successful",
       metadata: {
-        cancel_action: "http://localhost:5173/payment/failed",
+        cancel_action: "https://pickastudionow.web.app/payment/failed",
       },
       channels: ["card"],
     });

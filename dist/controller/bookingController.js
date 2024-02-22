@@ -33,11 +33,12 @@ const makeBookings = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                     accountID: userID,
                     studioID,
                 });
+                console.log(bookings);
                 getStudio.history.push(new mongoose_1.Types.ObjectId(bookings._id));
                 getStudio.save();
                 getUser.history.push(new mongoose_1.Types.ObjectId(bookings._id));
                 getUser.save();
-                return res.status(404).json({
+                return res.status(201).json({
                     message: "bookings has been recorded",
                     data: {
                         getStudio,

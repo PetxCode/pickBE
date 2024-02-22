@@ -22,14 +22,14 @@ export const makeBookings = async (req: Request, res: Response) => {
           accountID: userID,
           studioID,
         });
-
+        console.log(bookings);
         getStudio.history.push(new Types.ObjectId(bookings._id!));
         getStudio.save();
 
         getUser.history.push(new Types.ObjectId(bookings._id!));
         getUser.save();
 
-        return res.status(404).json({
+        return res.status(201).json({
           message: "bookings has been recorded",
           data: {
             getStudio,

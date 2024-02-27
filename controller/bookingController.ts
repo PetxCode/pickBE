@@ -13,21 +13,29 @@ export const makeBookings = async (req: Request, res: Response) => {
     const getUser = await authModel.findById(userID);
     const getStudio: any = await studioModel.findById(studioID);
 
+    const studioOwner: any = await authModel.findById(
+      getStudio?.accountHolderID
+    );
+
     if (getUser) {
       if (getStudio) {
         const bookings = await historyModel.create({
           calendarDate,
           bookedDate,
-          cost: getStudio?.studioPrice * parseFloat(bookedDate) + 500,
+          cost:
+            parseFloat(getStudio?.studioPrice) * parseFloat(bookedDate) + 500,
           accountID: userID,
           studioID,
         });
-        console.log(bookings);
+
         getStudio.history.push(new Types.ObjectId(bookings._id!));
         getStudio.save();
 
         getUser.history.push(new Types.ObjectId(bookings._id!));
         getUser.save();
+
+        studioOwner.history.push(new Types.ObjectId(bookings._id!));
+        studioOwner.save();
 
         return res.status(201).json({
           message: "bookings has been recorded",
@@ -46,9 +54,10 @@ export const makeBookings = async (req: Request, res: Response) => {
         message: "can't find user",
       });
     }
-  } catch (error) {
+  } catch (error: any) {
     return res.status(404).json({
       message: "Error making bookings",
+      data: error.message,
     });
   }
 };

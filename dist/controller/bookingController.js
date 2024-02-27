@@ -24,20 +24,22 @@ const makeBookings = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const { bookedDate, calendarDate } = req.body;
         const getUser = yield authModel_1.default.findById(userID);
         const getStudio = yield studioModel_1.default.findById(studioID);
+        const studioOwner = yield authModel_1.default.findById(getStudio === null || getStudio === void 0 ? void 0 : getStudio.accountHolderID);
         if (getUser) {
             if (getStudio) {
                 const bookings = yield historyModel_1.default.create({
                     calendarDate,
                     bookedDate,
-                    cost: (getStudio === null || getStudio === void 0 ? void 0 : getStudio.studioPrice) * parseFloat(bookedDate) + 500,
+                    cost: parseFloat(getStudio === null || getStudio === void 0 ? void 0 : getStudio.studioPrice) * parseFloat(bookedDate) + 500,
                     accountID: userID,
                     studioID,
                 });
-                console.log(bookings);
                 getStudio.history.push(new mongoose_1.Types.ObjectId(bookings._id));
                 getStudio.save();
                 getUser.history.push(new mongoose_1.Types.ObjectId(bookings._id));
                 getUser.save();
+                studioOwner.history.push(new mongoose_1.Types.ObjectId(bookings._id));
+                studioOwner.save();
                 return res.status(201).json({
                     message: "bookings has been recorded",
                     data: {
@@ -61,6 +63,7 @@ const makeBookings = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     catch (error) {
         return res.status(404).json({
             message: "Error making bookings",
+            data: error.message,
         });
     }
 });

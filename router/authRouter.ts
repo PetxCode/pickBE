@@ -15,6 +15,9 @@ import {
   updateOneAuthInfoProfession,
   updateOneAuthInfoContact,
   deleteOneAuth,
+  updateBankAccountName,
+  updateBankName,
+  updateAccountNumber,
 } from "../controller/authController";
 import multer from "multer";
 const upload = multer().single("avatar");
@@ -97,6 +100,12 @@ router.route("/verify-user").post(verifyUser);
 router.route("/update-one-user/:userID").patch(upload, updateOneAuthAvatar);
 
 router.route("/update-one-user-info/:userID").patch(updateOneAuthInfo);
+
+router.route("/update-account-name/:userID").patch(updateBankAccountName);
+
+router.route("/update-bank-name/:userID").patch(updateBankName);
+
+router.route("/update-account-number/:userID").patch(updateAccountNumber);
 
 router.route("/delete-user/:userID").delete(deleteOneAuth);
 

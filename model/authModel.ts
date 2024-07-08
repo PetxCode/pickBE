@@ -12,6 +12,11 @@ interface iAuth {
   lang: string;
   // category: string;
 
+  bankCode: string;
+  bankName: string;
+  bankAccount: string;
+  accountName: string;
+
   status: string;
   email: string;
   code: string;
@@ -37,7 +42,23 @@ const authModel = new Schema<iAuthData>(
       type: String,
     },
 
+    bankCode: {
+      type: String,
+    },
+
     status: {
+      type: String,
+    },
+
+    accountName: {
+      type: String,
+    },
+
+    bankAccount: {
+      type: String,
+    },
+
+    bankName: {
       type: String,
     },
 

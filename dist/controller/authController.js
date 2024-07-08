@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteOneAuth = exports.signInUser = exports.verifyUser = exports.updateOneAuthAvatar = exports.updateOneAuthInfoLang = exports.updateOneAuthInfoBio = exports.updateOneAuthInfoProfession = exports.updateOneAuthInfoPhone = exports.updateOneAuthInfoContact = exports.updateOneAuthInfo = exports.readOneAuth = exports.readAllAuth = exports.createArtistAuth = exports.createAdminAuth = exports.createUserAuth = void 0;
+exports.deleteOneAuth = exports.signInUser = exports.verifyUser = exports.updateOneAuthAvatar = exports.updateOneAuthInfoLang = exports.updateOneAuthInfoBio = exports.updateOneAuthInfoProfession = exports.updateBankAccountName = exports.updateBankName = exports.updateAccountNumber = exports.updateOneAuthInfoPhone = exports.updateOneAuthInfoContact = exports.updateOneAuthInfo = exports.readOneAuth = exports.readAllAuth = exports.createArtistAuth = exports.createAdminAuth = exports.createUserAuth = void 0;
 const statusEnums_1 = require("../utils/statusEnums");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const crypto_1 = __importDefault(require("crypto"));
@@ -197,6 +197,64 @@ const updateOneAuthInfoPhone = (req, res) => __awaiter(void 0, void 0, void 0, f
     }
 });
 exports.updateOneAuthInfoPhone = updateOneAuthInfoPhone;
+const updateAccountNumber = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userID } = req.params;
+        const { bankAccount } = req.body;
+        const user = yield authModel_1.default.findByIdAndUpdate(userID, {
+            bankAccount,
+        }, { new: true });
+        return res.status(statusEnums_1.status.OK).json({
+            message: "bank acc updated",
+            data: user,
+        });
+    }
+    catch (error) {
+        return res.status(statusEnums_1.status.BAD).json({
+            message: "Error creating user",
+        });
+    }
+});
+exports.updateAccountNumber = updateAccountNumber;
+const updateBankName = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userID } = req.params;
+        const { bankName, bankCode } = req.body;
+        const user = yield authModel_1.default.findByIdAndUpdate(userID, {
+            bankName,
+            bankCode,
+        }, { new: true });
+        return res.status(statusEnums_1.status.OK).json({
+            message: "bank acc name updated",
+            data: user,
+        });
+    }
+    catch (error) {
+        return res.status(statusEnums_1.status.BAD).json({
+            message: "Error creating user",
+        });
+    }
+});
+exports.updateBankName = updateBankName;
+const updateBankAccountName = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userID } = req.params;
+        const { accountName } = req.body;
+        const user = yield authModel_1.default.findByIdAndUpdate(userID, {
+            accountName,
+        }, { new: true });
+        return res.status(statusEnums_1.status.OK).json({
+            message: "bank acc name updated",
+            data: user,
+        });
+    }
+    catch (error) {
+        return res.status(statusEnums_1.status.BAD).json({
+            message: "Error creating user",
+        });
+    }
+});
+exports.updateBankAccountName = updateBankAccountName;
 const updateOneAuthInfoProfession = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userID } = req.params;

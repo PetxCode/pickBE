@@ -31,9 +31,6 @@ const authModel = new mongoose_1.Schema({
     code: {
         type: String,
     },
-    bankCode: {
-        type: String,
-    },
     status: {
         type: String,
     },
@@ -44,6 +41,9 @@ const authModel = new mongoose_1.Schema({
         type: String,
     },
     bankName: {
+        type: String,
+    },
+    bankCode: {
         type: String,
     },
     lang: {

@@ -42,10 +42,6 @@ const authModel = new Schema<iAuthData>(
       type: String,
     },
 
-    bankCode: {
-      type: String,
-    },
-
     status: {
       type: String,
     },
@@ -59,6 +55,10 @@ const authModel = new Schema<iAuthData>(
     },
 
     bankName: {
+      type: String,
+    },
+
+    bankCode: {
       type: String,
     },
 

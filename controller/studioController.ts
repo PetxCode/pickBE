@@ -213,3 +213,45 @@ export const searchStudio = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const editAccountStudioInfo = async (req: Request, res: Response) => {
+  try {
+    const { userID, studioID } = req.params;
+    const {
+      studioName,
+      studioPrice,
+      studioPriceDaily,
+      studioAddress,
+      studioDescription,
+      discountPercent,
+    } = req.body;
+    const user = await authModel.findById(userID);
+
+    if (user) {
+      const account = await studioModel.findByIdAndUpdate(
+        studioID,
+        {
+          studioName,
+          studioPrice,
+          studioPriceDaily,
+          studioAddress,
+          studioDescription,
+          discountPercent,
+        },
+        { new: true }
+      );
+      return res.status(status.OK).json({
+        message: `viewing studio`,
+        data: account,
+      });
+    } else {
+      return res.status(status.BAD).json({
+        message: "error with userID",
+      });
+    }
+  } catch (error: any) {
+    return res.status(status.BAD).json({
+      message: error.message,
+    });
+  }
+};

@@ -21,4 +21,7 @@ router
 router
     .route("/remove-studio-image/:accountID/:studioID")
     .delete(studioController_1.removeStudioImages);
+router
+    .route("/edit-studio-info/:userID/:studioID")
+    .patch(studioController_1.editAccountStudioInfo);
 exports.default = router;

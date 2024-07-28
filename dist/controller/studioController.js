@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchStudio = exports.removeStudioImages = exports.addStudioImages = exports.viewAllStudio = exports.viewAccountStudioByName = exports.viewUserStudios = exports.viewAccountStudio = exports.createStudio = void 0;
+exports.editAccountStudioInfo = exports.searchStudio = exports.removeStudioImages = exports.addStudioImages = exports.viewAllStudio = exports.viewAccountStudioByName = exports.viewUserStudios = exports.viewAccountStudio = exports.createStudio = void 0;
 const statusEnums_1 = require("../utils/statusEnums");
 const authModel_1 = __importDefault(require("../model/authModel"));
 const studioModel_1 = __importDefault(require("../model/studioModel"));
@@ -204,3 +204,35 @@ const searchStudio = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.searchStudio = searchStudio;
+const editAccountStudioInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userID, studioID } = req.params;
+        const { studioName, studioPrice, studioPriceDaily, studioAddress, studioDescription, discountPercent, } = req.body;
+        const user = yield authModel_1.default.findById(userID);
+        if (user) {
+            const account = yield studioModel_1.default.findByIdAndUpdate(studioID, {
+                studioName,
+                studioPrice,
+                studioPriceDaily,
+                studioAddress,
+                studioDescription,
+                discountPercent,
+            }, { new: true });
+            return res.status(statusEnums_1.status.OK).json({
+                message: `viewing studio`,
+                data: account,
+            });
+        }
+        else {
+            return res.status(statusEnums_1.status.BAD).json({
+                message: "error with userID",
+            });
+        }
+    }
+    catch (error) {
+        return res.status(statusEnums_1.status.BAD).json({
+            message: error.message,
+        });
+    }
+});
+exports.editAccountStudioInfo = editAccountStudioInfo;

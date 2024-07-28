@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.editAccountStudioInfo = exports.searchStudio = exports.removeStudioImages = exports.addStudioImages = exports.viewAllStudio = exports.viewAccountStudioByName = exports.viewUserStudios = exports.viewAccountStudio = exports.createStudio = void 0;
+exports.deleteStudio = exports.editAccountStudioInfo = exports.searchStudio = exports.removeStudioImages = exports.addStudioImages = exports.viewAllStudio = exports.viewAccountStudioByName = exports.viewUserStudios = exports.viewAccountStudio = exports.createStudio = void 0;
 const statusEnums_1 = require("../utils/statusEnums");
 const authModel_1 = __importDefault(require("../model/authModel"));
 const studioModel_1 = __importDefault(require("../model/studioModel"));
@@ -236,3 +236,28 @@ const editAccountStudioInfo = (req, res) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.editAccountStudioInfo = editAccountStudioInfo;
+const deleteStudio = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    try {
+        const { accountID, studioID } = req.params;
+        const account = yield authModel_1.default.findById(accountID);
+        if (account) {
+            (_a = account === null || account === void 0 ? void 0 : account.studio) === null || _a === void 0 ? void 0 : _a.pull(new mongoose_1.Types.ObjectId(studioID));
+            account.save();
+            return res.status(statusEnums_1.status.OK).json({
+                message: `studio has been delete`,
+            });
+        }
+        else {
+            return res.status(statusEnums_1.status.BAD).json({
+                message: "Account can't be found",
+            });
+        }
+    }
+    catch (error) {
+        return res.status(statusEnums_1.status.BAD).json({
+            message: error.message,
+        });
+    }
+});
+exports.deleteStudio = deleteStudio;

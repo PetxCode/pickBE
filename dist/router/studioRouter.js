@@ -19,9 +19,10 @@ router
     .route("/add-studio-image/:accountID/:studioID")
     .post(upload, studioController_1.addStudioImages);
 router
-    .route("/remove-studio-image/:accountID/:studioID")
+    .route("/remove-studio-delete/:accountID/:studioID")
     .delete(studioController_1.removeStudioImages);
 router
     .route("/edit-studio-info/:userID/:studioID")
     .patch(studioController_1.editAccountStudioInfo);
+router.route("/delete-studio/:accountID/:studioID").delete(studioController_1.deleteStudio);
 exports.default = router;

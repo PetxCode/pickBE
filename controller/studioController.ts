@@ -255,3 +255,28 @@ export const editAccountStudioInfo = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const deleteStudio = async (req: Request, res: Response) => {
+  try {
+    const { accountID, studioID } = req.params;
+
+    const account: any = await authModel.findById(accountID);
+
+    if (account) {
+      account?.studio?.pull(new Types.ObjectId(studioID));
+      account.save();
+
+      return res.status(status.OK).json({
+        message: `studio has been delete`,
+      });
+    } else {
+      return res.status(status.BAD).json({
+        message: "Account can't be found",
+      });
+    }
+  } catch (error: any) {
+    return res.status(status.BAD).json({
+      message: error.message,
+    });
+  }
+};

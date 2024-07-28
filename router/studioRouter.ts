@@ -11,6 +11,7 @@ import {
   viewAllStudio,
   viewUserStudios,
   editAccountStudioInfo,
+  deleteStudio,
 } from "../controller/studioController";
 const upload = multer().array("avatar", 12);
 const uploadOne = multer().single("avatar");
@@ -29,11 +30,13 @@ router
   .post(upload, addStudioImages);
 
 router
-  .route("/remove-studio-image/:accountID/:studioID")
+  .route("/remove-studio-delete/:accountID/:studioID")
   .delete(removeStudioImages);
 
 router
   .route("/edit-studio-info/:userID/:studioID")
   .patch(editAccountStudioInfo);
+
+router.route("/delete-studio/:accountID/:studioID").delete(deleteStudio);
 
 export default router;

@@ -18,6 +18,7 @@ import {
   updateBankAccountName,
   updateBankName,
   updateAccountNumber,
+  singleAccountName,
 } from "../controller/authController";
 import multer from "multer";
 const upload = multer().single("avatar");
@@ -97,6 +98,7 @@ router.route("/create-artist").post(createArtistAuth);
 router.route("/create-user").post(createUserAuth);
 router.route("/verify-user").post(verifyUser);
 
+router.route("/single-account/:userID").get(singleAccountName);
 router.route("/update-one-user/:userID").patch(upload, updateOneAuthAvatar);
 
 router.route("/update-one-user-info/:userID").patch(updateOneAuthInfo);

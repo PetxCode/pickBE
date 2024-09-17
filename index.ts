@@ -4,6 +4,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import { dbConfig } from "./utils/dbConfig";
 import cookieSession from "cookie-session";
+import session from "express-session";
 import passport from "passport";
 import "./utils/socialAuth";
 import { mainApp } from "./mainApp";
@@ -54,7 +55,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.use(express.json());
 app.use(
   cors({
-    origin: "*",
+    origin: "http://localhost:5173",
     methods: "GET,POST,PUT, PATCH,DELETE",
     credentials: true,
     allowedHeaders: "Content-Type",
@@ -71,11 +72,20 @@ passport.deserializeUser((user, done) => {
   done(null, user!);
 });
 
+// app.use(
+//   cookieSession({
+//     name: `pickStudio`,
+//     keys: ["pickStudio"],
+//     maxAge: 2 * 60 * 60 * 1000,
+//   })
+// );
+
 app.use(
-  cookieSession({
-    name: `pickStudio`,
-    keys: ["pickStudio"],
-    maxAge: 2 * 60 * 60 * 100,
+  session({
+    secret: "pickStudio",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false, httpOnly: true }, // Change this in production
   })
 );
 

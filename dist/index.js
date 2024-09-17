@@ -8,7 +8,7 @@ const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
 const morgan_1 = __importDefault(require("morgan"));
 const dbConfig_1 = require("./utils/dbConfig");
-const cookie_session_1 = __importDefault(require("cookie-session"));
+const express_session_1 = __importDefault(require("express-session"));
 const passport_1 = __importDefault(require("passport"));
 require("./utils/socialAuth");
 const mainApp_1 = require("./mainApp");
@@ -53,7 +53,7 @@ app.use((req, res, next) => {
 });
 app.use(express_1.default.json());
 app.use((0, cors_1.default)({
-    origin: "*",
+    origin: "http://localhost:5173",
     methods: "GET,POST,PUT, PATCH,DELETE",
     credentials: true,
     allowedHeaders: "Content-Type",
@@ -66,10 +66,18 @@ passport_1.default.serializeUser((user, done) => {
 passport_1.default.deserializeUser((user, done) => {
     done(null, user);
 });
-app.use((0, cookie_session_1.default)({
-    name: `pickStudio`,
-    keys: ["pickStudio"],
-    maxAge: 2 * 60 * 60 * 100,
+// app.use(
+//   cookieSession({
+//     name: `pickStudio`,
+//     keys: ["pickStudio"],
+//     maxAge: 2 * 60 * 60 * 1000,
+//   })
+// );
+app.use((0, express_session_1.default)({
+    secret: "pickStudio",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false, httpOnly: true }, // Change this in production
 }));
 app.use((req, res, next) => {
     if (req.session && !req.session.regenerate) {

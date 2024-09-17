@@ -252,6 +252,27 @@ export const updateBankName = async (req: Request, res: Response) => {
   }
 };
 
+export const singleAccountName = async (req: Request, res: Response) => {
+  try {
+    const { userID } = req.params;
+    const user: any = await authModel.findByIdAndUpdate(userID);
+
+    const token = jwt.sign(
+      { id: user._id, email: user.email, avatar: user.email },
+      "thisIsAwesome"
+    );
+
+    return res.status(status.OK).json({
+      message: "user acc",
+      data: token,
+    });
+  } catch (error) {
+    return res.status(status.BAD).json({
+      message: "Error creating user",
+    });
+  }
+};
+
 export const updateBankAccountName = async (req: Request, res: Response) => {
   try {
     const { userID } = req.params;

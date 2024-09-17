@@ -75,6 +75,7 @@ router.route("/create-admin").post(authController_1.createAdminAuth);
 router.route("/create-artist").post(authController_1.createArtistAuth);
 router.route("/create-user").post(authController_1.createUserAuth);
 router.route("/verify-user").post(authController_1.verifyUser);
+router.route("/single-account/:userID").get(authController_1.singleAccountName);
 router.route("/update-one-user/:userID").patch(upload, authController_1.updateOneAuthAvatar);
 router.route("/update-one-user-info/:userID").patch(authController_1.updateOneAuthInfo);
 router.route("/update-account-name/:userID").patch(authController_1.updateBankAccountName);

@@ -21,7 +21,7 @@ export const mainApp = (app: Application) => {
     app.use("/api/v1", auth);
     app.use("/api/v1", studio);
     app.use("/api/v1", rating);
-    app.use("/api/v1", social);
+    app.use("/api", social);
     app.use("/api/v1", review);
     app.use("/api/v1", booking);
     app.use("/api/v1", article);

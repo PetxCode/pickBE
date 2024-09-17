@@ -24,7 +24,7 @@ const mainApp = (app) => {
         app.use("/api/v1", authRouter_1.default);
         app.use("/api/v1", studioRouter_1.default);
         app.use("/api/v1", studioRatingRouter_1.default);
-        app.use("/api/v1", socialRouter_1.default);
+        app.use("/api", socialRouter_1.default);
         app.use("/api/v1", reviewRouter_1.default);
         app.use("/api/v1", bookingsRouter_1.default);
         app.use("/api/v1", articleRouter_1.default);

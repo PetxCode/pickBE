@@ -12,23 +12,38 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.socialAuthFinal = exports.socialAuth = void 0;
 const passport_1 = __importDefault(require("passport"));
-require("../utils/social");
-// "/auth/google",
-const socialAuth = () => __awaiter(void 0, void 0, void 0, function* () {
-    yield passport_1.default.authenticate("google", { scope: ["profile", "email"] });
-});
-exports.socialAuth = socialAuth;
-const socialAuthFinal = () => __awaiter(void 0, void 0, void 0, function* () {
-    passport_1.default.authenticate("google", { failureRedirect: "/login" }),
-        (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-            const user = req.user;
-            res.status(200).json({
-                message: "Well done...!",
-                data: user,
-            });
+const passport_google_oauth20_1 = require("passport-google-oauth20");
+const authModel_1 = __importDefault(require("../model/authModel"));
+const GOOGLE_CLIENT_ID = "938639497902-18ng02iae50d323nd5i0gilva0bl4lqk.apps.googleusercontent.com";
+const GOOGLE_CLIENT_SECRET = "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";
+// const GOOGLE_CLIENT_ID =
+//   "76597312158-2o058qto2hgrmbe4ks4a8lbho51i1bd0.apps.googleusercontent.com";
+// const GOOGLE_CLIENT_SECRET = "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";
+// ${process.env.APP_URL_DEPLOY}
+const BACKEND_URL = "http://localhost:3300";
+passport_1.default.use(new passport_google_oauth20_1.Strategy({
+    clientID: GOOGLE_CLIENT_ID,
+    clientSecret: GOOGLE_CLIENT_SECRET,
+    callbackURL: `http://localhost:3300/api/auth/google/callback`,
+}, (accessToken, refreshToken, profile, done) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield authModel_1.default.findOne({
+        email: profile === null || profile === void 0 ? void 0 : profile.emails[0].value,
+    });
+    if (user) {
+        return done(null, user);
+    }
+    else {
+        yield authModel_1.default.create({
+            email: profile === null || profile === void 0 ? void 0 : profile.emails[0].value,
+            verify: true,
         });
+        return done(null, user);
+    }
+})));
+passport_1.default.serializeUser(function (user, done) {
+    done(null, user._id);
 });
-exports.socialAuthFinal = socialAuthFinal;
-// "/auth/google/callback",
+passport_1.default.deserializeUser(function (user, done) {
+    done(null, user._id);
+});

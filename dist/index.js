@@ -53,7 +53,11 @@ app.use((req, res, next) => {
 });
 app.use(express_1.default.json());
 app.use((0, cors_1.default)({
-    origin: "http://localhost:5173",
+    origin: [
+        "http://localhost:5173",
+        "http://localhost:4173",
+        "https://pickastudionow.web.app",
+    ],
     methods: "GET,POST,PUT, PATCH,DELETE",
     credentials: true,
     allowedHeaders: "Content-Type",

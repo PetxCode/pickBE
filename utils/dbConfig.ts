@@ -7,7 +7,7 @@ import { connect } from "mongoose";
 //   "mongodb+srv://brighterdayscodelab:brighterdayscodelab@cluster0.6d4tpug.mongodb.net/pickDB?retryWrites=true&w=majority";
 
 const URL: string =
-  "mongodb+srv://shecodesaj:shecodesaj@cluster0.xe1jgnf.mongodb.net/pickDB?retryWrites=true&w=majority";
+  "mongodb+srv://pickastudio_admin:OqtlK7mgkEBV0xc@pickastudio.pvw4h.mongodb.net/pickDB?retryWrites=true&w=majority&appName=Pickastudio";
 
 export const dbConfig = async () => {
   try {

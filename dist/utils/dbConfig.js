@@ -16,7 +16,7 @@ const mongoose_1 = require("mongoose");
 //   "mongodb+srv://brighterdayscodelab:brighterdayscodelab@cluster0.upn8ipm.mongodb.net/pickDB?retryWrites=true&w=majority";
 // const URL: string =
 //   "mongodb+srv://brighterdayscodelab:brighterdayscodelab@cluster0.6d4tpug.mongodb.net/pickDB?retryWrites=true&w=majority";
-const URL = "mongodb+srv://shecodesaj:shecodesaj@cluster0.xe1jgnf.mongodb.net/pickDB?retryWrites=true&w=majority";
+const URL = "mongodb+srv://pickastudio_admin:OqtlK7mgkEBV0xc@pickastudio.pvw4h.mongodb.net/pickDB?retryWrites=true&w=majority&appName=Pickastudio";
 const dbConfig = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield (0, mongoose_1.connect)(URL).then(() => {

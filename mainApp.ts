@@ -14,7 +14,7 @@ import jwt from "jsonwebtoken";
 import passport from "passport";
 
 // const CLIENT_URL = "http://localhost:5173";
-const CLIENT_URL = "https://pickstudio.netlify.app";
+const CLIENT_URL = "https://pickastudio.com";
 
 export const mainApp = (app: Application) => {
   try {

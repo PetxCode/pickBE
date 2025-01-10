@@ -21,7 +21,7 @@ const makeTransaction = (req, res) => __awaiter(void 0, void 0, void 0, function
         const data = {
             email,
             amount,
-            callback: "http://localhost:5173/payment/successful",
+            callback: "https://pickastudio.com/payment/successful",
         };
         yield axios_1.default
             .post(`https://api.paystack.co/transaction/initialize`, data, {
@@ -49,16 +49,15 @@ const makeTransaction = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.makeTransaction = makeTransaction;
-// https://pickastudionow.web.app
 const makePayment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { amount, email } = req.body;
         const params = JSON.stringify({
             email,
             amount: (parseInt(amount) * 100).toString(),
-            callback_url: "http://localhost:5173/payment/successful",
+            callback_url: "https://pickastudio.com/payment/successful",
             metadata: {
-                cancel_action: "http://localhost:5173/payment/failed",
+                cancel_action: "https://pickastudio.com/payment/failed",
             },
             channels: ["card"],
         });

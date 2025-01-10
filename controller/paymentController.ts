@@ -9,7 +9,7 @@ export const makeTransaction = async (req: Request, res: Response) => {
     const data = {
       email,
       amount,
-      callback: "http://localhost:5173/payment/successful",
+      callback: "https://pickastudio.com/payment/successful",
     };
 
     await axios
@@ -38,7 +38,6 @@ export const makeTransaction = async (req: Request, res: Response) => {
     });
   }
 };
-// https://pickastudionow.web.app
 export const makePayment = async (req: Request, res: Response) => {
   try {
     const { amount, email } = req.body;
@@ -46,9 +45,9 @@ export const makePayment = async (req: Request, res: Response) => {
     const params = JSON.stringify({
       email,
       amount: (parseInt(amount) * 100).toString(),
-      callback_url: "http://localhost:5173/payment/successful",
+      callback_url: "https://pickastudio.com/payment/successful",
       metadata: {
-        cancel_action: "http://localhost:5173/payment/failed",
+        cancel_action: "https://pickastudio.com/payment/failed",
       },
       channels: ["card"],
     });

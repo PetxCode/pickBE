@@ -18,7 +18,7 @@ const payment_1 = __importDefault(require("./router/payment"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const passport_1 = __importDefault(require("passport"));
 // const CLIENT_URL = "http://localhost:5173";
-const CLIENT_URL = "https://pickstudio.netlify.app";
+const CLIENT_URL = "https://pickastudio.com";
 const mainApp = (app) => {
     try {
         app.use("/api/v1", authRouter_1.default);

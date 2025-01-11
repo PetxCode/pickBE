@@ -5,6 +5,7 @@ interface iStudio {
   studioID: string;
   calendarDate: string;
   bookedDate: string;
+  paymentRef: string;
   cost: number;
   studio: {};
   user: {};
@@ -23,6 +24,10 @@ const historyModel = new Schema<iStudioData>(
 
     cost: {
       type: Number,
+    },
+
+    paymentRef: {
+      type: String,
     },
 
     bookedDate: {

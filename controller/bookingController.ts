@@ -8,7 +8,7 @@ import studioModel from "../model/studioModel";
 export const makeBookings = async (req: Request, res: Response) => {
   try {
     const { userID, studioID } = req.params;
-    const { bookedDate, calendarDate } = req.body;
+    const { bookedDate, calendarDate, paymentRef } = req.body;
 
     const getUser = await authModel.findById(userID);
     const getStudio: any = await studioModel.findById(studioID);
@@ -19,31 +19,47 @@ export const makeBookings = async (req: Request, res: Response) => {
 
     if (getUser) {
       if (getStudio) {
-        const bookings = await historyModel.create({
-          calendarDate,
-          bookedDate,
-          cost:
-            parseFloat(getStudio?.studioPrice) * parseFloat(bookedDate) + 500,
-          accountID: userID,
-          studioID,
+        let x1 = parseFloat(`${getStudio?.studioPrice}`);
+        let x2 = bookedDate;
+        let x = x1 * x2 + 500;
+
+        const ref = await historyModel.find();
+
+        const check = ref.some((el) => {
+          return el.paymentRef === paymentRef;
         });
+        if (check) {
+          return res.status(201).json({
+            message: "Already Recorded",
+          });
+        } else {
+          const bookings = await historyModel.create({
+            calendarDate,
+            bookedDate,
+            cost: x,
+            accountID: userID,
+            studioID,
+            paymentRef,
+          });
 
-        getStudio.history.push(new Types.ObjectId(bookings._id!));
-        getStudio.save();
+          getStudio.history.push(new Types.ObjectId(bookings._id!));
+          getStudio.save();
 
-        getUser.history.push(new Types.ObjectId(bookings._id!));
-        getUser.save();
+          getUser.history.push(new Types.ObjectId(bookings._id!));
+          getUser.save();
 
-        studioOwner.history.push(new Types.ObjectId(bookings._id!));
-        studioOwner.save();
+          studioOwner.history.push(new Types.ObjectId(bookings._id!));
+          studioOwner.save();
 
-        return res.status(201).json({
-          message: "bookings has been recorded",
-          data: {
-            getStudio,
-            getUser,
-          },
-        });
+          return res.status(201).json({
+            message: "bookings has been recorded",
+            data: {
+              getStudio,
+              getUser,
+            },
+            status: 201,
+          });
+        }
       } else {
         return res.status(404).json({
           message: "can't find studio",

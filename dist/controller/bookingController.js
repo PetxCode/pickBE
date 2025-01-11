@@ -21,32 +21,48 @@ const studioModel_1 = __importDefault(require("../model/studioModel"));
 const makeBookings = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userID, studioID } = req.params;
-        const { bookedDate, calendarDate } = req.body;
+        const { bookedDate, calendarDate, paymentRef } = req.body;
         const getUser = yield authModel_1.default.findById(userID);
         const getStudio = yield studioModel_1.default.findById(studioID);
         const studioOwner = yield authModel_1.default.findById(getStudio === null || getStudio === void 0 ? void 0 : getStudio.accountHolderID);
         if (getUser) {
             if (getStudio) {
-                const bookings = yield historyModel_1.default.create({
-                    calendarDate,
-                    bookedDate,
-                    cost: parseFloat(getStudio === null || getStudio === void 0 ? void 0 : getStudio.studioPrice) * parseFloat(bookedDate) + 500,
-                    accountID: userID,
-                    studioID,
+                let x1 = parseFloat(`${getStudio === null || getStudio === void 0 ? void 0 : getStudio.studioPrice}`);
+                let x2 = bookedDate;
+                let x = x1 * x2 + 500;
+                const ref = yield historyModel_1.default.find();
+                const check = ref.some((el) => {
+                    return el.paymentRef === paymentRef;
                 });
-                getStudio.history.push(new mongoose_1.Types.ObjectId(bookings._id));
-                getStudio.save();
-                getUser.history.push(new mongoose_1.Types.ObjectId(bookings._id));
-                getUser.save();
-                studioOwner.history.push(new mongoose_1.Types.ObjectId(bookings._id));
-                studioOwner.save();
-                return res.status(201).json({
-                    message: "bookings has been recorded",
-                    data: {
-                        getStudio,
-                        getUser,
-                    },
-                });
+                if (check) {
+                    return res.status(201).json({
+                        message: "Already Recorded",
+                    });
+                }
+                else {
+                    const bookings = yield historyModel_1.default.create({
+                        calendarDate,
+                        bookedDate,
+                        cost: x,
+                        accountID: userID,
+                        studioID,
+                        paymentRef,
+                    });
+                    getStudio.history.push(new mongoose_1.Types.ObjectId(bookings._id));
+                    getStudio.save();
+                    getUser.history.push(new mongoose_1.Types.ObjectId(bookings._id));
+                    getUser.save();
+                    studioOwner.history.push(new mongoose_1.Types.ObjectId(bookings._id));
+                    studioOwner.save();
+                    return res.status(201).json({
+                        message: "bookings has been recorded",
+                        data: {
+                            getStudio,
+                            getUser,
+                        },
+                        status: 201,
+                    });
+                }
             }
             else {
                 return res.status(404).json({

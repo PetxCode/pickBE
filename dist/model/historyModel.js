@@ -34,6 +34,9 @@ const historyModel = new mongoose_1.Schema({
     cost: {
         type: Number,
     },
+    paymentRef: {
+        type: String,
+    },
     bookedDate: {
         type: String,
     },

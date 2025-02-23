@@ -17,12 +17,20 @@ export const createStudioReview = async (req: Request, res: Response) => {
       .findById(studioID)
       .populate({ path: "studioReview" });
 
-    const check = studio?.studioRating.some(
-      (el: any) => el.accountRaterID === accountID
+    const studioHistory = await studioModel
+      .findById(studioID)
+      .populate({ path: "history" });
+
+    // const check = studio?.studioRating.some(
+    //   (el: any) => el.accountRaterID === accountID
+    // );
+
+    const checkHistory = studioHistory?.history.some(
+      (el: any) => el.accountID === accountID
     );
 
     if (account && studio) {
-      if (check) {
+      if (!checkHistory) {
         return res.status(status.BAD).json({
           message: "You've already review",
         });
@@ -38,6 +46,7 @@ export const createStudioReview = async (req: Request, res: Response) => {
         return res.status(status.OK).json({
           message: `studio has been reviewed`,
           data: studioRating,
+          status: 201,
         });
       }
     } else {

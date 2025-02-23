@@ -26,9 +26,15 @@ const createStudioReview = (req, res) => __awaiter(void 0, void 0, void 0, funct
         const studio = yield studioModel_1.default
             .findById(studioID)
             .populate({ path: "studioReview" });
-        const check = studio === null || studio === void 0 ? void 0 : studio.studioRating.some((el) => el.accountRaterID === accountID);
+        const studioHistory = yield studioModel_1.default
+            .findById(studioID)
+            .populate({ path: "history" });
+        // const check = studio?.studioRating.some(
+        //   (el: any) => el.accountRaterID === accountID
+        // );
+        const checkHistory = studioHistory === null || studioHistory === void 0 ? void 0 : studioHistory.history.some((el) => el.accountID === accountID);
         if (account && studio) {
-            if (check) {
+            if (!checkHistory) {
                 return res.status(statusEnums_1.status.BAD).json({
                     message: "You've already review",
                 });
@@ -43,6 +49,7 @@ const createStudioReview = (req, res) => __awaiter(void 0, void 0, void 0, funct
                 return res.status(statusEnums_1.status.OK).json({
                     message: `studio has been reviewed`,
                     data: studioRating,
+                    status: 201,
                 });
             }
         }

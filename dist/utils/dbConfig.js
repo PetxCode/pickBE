@@ -11,11 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.dbConfig = void 0;
 const mongoose_1 = require("mongoose");
-// const URL: string = "mongodb://127.0.0.1:27017/pickDB";
-// const URL: string =
-//   "mongodb+srv://brighterdayscodelab:brighterdayscodelab@cluster0.upn8ipm.mongodb.net/pickDB?retryWrites=true&w=majority";
-// const URL: string =
-//   "mongodb+srv://brighterdayscodelab:brighterdayscodelab@cluster0.6d4tpug.mongodb.net/pickDB?retryWrites=true&w=majority";
 const URL = "mongodb+srv://pickastudio_admin:OqtlK7mgkEBV0xc@pickastudio.pvw4h.mongodb.net/pickDB?retryWrites=true&w=majority&appName=Pickastudio";
 const dbConfig = () => __awaiter(void 0, void 0, void 0, function* () {
     try {

@@ -1,7 +1,13 @@
 import axios from "axios";
 import { Request, Response } from "express";
 import https from "https";
+import { receiptEmail } from "../utils/email";
+import authModel from "../model/authModel";
 
+const testPublicKey = "pk_test_308c16cdd6d785f5b308a8f6bc06ef96069327a8";
+const testSecretKey = "sk_test_5ce8884a32a608b1f4d72536630b19abde0613f7";
+
+// sk_test_ec1b0ccabcb547fe0efbd991f3b64b485903c88e
 export const makeTransaction = async (req: Request, res: Response) => {
   try {
     const { email, amount } = req.body;
@@ -23,7 +29,6 @@ export const makeTransaction = async (req: Request, res: Response) => {
         },
       })
       .then((resp) => {
-        console.log(resp.data);
         return res.status(201).json({
           message: "transaction initialize",
           data: resp.data,
@@ -58,8 +63,7 @@ export const makePayment = async (req: Request, res: Response) => {
       path: "/transaction/initialize",
       method: "POST",
       headers: {
-        Authorization:
-          "Bearer sk_test_ec1b0ccabcb547fe0efbd991f3b64b485903c88e",
+        Authorization: `Bearer ${testSecretKey}`,
         "Content-Type": "application/json",
       },
     };
@@ -81,7 +85,7 @@ export const makePayment = async (req: Request, res: Response) => {
         });
       })
       .on("error", (error: any) => {
-        console.error(error);
+        console.log(error);
       });
 
     request.write(params);
@@ -97,19 +101,21 @@ export const makePayment = async (req: Request, res: Response) => {
 
 export const viewVerifyTransaction = async (req: Request, res: Response) => {
   try {
-    const { trxref } = req.params;
+    const { trxref, userID } = req.params;
 
+    const user = await authModel.findById(userID);
     await axios
       .get(`https://api.paystack.co/transaction/verify/${trxref}`, {
         headers: {
-          authorization:
-            "Bearer sk_test_ec1b0ccabcb547fe0efbd991f3b64b485903c88e",
+          authorization: `Bearer ${testSecretKey}`,
 
           "content-type": "application/json",
           "cache-control": "no-cache",
         },
       })
       .then((resp) => {
+        receiptEmail(user, resp.data);
+
         return res.status(201).json({
           message: "payment verified successfully",
           data: resp.data,

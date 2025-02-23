@@ -15,6 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.viewVerifyTransaction = exports.makePayment = exports.makeTransaction = void 0;
 const axios_1 = __importDefault(require("axios"));
 const https_1 = __importDefault(require("https"));
+const email_1 = require("../utils/email");
+const authModel_1 = __importDefault(require("../model/authModel"));
+const testPublicKey = "pk_test_308c16cdd6d785f5b308a8f6bc06ef96069327a8";
+const testSecretKey = "sk_test_5ce8884a32a608b1f4d72536630b19abde0613f7";
+// sk_test_ec1b0ccabcb547fe0efbd991f3b64b485903c88e
 const makeTransaction = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, amount } = req.body;
@@ -32,7 +37,6 @@ const makeTransaction = (req, res) => __awaiter(void 0, void 0, void 0, function
             },
         })
             .then((resp) => {
-            console.log(resp.data);
             return res.status(201).json({
                 message: "transaction initialize",
                 data: resp.data,
@@ -67,7 +71,7 @@ const makePayment = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             path: "/transaction/initialize",
             method: "POST",
             headers: {
-                Authorization: "Bearer sk_test_ec1b0ccabcb547fe0efbd991f3b64b485903c88e",
+                Authorization: `Bearer ${testSecretKey}`,
                 "Content-Type": "application/json",
             },
         };
@@ -86,7 +90,7 @@ const makePayment = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             });
         })
             .on("error", (error) => {
-            console.error(error);
+            console.log(error);
         });
         request.write(params);
         request.end();
@@ -102,16 +106,18 @@ const makePayment = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.makePayment = makePayment;
 const viewVerifyTransaction = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { trxref } = req.params;
+        const { trxref, userID } = req.params;
+        const user = yield authModel_1.default.findById(userID);
         yield axios_1.default
             .get(`https://api.paystack.co/transaction/verify/${trxref}`, {
             headers: {
-                authorization: "Bearer sk_test_ec1b0ccabcb547fe0efbd991f3b64b485903c88e",
+                authorization: `Bearer ${testSecretKey}`,
                 "content-type": "application/json",
                 "cache-control": "no-cache",
             },
         })
             .then((resp) => {
+            (0, email_1.receiptEmail)(user, resp.data);
             return res.status(201).json({
                 message: "payment verified successfully",
                 data: resp.data,

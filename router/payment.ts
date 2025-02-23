@@ -6,7 +6,7 @@ import {
 
 const router: Router = Router();
 
-router.route("/make-payment").post(makePayment);
-router.route("/verify/:trxref").get(viewVerifyTransaction);
+router.route("/make-payment-now").post(makePayment);
+router.route("/verify/:trxref/:userID").get(viewVerifyTransaction);
 
 export default router;

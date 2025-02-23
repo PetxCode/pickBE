@@ -2,6 +2,7 @@ import nodemail from "nodemailer";
 import { google } from "googleapis";
 import path from "path";
 import ejs from "ejs";
+import moment from "moment";
 import jwt from "jsonwebtoken";
 
 // const GOOGLE_ID =
@@ -70,8 +71,56 @@ export const verifiedEmail = async (user: any) => {
     };
 
     await transporter.sendMail(mailerOption);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-    console.log("done", user);
+export const receiptEmail = async (user: any, data: any) => {
+  try {
+    const accessToken: any = (await oAuth.getAccessToken()).token;
+
+    const transporter = nodemail.createTransport({
+      service: "gmail",
+      auth: {
+        type: "OAuth2",
+        user: "codelabbest@gmail.com",
+        clientSecret: GOOGLE_SECRET,
+        clientId: GOOGLE_ID,
+        refreshToken: GOOGLE_REFRESH,
+        accessToken,
+      },
+    });
+
+    const token = jwt.sign(
+      {
+        id: user._id,
+        email: user.email,
+        name: user.firstName,
+      },
+      "secretCode"
+    );
+
+    let myURL = `${url}/${token}/sign-in`;
+
+    const myPath = path.join(__dirname, "../views/paymentEmail.ejs");
+    const html = await ejs.renderFile(myPath, {
+      userName: user.firstName,
+      receipt: data?.data?.reference,
+      amount: data?.data?.amount,
+      channel: data?.data?.channel,
+      currency: data?.data?.currency,
+      paid_at: moment(data?.data?.paid_at).format("LLLL"),
+    });
+
+    const mailerOption = {
+      from: "Pick a Studio🚀🚀🚀 <codelabbest@gmail.com>",
+      to: user.email,
+      subject: "Payment Receipt",
+      html,
+    };
+
+    await transporter.sendMail(mailerOption);
   } catch (error) {
     console.log(error);
   }

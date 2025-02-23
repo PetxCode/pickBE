@@ -12,11 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifiedEmail = void 0;
+exports.receiptEmail = exports.verifiedEmail = void 0;
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const googleapis_1 = require("googleapis");
 const path_1 = __importDefault(require("path"));
 const ejs_1 = __importDefault(require("ejs"));
+const moment_1 = __importDefault(require("moment"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 // const GOOGLE_ID =
 //   "199704572461-g84htr0if8p5ej23l2ukvsgtq2rh288g.apps.googleusercontent.com";
@@ -64,10 +65,52 @@ const verifiedEmail = (user) => __awaiter(void 0, void 0, void 0, function* () {
             html,
         };
         yield transporter.sendMail(mailerOption);
-        console.log("done", user);
     }
     catch (error) {
         console.log(error);
     }
 });
 exports.verifiedEmail = verifiedEmail;
+const receiptEmail = (user, data) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b, _c, _d, _e;
+    try {
+        const accessToken = (yield oAuth.getAccessToken()).token;
+        const transporter = nodemailer_1.default.createTransport({
+            service: "gmail",
+            auth: {
+                type: "OAuth2",
+                user: "codelabbest@gmail.com",
+                clientSecret: GOOGLE_SECRET,
+                clientId: GOOGLE_ID,
+                refreshToken: GOOGLE_REFRESH,
+                accessToken,
+            },
+        });
+        const token = jsonwebtoken_1.default.sign({
+            id: user._id,
+            email: user.email,
+            name: user.firstName,
+        }, "secretCode");
+        let myURL = `${url}/${token}/sign-in`;
+        const myPath = path_1.default.join(__dirname, "../views/paymentEmail.ejs");
+        const html = yield ejs_1.default.renderFile(myPath, {
+            userName: user.firstName,
+            receipt: (_a = data === null || data === void 0 ? void 0 : data.data) === null || _a === void 0 ? void 0 : _a.reference,
+            amount: (_b = data === null || data === void 0 ? void 0 : data.data) === null || _b === void 0 ? void 0 : _b.amount,
+            channel: (_c = data === null || data === void 0 ? void 0 : data.data) === null || _c === void 0 ? void 0 : _c.channel,
+            currency: (_d = data === null || data === void 0 ? void 0 : data.data) === null || _d === void 0 ? void 0 : _d.currency,
+            paid_at: (0, moment_1.default)((_e = data === null || data === void 0 ? void 0 : data.data) === null || _e === void 0 ? void 0 : _e.paid_at).format("LLLL"),
+        });
+        const mailerOption = {
+            from: "Pick a Studio🚀🚀🚀 <codelabbest@gmail.com>",
+            to: user.email,
+            subject: "Payment Receipt",
+            html,
+        };
+        yield transporter.sendMail(mailerOption);
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
+exports.receiptEmail = receiptEmail;

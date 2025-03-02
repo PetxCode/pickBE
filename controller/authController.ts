@@ -205,53 +205,6 @@ export const updateOneAuthInfoPhone = async (req: Request, res: Response) => {
   }
 };
 
-export const updateAccountNumber = async (req: Request, res: Response) => {
-  try {
-    const { userID } = req.params;
-    const { bankAccount } = req.body;
-    const user = await authModel.findByIdAndUpdate(
-      userID,
-      {
-        bankAccount,
-      },
-      { new: true }
-    );
-
-    return res.status(status.OK).json({
-      message: "bank acc updated",
-      data: user,
-    });
-  } catch (error) {
-    return res.status(status.BAD).json({
-      message: "Error creating user",
-    });
-  }
-};
-
-export const updateBankName = async (req: Request, res: Response) => {
-  try {
-    const { userID } = req.params;
-    const { bankName, bankCode } = req.body;
-    const user = await authModel.findByIdAndUpdate(
-      userID,
-      {
-        bankName,
-        bankCode,
-      },
-      { new: true }
-    );
-
-    return res.status(status.OK).json({
-      message: "bank acc name updated",
-      data: user,
-    });
-  } catch (error) {
-    return res.status(status.BAD).json({
-      message: "Error creating user",
-    });
-  }
-};
-
 export const singleAccountName = async (req: Request, res: Response) => {
   try {
     const { userID } = req.params;
@@ -265,29 +218,6 @@ export const singleAccountName = async (req: Request, res: Response) => {
     return res.status(status.OK).json({
       message: "user acc",
       data: token,
-    });
-  } catch (error) {
-    return res.status(status.BAD).json({
-      message: "Error creating user",
-    });
-  }
-};
-
-export const updateBankAccountName = async (req: Request, res: Response) => {
-  try {
-    const { userID } = req.params;
-    const { accountName } = req.body;
-    const user = await authModel.findByIdAndUpdate(
-      userID,
-      {
-        accountName,
-      },
-      { new: true }
-    );
-
-    return res.status(status.OK).json({
-      message: "bank acc name updated",
-      data: user,
     });
   } catch (error) {
     return res.status(status.BAD).json({
@@ -353,6 +283,29 @@ export const updateOneAuthInfoLang = async (req: Request, res: Response) => {
       userID,
       {
         lang,
+      },
+      { new: true }
+    );
+
+    return res.status(status.OK).json({
+      message: "one users read",
+      data: user,
+    });
+  } catch (error) {
+    return res.status(status.BAD).json({
+      message: "Error creating user",
+    });
+  }
+};
+
+export const updateOneAuthInfoAddress = async (req: Request, res: Response) => {
+  try {
+    const { userID } = req.params;
+    const { address } = req.body;
+    const user = await authModel.findByIdAndUpdate(
+      userID,
+      {
+        address,
       },
       { new: true }
     );
@@ -485,6 +438,76 @@ export const deleteOneAuth = async (req: Request, res: Response) => {
 
     return res.status(status.OK).json({
       message: "this users has been deleted",
+      data: user,
+    });
+  } catch (error) {
+    return res.status(status.BAD).json({
+      message: "Error creating user",
+    });
+  }
+};
+
+export const updateBankAccountName = async (req: Request, res: Response) => {
+  try {
+    const { userID } = req.params;
+    const { accountName } = req.body;
+    const user = await authModel.findByIdAndUpdate(
+      userID,
+      {
+        accountName,
+      },
+      { new: true }
+    );
+
+    return res.status(status.OK).json({
+      message: "bank acc name updated",
+      data: user,
+    });
+  } catch (error) {
+    return res.status(status.BAD).json({
+      message: "Error creating user",
+    });
+  }
+};
+
+export const updateAccountNumber = async (req: Request, res: Response) => {
+  try {
+    const { userID } = req.params;
+    const { bankAccount } = req.body;
+    const user = await authModel.findByIdAndUpdate(
+      userID,
+      {
+        bankAccount,
+      },
+      { new: true }
+    );
+
+    return res.status(status.OK).json({
+      message: "bank acc updated",
+      data: user,
+    });
+  } catch (error) {
+    return res.status(status.BAD).json({
+      message: "Error creating user",
+    });
+  }
+};
+
+export const updateBankName = async (req: Request, res: Response) => {
+  try {
+    const { userID } = req.params;
+    const { bankName, bankCode } = req.body;
+    const user = await authModel.findByIdAndUpdate(
+      userID,
+      {
+        bankName,
+        bankCode,
+      },
+      { new: true }
+    );
+
+    return res.status(status.OK).json({
+      message: "bank acc name updated",
       data: user,
     });
   } catch (error) {

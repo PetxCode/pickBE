@@ -9,6 +9,7 @@ interface iAuth {
   phone: string;
   bio: string;
   profession: string;
+  address: string;
   lang: string;
   // category: string;
 
@@ -67,6 +68,10 @@ const authModel = new Schema<iAuthData>(
     },
 
     phone: {
+      type: String,
+    },
+
+    address: {
       type: String,
     },
 

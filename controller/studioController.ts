@@ -201,12 +201,22 @@ export const removeStudioImages = async (req: any, res: Response) => {
 export const searchStudio = async (req: Request, res: Response) => {
   try {
     const { studioCategory } = req.body;
-    const account = await studioModel.find({ studioCategory });
 
-    return res.status(status.OK).json({
-      message: `viewing studio`,
-      data: account,
-    });
+    if (studioCategory === "All") {
+      const account = await studioModel.find();
+
+      return res.status(status.OK).json({
+        message: `viewing studio`,
+        data: account,
+      });
+    } else {
+      const account = await studioModel.find({ studioCategory });
+
+      return res.status(status.OK).json({
+        message: `viewing studio`,
+        data: account,
+      });
+    }
   } catch (error: any) {
     return res.status(status.BAD).json({
       message: error.message,
@@ -237,6 +247,76 @@ export const editAccountStudioInfo = async (req: Request, res: Response) => {
           studioAddress,
           studioDescription,
           discountPercent,
+        },
+        { new: true }
+      );
+      return res.status(status.OK).json({
+        message: `viewing studio`,
+        data: account,
+      });
+    } else {
+      return res.status(status.BAD).json({
+        message: "error with userID",
+      });
+    }
+  } catch (error: any) {
+    return res.status(status.BAD).json({
+      message: error.message,
+    });
+  }
+};
+
+export const deleteAccountStudioFeature = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { userID, studioID } = req.params;
+    const { featureName } = req.body;
+    const user = await authModel.findById(userID);
+    const studio: any = await studioModel.findById(studioID);
+
+    const y = studio.studioFeatures[0].split(",");
+    const m = y.filter((el: string) => el !== featureName);
+
+    if (user) {
+      const account = await studioModel.findByIdAndUpdate(
+        studioID,
+        {
+          studioFeatures: [m.join(",")],
+        },
+        { new: true }
+      );
+      return res.status(status.OK).json({
+        message: `viewing studio`,
+        data: account,
+      });
+    } else {
+      return res.status(status.BAD).json({
+        message: "error with userID",
+      });
+    }
+  } catch (error: any) {
+    return res.status(status.BAD).json({
+      message: error.message,
+    });
+  }
+};
+
+export const addAccountStudioFeature = async (req: Request, res: Response) => {
+  try {
+    const { userID, studioID } = req.params;
+    const { featureName } = req.body;
+    const user = await authModel.findById(userID);
+    const studio: any = await studioModel.findById(studioID);
+
+    const y = studio.studioFeatures[0].split(",");
+
+    if (user) {
+      const account = await studioModel.findByIdAndUpdate(
+        studioID,
+        {
+          studioFeatures: [[...featureName].join(",")],
         },
         { new: true }
       );

@@ -52,6 +52,9 @@ const authModel = new mongoose_1.Schema({
     phone: {
         type: String,
     },
+    address: {
+        type: String,
+    },
     profession: {
         type: String,
     },

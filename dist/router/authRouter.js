@@ -82,6 +82,9 @@ router.route("/update-account-name/:userID").patch(authController_1.updateBankAc
 router.route("/update-bank-name/:userID").patch(authController_1.updateBankName);
 router.route("/update-account-number/:userID").patch(authController_1.updateAccountNumber);
 router.route("/delete-user/:userID").delete(authController_1.deleteOneAuth);
+router
+    .route("/update-one-user-address/:userID")
+    .patch(authController_1.updateOneAuthInfoAddress);
 router.route("/update-one-user-lang/:userID").patch(authController_1.updateOneAuthInfoLang);
 router.route("/update-one-user-bio/:userID").patch(authController_1.updateOneAuthInfoBio);
 router

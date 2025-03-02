@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteStudio = exports.editAccountStudioInfo = exports.searchStudio = exports.removeStudioImages = exports.addStudioImages = exports.viewAllStudio = exports.viewAccountStudioByName = exports.viewUserStudios = exports.viewAccountStudio = exports.createStudio = void 0;
+exports.deleteStudio = exports.addAccountStudioFeature = exports.deleteAccountStudioFeature = exports.editAccountStudioInfo = exports.searchStudio = exports.removeStudioImages = exports.addStudioImages = exports.viewAllStudio = exports.viewAccountStudioByName = exports.viewUserStudios = exports.viewAccountStudio = exports.createStudio = void 0;
 const statusEnums_1 = require("../utils/statusEnums");
 const authModel_1 = __importDefault(require("../model/authModel"));
 const studioModel_1 = __importDefault(require("../model/studioModel"));
@@ -191,11 +191,20 @@ exports.removeStudioImages = removeStudioImages;
 const searchStudio = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { studioCategory } = req.body;
-        const account = yield studioModel_1.default.find({ studioCategory });
-        return res.status(statusEnums_1.status.OK).json({
-            message: `viewing studio`,
-            data: account,
-        });
+        if (studioCategory === "All") {
+            const account = yield studioModel_1.default.find();
+            return res.status(statusEnums_1.status.OK).json({
+                message: `viewing studio`,
+                data: account,
+            });
+        }
+        else {
+            const account = yield studioModel_1.default.find({ studioCategory });
+            return res.status(statusEnums_1.status.OK).json({
+                message: `viewing studio`,
+                data: account,
+            });
+        }
     }
     catch (error) {
         return res.status(statusEnums_1.status.BAD).json({
@@ -236,6 +245,65 @@ const editAccountStudioInfo = (req, res) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.editAccountStudioInfo = editAccountStudioInfo;
+const deleteAccountStudioFeature = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userID, studioID } = req.params;
+        const { featureName } = req.body;
+        const user = yield authModel_1.default.findById(userID);
+        const studio = yield studioModel_1.default.findById(studioID);
+        const y = studio.studioFeatures[0].split(",");
+        const m = y.filter((el) => el !== featureName);
+        if (user) {
+            const account = yield studioModel_1.default.findByIdAndUpdate(studioID, {
+                studioFeatures: [m.join(",")],
+            }, { new: true });
+            return res.status(statusEnums_1.status.OK).json({
+                message: `viewing studio`,
+                data: account,
+            });
+        }
+        else {
+            return res.status(statusEnums_1.status.BAD).json({
+                message: "error with userID",
+            });
+        }
+    }
+    catch (error) {
+        return res.status(statusEnums_1.status.BAD).json({
+            message: error.message,
+        });
+    }
+});
+exports.deleteAccountStudioFeature = deleteAccountStudioFeature;
+const addAccountStudioFeature = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userID, studioID } = req.params;
+        const { featureName } = req.body;
+        const user = yield authModel_1.default.findById(userID);
+        const studio = yield studioModel_1.default.findById(studioID);
+        const y = studio.studioFeatures[0].split(",");
+        if (user) {
+            const account = yield studioModel_1.default.findByIdAndUpdate(studioID, {
+                studioFeatures: [[...featureName].join(",")],
+            }, { new: true });
+            return res.status(statusEnums_1.status.OK).json({
+                message: `viewing studio`,
+                data: account,
+            });
+        }
+        else {
+            return res.status(statusEnums_1.status.BAD).json({
+                message: "error with userID",
+            });
+        }
+    }
+    catch (error) {
+        return res.status(statusEnums_1.status.BAD).json({
+            message: error.message,
+        });
+    }
+});
+exports.addAccountStudioFeature = addAccountStudioFeature;
 const deleteStudio = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {

@@ -360,3 +360,37 @@ export const deleteStudio = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const deleteAccountStudioImage = async (req: Request, res: Response) => {
+  try {
+    const { userID, studioID } = req.params;
+    const { imageURL } = req.body;
+    const user = await authModel.findById(userID);
+    const studio: any = await studioModel.findById(studioID);
+
+    if (user) {
+      const account = await studioModel.findByIdAndUpdate(
+        studioID,
+        {
+          studioImages: studio.studioImages.filter(
+            (el: string) => el !== imageURL
+          ),
+        },
+        { new: true }
+      );
+      return res.status(status.OK).json({
+        message: `viewing studio`,
+        data: account,
+        status: 201,
+      });
+    } else {
+      return res.status(status.BAD).json({
+        message: "error with userID",
+      });
+    }
+  } catch (error: any) {
+    return res.status(status.BAD).json({
+      message: error.message,
+    });
+  }
+};

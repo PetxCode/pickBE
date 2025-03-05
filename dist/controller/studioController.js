@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteAccountStudioImage = exports.deleteStudio = exports.addAccountStudioFeature = exports.deleteAccountStudioFeature = exports.editAccountStudioInfo = exports.searchStudio = exports.removeStudioImages = exports.addStudioImages = exports.viewAllStudio = exports.viewAccountStudioByName = exports.viewUserStudios = exports.viewAccountStudio = exports.createStudio = void 0;
+exports.deleteAccountStudioImage = exports.deleteStudio = exports.addAccountStudioFeature = exports.deleteAccountStudioFeature = exports.editAccountStudioInfo = exports.searchStudio = exports.removeStudioImages = exports.addStudioImages = exports.updateStudioInfo = exports.viewAllStudio = exports.viewAccountStudioByName = exports.viewUserStudios = exports.viewAccountStudio = exports.createStudio = void 0;
 const statusEnums_1 = require("../utils/statusEnums");
 const authModel_1 = __importDefault(require("../model/authModel"));
 const studioModel_1 = __importDefault(require("../model/studioModel"));
@@ -129,6 +129,35 @@ const viewAllStudio = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.viewAllStudio = viewAllStudio;
+const updateStudioInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { accountID, studioID } = req.params;
+        const { studioDescription } = req.body;
+        const account = yield authModel_1.default.findById(accountID);
+        const studio = yield studioModel_1.default.findById(studioID);
+        if (account && studio) {
+            let imagesAdded = yield studioModel_1.default.findByIdAndUpdate(studioID, {
+                studioDescription: studioDescription,
+            }, { new: true });
+            return res.status(statusEnums_1.status.OK).json({
+                message: `studio description has been updated`,
+                data: imagesAdded,
+                status: 201,
+            });
+        }
+        else {
+            return res.status(statusEnums_1.status.BAD).json({
+                message: "Account can't be found",
+            });
+        }
+    }
+    catch (error) {
+        return res.status(statusEnums_1.status.BAD).json({
+            message: error.message,
+        });
+    }
+});
+exports.updateStudioInfo = updateStudioInfo;
 const addStudioImages = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { accountID, studioID } = req.params;

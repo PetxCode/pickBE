@@ -128,6 +128,40 @@ export const viewAllStudio = async (req: Request, res: Response) => {
   }
 };
 
+export const updateStudioInfo = async (req: any, res: Response) => {
+  try {
+    const { accountID, studioID } = req.params;
+    const { studioDescription } = req.body;
+
+    const account = await authModel.findById(accountID);
+    const studio = await studioModel.findById(studioID);
+
+    if (account && studio) {
+      let imagesAdded = await studioModel.findByIdAndUpdate(
+        studioID,
+        {
+          studioDescription: studioDescription,
+        },
+        { new: true }
+      );
+
+      return res.status(status.OK).json({
+        message: `studio description has been updated`,
+        data: imagesAdded,
+        status: 201,
+      });
+    } else {
+      return res.status(status.BAD).json({
+        message: "Account can't be found",
+      });
+    }
+  } catch (error: any) {
+    return res.status(status.BAD).json({
+      message: error.message,
+    });
+  }
+};
+
 export const addStudioImages = async (req: any, res: Response) => {
   try {
     const { accountID, studioID } = req.params;

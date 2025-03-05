@@ -31,6 +31,9 @@ router
     .route("/delete-studio-image/:userID/:studioID")
     .patch(studioController_1.deleteAccountStudioImage);
 router
+    .route("/update-studio-info/:accountID/:studioID")
+    .patch(studioController_1.updateStudioInfo);
+router
     .route("/add-studio-feature/:userID/:studioID")
     .patch(studioController_1.addAccountStudioFeature);
 router.route("/delete-studio/:accountID/:studioID").delete(studioController_1.deleteStudio);

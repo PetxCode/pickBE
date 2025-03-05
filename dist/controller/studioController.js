@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteStudio = exports.addAccountStudioFeature = exports.deleteAccountStudioFeature = exports.editAccountStudioInfo = exports.searchStudio = exports.removeStudioImages = exports.addStudioImages = exports.viewAllStudio = exports.viewAccountStudioByName = exports.viewUserStudios = exports.viewAccountStudio = exports.createStudio = void 0;
+exports.deleteAccountStudioImage = exports.deleteStudio = exports.addAccountStudioFeature = exports.deleteAccountStudioFeature = exports.editAccountStudioInfo = exports.searchStudio = exports.removeStudioImages = exports.addStudioImages = exports.viewAllStudio = exports.viewAccountStudioByName = exports.viewUserStudios = exports.viewAccountStudio = exports.createStudio = void 0;
 const statusEnums_1 = require("../utils/statusEnums");
 const authModel_1 = __importDefault(require("../model/authModel"));
 const studioModel_1 = __importDefault(require("../model/studioModel"));
@@ -329,3 +329,32 @@ const deleteStudio = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.deleteStudio = deleteStudio;
+const deleteAccountStudioImage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userID, studioID } = req.params;
+        const { imageURL } = req.body;
+        const user = yield authModel_1.default.findById(userID);
+        const studio = yield studioModel_1.default.findById(studioID);
+        if (user) {
+            const account = yield studioModel_1.default.findByIdAndUpdate(studioID, {
+                studioImages: studio.studioImages.filter((el) => el !== imageURL),
+            }, { new: true });
+            return res.status(statusEnums_1.status.OK).json({
+                message: `viewing studio`,
+                data: account,
+                status: 201,
+            });
+        }
+        else {
+            return res.status(statusEnums_1.status.BAD).json({
+                message: "error with userID",
+            });
+        }
+    }
+    catch (error) {
+        return res.status(statusEnums_1.status.BAD).json({
+            message: error.message,
+        });
+    }
+});
+exports.deleteAccountStudioImage = deleteAccountStudioImage;

@@ -28,6 +28,9 @@ router
     .route("/remove-studio-feature/:userID/:studioID")
     .patch(studioController_1.deleteAccountStudioFeature);
 router
+    .route("/delete-studio-image/:userID/:studioID")
+    .patch(studioController_1.deleteAccountStudioImage);
+router
     .route("/add-studio-feature/:userID/:studioID")
     .patch(studioController_1.addAccountStudioFeature);
 router.route("/delete-studio/:accountID/:studioID").delete(studioController_1.deleteStudio);

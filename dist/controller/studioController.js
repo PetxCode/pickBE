@@ -18,6 +18,7 @@ const authModel_1 = __importDefault(require("../model/authModel"));
 const studioModel_1 = __importDefault(require("../model/studioModel"));
 const mongoose_1 = require("mongoose");
 const streamifier_1 = require("../utils/streamifier");
+const axios_1 = __importDefault(require("axios"));
 const createStudio = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { accountID } = req.params;
@@ -25,12 +26,31 @@ const createStudio = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         // includeDiscount,
          } = req.body;
         const account = yield authModel_1.default.findById(accountID);
+        const options = {
+            method: "GET",
+            params: {
+                address: studioAddress,
+            },
+            headers: {
+                "x-rapidapi-key": "02dc23aea7msh5cc3022c747fdd7p160805jsn1378c2b79155",
+                "x-rapidapi-host": "address-from-to-latitude-longitude.p.rapidapi.com",
+            },
+        };
+        const location = yield axios_1.default
+            .get(`https://address-from-to-latitude-longitude.p.rapidapi.com/geolocationapi`, options)
+            .then((res) => {
+            var _a;
+            console.log(res.data.Results[0]);
+            return (_a = res === null || res === void 0 ? void 0 : res.data) === null || _a === void 0 ? void 0 : _a.Results[0];
+        });
         if (account) {
             const studio = yield studioModel_1.default.create({
-                accountHolderID: account._id,
+                accountHolderID: account === null || account === void 0 ? void 0 : account._id,
                 studioContact,
                 studioCategory,
                 studioAddress,
+                longitude: location === null || location === void 0 ? void 0 : location.longitude,
+                latitude: location === null || location === void 0 ? void 0 : location.latitude,
                 studioDescription,
                 studioFeatures,
                 studioImages: yield (0, streamifier_1.multiStreamifier)(req),
@@ -248,8 +268,31 @@ const editAccountStudioInfo = (req, res) => __awaiter(void 0, void 0, void 0, fu
         const { studioName, studioPrice, studioPriceDaily, studioAddress, studioDescription, discountPercent, } = req.body;
         const user = yield authModel_1.default.findById(userID);
         if (user) {
+            const options = {
+                method: "GET",
+                params: {
+                    address: studioAddress,
+                },
+                headers: {
+                    "x-rapidapi-key": "02dc23aea7msh5cc3022c747fdd7p160805jsn1378c2b79155",
+                    "x-rapidapi-host": "address-from-to-latitude-longitude.p.rapidapi.com",
+                },
+            };
+            const location = yield axios_1.default
+                .get(`https://address-from-to-latitude-longitude.p.rapidapi.com/geolocationapi`, options)
+                .then((res) => {
+                var _a;
+                console.log(res.data.Results[0]);
+                return (_a = res === null || res === void 0 ? void 0 : res.data) === null || _a === void 0 ? void 0 : _a.Results[0];
+            });
             const account = yield studioModel_1.default.findByIdAndUpdate(studioID, {
                 studioName,
+                latitude: location.latitude,
+                longitude: location.longitude,
+                studioLat: {
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                },
                 studioPrice,
                 studioPriceDaily,
                 studioAddress,

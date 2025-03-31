@@ -5,10 +5,13 @@ interface iAuth {
 
   studioName: string;
   studioPrice: number;
+  longitude: number;
+  latitude: number;
   studioPriceDaily: number;
   studioAddress: string;
   studioContact: string;
   studioImages: Array<{}>;
+  studioLat: {};
 
   studioDescription: string;
   studioCategory: string;
@@ -40,6 +43,18 @@ const authModel = new Schema<iAuthData>(
     studioRate: {
       type: Number,
       default: 0,
+    },
+
+    longitude: {
+      type: Number,
+    },
+
+    latitude: {
+      type: Number,
+    },
+
+    studioLat: {
+      type: {},
     },
 
     studioPrice: {

@@ -55,8 +55,8 @@ exports.makeTransaction = makeTransaction;
 const makePayment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { amount, email } = req.body;
-        const URL = "http://localhost:5173";
-        // const URL = "https://pickastudio.com";
+        // const URL = "http://localhost:5173";
+        const URL = "https://pickastudio.com";
         const params = JSON.stringify({
             email,
             amount: (parseInt(amount) * 100).toString(),

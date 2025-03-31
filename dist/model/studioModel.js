@@ -35,6 +35,15 @@ const authModel = new mongoose_1.Schema({
         type: Number,
         default: 0,
     },
+    longitude: {
+        type: Number,
+    },
+    latitude: {
+        type: Number,
+    },
+    studioLat: {
+        type: {},
+    },
     studioPrice: {
         type: Number,
     },

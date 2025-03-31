@@ -4,6 +4,7 @@ import authModel from "../model/authModel";
 import studioModel from "../model/studioModel";
 import { Types } from "mongoose";
 import { multiStreamifier, streamUpload } from "../utils/streamifier";
+import axios from "axios";
 
 export const createStudio = async (req: Request, res: Response) => {
   try {
@@ -24,12 +25,35 @@ export const createStudio = async (req: Request, res: Response) => {
 
     const account = await authModel.findById(accountID);
 
+    const options = {
+      method: "GET",
+      params: {
+        address: studioAddress,
+      },
+      headers: {
+        "x-rapidapi-key": "02dc23aea7msh5cc3022c747fdd7p160805jsn1378c2b79155",
+        "x-rapidapi-host": "address-from-to-latitude-longitude.p.rapidapi.com",
+      },
+    };
+
+    const location = await axios
+      .get(
+        `https://address-from-to-latitude-longitude.p.rapidapi.com/geolocationapi`,
+        options
+      )
+      .then((res: any | {}) => {
+        console.log(res.data.Results[0]);
+        return res?.data?.Results[0];
+      });
+
     if (account) {
       const studio = await studioModel.create({
-        accountHolderID: account._id,
+        accountHolderID: account?._id,
         studioContact,
         studioCategory,
         studioAddress,
+        longitude: location?.longitude,
+        latitude: location?.latitude,
         studioDescription,
         studioFeatures,
         studioImages: await multiStreamifier(req),
@@ -272,10 +296,39 @@ export const editAccountStudioInfo = async (req: Request, res: Response) => {
     const user = await authModel.findById(userID);
 
     if (user) {
+      const options = {
+        method: "GET",
+        params: {
+          address: studioAddress,
+        },
+        headers: {
+          "x-rapidapi-key":
+            "02dc23aea7msh5cc3022c747fdd7p160805jsn1378c2b79155",
+          "x-rapidapi-host":
+            "address-from-to-latitude-longitude.p.rapidapi.com",
+        },
+      };
+
+      const location = await axios
+        .get(
+          `https://address-from-to-latitude-longitude.p.rapidapi.com/geolocationapi`,
+          options
+        )
+        .then((res: any | {}) => {
+          console.log(res.data.Results[0]);
+          return res?.data?.Results[0];
+        });
+
       const account = await studioModel.findByIdAndUpdate(
         studioID,
         {
           studioName,
+          latitude: location.latitude,
+          longitude: location.longitude,
+          studioLat: {
+            latitude: location.latitude,
+            longitude: location.longitude,
+          },
           studioPrice,
           studioPriceDaily,
           studioAddress,

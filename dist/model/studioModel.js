@@ -79,7 +79,7 @@ const authModel = new mongoose_1.Schema({
     studioRating: [
         {
             type: mongoose_1.default.Types.ObjectId,
-            ref: "ratings",
+            ref: "studioRates",
         },
     ],
     studioLikes: [

@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.viewVerifyTransaction = exports.makePayment = exports.makeTransaction = void 0;
 const axios_1 = __importDefault(require("axios"));
 const https_1 = __importDefault(require("https"));
-const email_1 = require("../utils/email");
 const authModel_1 = __importDefault(require("../model/authModel"));
 const testPublicKey = "pk_test_308c16cdd6d785f5b308a8f6bc06ef96069327a8";
 const testSecretKey = "sk_test_5ce8884a32a608b1f4d72536630b19abde0613f7";
@@ -56,12 +55,14 @@ exports.makeTransaction = makeTransaction;
 const makePayment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { amount, email } = req.body;
+        const URL = "http://localhost:5173";
+        // const URL = "https://pickastudio.com";
         const params = JSON.stringify({
             email,
             amount: (parseInt(amount) * 100).toString(),
-            callback_url: "https://pickastudio.com/payment/successful",
+            callback_url: `${URL}/payment/successful`,
             metadata: {
-                cancel_action: "https://pickastudio.com/payment/failed",
+                cancel_action: `${URL}/payment/failed`,
             },
             channels: ["card"],
         });
@@ -117,7 +118,7 @@ const viewVerifyTransaction = (req, res) => __awaiter(void 0, void 0, void 0, fu
             },
         })
             .then((resp) => {
-            (0, email_1.receiptEmail)(user, resp.data);
+            // completePaymentEmail(user, resp.data);
             return res.status(201).json({
                 message: "payment verified successfully",
                 data: resp.data,

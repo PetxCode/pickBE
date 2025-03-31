@@ -18,6 +18,8 @@ const historyModel_1 = __importDefault(require("../model/historyModel"));
 const mongoose_1 = require("mongoose");
 const statusEnums_1 = require("../utils/statusEnums");
 const studioModel_1 = __importDefault(require("../model/studioModel"));
+const email_1 = require("../utils/email");
+const moment_1 = __importDefault(require("moment"));
 const makeBookings = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userID, studioID } = req.params;
@@ -27,8 +29,8 @@ const makeBookings = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const studioOwner = yield authModel_1.default.findById(getStudio === null || getStudio === void 0 ? void 0 : getStudio.accountHolderID);
         if (getUser) {
             if (getStudio) {
-                let x1 = parseFloat(`${getStudio === null || getStudio === void 0 ? void 0 : getStudio.studioPrice}`);
-                let x2 = bookedDate;
+                let x1 = parseFloat(`${getStudio === null || getStudio === void 0 ? void 0 : getStudio.studioPrice}`) / 10;
+                let x2 = parseFloat(bookedDate);
                 let x = x1 * x2 + 500;
                 const ref = yield historyModel_1.default.find();
                 const check = ref.some((el) => {
@@ -48,6 +50,20 @@ const makeBookings = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                         studioID,
                         paymentRef,
                     });
+                    // bookings?.createdAt;
+                    const studioData = {
+                        accountID: userID,
+                        studioID,
+                        date: (0, moment_1.default)(bookings.createdAt).format("LLLL"),
+                        // date: moment(Date.now()).format("LLLL"),
+                        calendarDate,
+                        bookedDate,
+                        currency: "NGN",
+                        cost: x.toLocaleString(),
+                        paymentRef,
+                        studioName: getStudio === null || getStudio === void 0 ? void 0 : getStudio.studioName,
+                    };
+                    (0, email_1.completePaymentEmail)(getUser, studioData);
                     getStudio.history.push(new mongoose_1.Types.ObjectId(bookings._id));
                     getStudio.save();
                     getUser.history.push(new mongoose_1.Types.ObjectId(bookings._id));

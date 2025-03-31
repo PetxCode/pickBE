@@ -27,4 +27,4 @@ const studioRatingModel = new Schema<iStudioData>(
   }
 );
 
-export default model<iStudioData>("ratings", studioRatingModel);
+export default model<iStudioData>("studioRates", studioRatingModel);

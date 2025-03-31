@@ -125,3 +125,57 @@ export const receiptEmail = async (user: any, data: any) => {
     console.log(error);
   }
 };
+
+export const completePaymentEmail = async (user: any, data: any) => {
+  try {
+    const accessToken: any = (await oAuth.getAccessToken()).token;
+
+    const transporter = nodemail.createTransport({
+      service: "gmail",
+      auth: {
+        type: "OAuth2",
+        user: "codelabbest@gmail.com",
+        clientSecret: GOOGLE_SECRET,
+        clientId: GOOGLE_ID,
+        refreshToken: GOOGLE_REFRESH,
+        accessToken,
+      },
+    });
+
+    const token = jwt.sign(
+      {
+        id: user._id,
+        email: user.email,
+        name: user.firstName,
+      },
+      "secretCode"
+    );
+
+    let myURL = `${url}/${token}/sign-in`;
+
+    const myPath = path.join(__dirname, "../views/completePayment.ejs");
+
+    const html = await ejs.renderFile(myPath, {
+      userName: user.firstName,
+
+      studioName: data?.studioName,
+      receipt: data?.paymentRef,
+      amount: data?.cost,
+      bookedDate: data?.calendarDate,
+      duration: data?.bookedDate,
+      currency: data?.currency,
+      paid_at: moment(data?.date).format("LLLL"),
+    });
+
+    const mailerOption = {
+      from: "Pick a Studio🚀🚀🚀 <codelabbest@gmail.com>",
+      to: user.email,
+      subject: "Payment Receipt",
+      html,
+    };
+
+    await transporter.sendMail(mailerOption);
+  } catch (error) {
+    console.log(error);
+  }
+};

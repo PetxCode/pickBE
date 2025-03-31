@@ -98,7 +98,7 @@ const authModel = new Schema<iAuthData>(
     studioRating: [
       {
         type: mongoose.Types.ObjectId,
-        ref: "ratings",
+        ref: "studioRates",
       },
     ],
 

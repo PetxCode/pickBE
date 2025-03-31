@@ -4,6 +4,8 @@ import historyModel from "../model/historyModel";
 import { Types } from "mongoose";
 import { status } from "../utils/statusEnums";
 import studioModel from "../model/studioModel";
+import { completePaymentEmail, receiptEmail } from "../utils/email";
+import moment from "moment";
 
 export const makeBookings = async (req: Request, res: Response) => {
   try {
@@ -19,8 +21,8 @@ export const makeBookings = async (req: Request, res: Response) => {
 
     if (getUser) {
       if (getStudio) {
-        let x1 = parseFloat(`${getStudio?.studioPrice}`);
-        let x2 = bookedDate;
+        let x1 = parseFloat(`${getStudio?.studioPrice}`) / 10;
+        let x2 = parseFloat(bookedDate);
         let x = x1 * x2 + 500;
 
         const ref = await historyModel.find();
@@ -33,7 +35,7 @@ export const makeBookings = async (req: Request, res: Response) => {
             message: "Already Recorded",
           });
         } else {
-          const bookings = await historyModel.create({
+          const bookings: any = await historyModel.create({
             calendarDate,
             bookedDate,
             cost: x,
@@ -41,6 +43,22 @@ export const makeBookings = async (req: Request, res: Response) => {
             studioID,
             paymentRef,
           });
+          // bookings?.createdAt;
+          const studioData = {
+            accountID: userID,
+            studioID,
+
+            date: moment(bookings.createdAt).format("LLLL"),
+            // date: moment(Date.now()).format("LLLL"),
+            calendarDate,
+            bookedDate,
+            currency: "NGN",
+            cost: x.toLocaleString(),
+            paymentRef,
+            studioName: getStudio?.studioName,
+          };
+
+          completePaymentEmail(getUser, studioData);
 
           getStudio.history.push(new Types.ObjectId(bookings._id!));
           getStudio.save();

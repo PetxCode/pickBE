@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.receiptEmail = exports.verifiedEmail = void 0;
+exports.completePaymentEmail = exports.receiptEmail = exports.verifiedEmail = void 0;
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const googleapis_1 = require("googleapis");
 const path_1 = __importDefault(require("path"));
@@ -114,3 +114,47 @@ const receiptEmail = (user, data) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.receiptEmail = receiptEmail;
+const completePaymentEmail = (user, data) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const accessToken = (yield oAuth.getAccessToken()).token;
+        const transporter = nodemailer_1.default.createTransport({
+            service: "gmail",
+            auth: {
+                type: "OAuth2",
+                user: "codelabbest@gmail.com",
+                clientSecret: GOOGLE_SECRET,
+                clientId: GOOGLE_ID,
+                refreshToken: GOOGLE_REFRESH,
+                accessToken,
+            },
+        });
+        const token = jsonwebtoken_1.default.sign({
+            id: user._id,
+            email: user.email,
+            name: user.firstName,
+        }, "secretCode");
+        let myURL = `${url}/${token}/sign-in`;
+        const myPath = path_1.default.join(__dirname, "../views/completePayment.ejs");
+        const html = yield ejs_1.default.renderFile(myPath, {
+            userName: user.firstName,
+            studioName: data === null || data === void 0 ? void 0 : data.studioName,
+            receipt: data === null || data === void 0 ? void 0 : data.paymentRef,
+            amount: data === null || data === void 0 ? void 0 : data.cost,
+            bookedDate: data === null || data === void 0 ? void 0 : data.calendarDate,
+            duration: data === null || data === void 0 ? void 0 : data.bookedDate,
+            currency: data === null || data === void 0 ? void 0 : data.currency,
+            paid_at: (0, moment_1.default)(data === null || data === void 0 ? void 0 : data.date).format("LLLL"),
+        });
+        const mailerOption = {
+            from: "Pick a Studio🚀🚀🚀 <codelabbest@gmail.com>",
+            to: user.email,
+            subject: "Payment Receipt",
+            html,
+        };
+        yield transporter.sendMail(mailerOption);
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
+exports.completePaymentEmail = completePaymentEmail;

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Request, Response } from "express";
 import https from "https";
-import { receiptEmail } from "../utils/email";
+import { completePaymentEmail, receiptEmail } from "../utils/email";
 import authModel from "../model/authModel";
 
 const testPublicKey = "pk_test_308c16cdd6d785f5b308a8f6bc06ef96069327a8";
@@ -46,13 +46,15 @@ export const makeTransaction = async (req: Request, res: Response) => {
 export const makePayment = async (req: Request, res: Response) => {
   try {
     const { amount, email } = req.body;
+    const URL = "http://localhost:5173";
+    // const URL = "https://pickastudio.com";
 
     const params = JSON.stringify({
       email,
       amount: (parseInt(amount) * 100).toString(),
-      callback_url: "https://pickastudio.com/payment/successful",
+      callback_url: `${URL}/payment/successful`,
       metadata: {
-        cancel_action: "https://pickastudio.com/payment/failed",
+        cancel_action: `${URL}/payment/failed`,
       },
       channels: ["card"],
     });
@@ -114,7 +116,7 @@ export const viewVerifyTransaction = async (req: Request, res: Response) => {
         },
       })
       .then((resp) => {
-        receiptEmail(user, resp.data);
+        // completePaymentEmail(user, resp.data);
 
         return res.status(201).json({
           message: "payment verified successfully",

@@ -38,7 +38,7 @@ const historyModel = new mongoose_1.Schema({
         type: String,
     },
     bookedDate: {
-        type: String,
+        type: {},
     },
     calendarDate: {
         type: String,

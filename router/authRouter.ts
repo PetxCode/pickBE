@@ -20,6 +20,7 @@ import {
   updateAccountNumber,
   singleAccountName,
   updateOneAuthInfoAddress,
+  createUserAuthFromGoogle,
 } from "../controller/authController";
 import multer from "multer";
 const upload = multer().single("avatar");
@@ -94,6 +95,7 @@ router.route("/sign-user").post(signInUser);
  *
  */
 
+router.route("/login-with-google").post(createUserAuthFromGoogle);
 router.route("/create-admin").post(createAdminAuth);
 router.route("/create-artist").post(createArtistAuth);
 router.route("/create-user").post(createUserAuth);

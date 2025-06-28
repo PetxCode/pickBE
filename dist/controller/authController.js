@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateBankName = exports.updateAccountNumber = exports.updateBankAccountName = exports.deleteOneAuth = exports.signInUser = exports.verifyUser = exports.updateOneAuthAvatar = exports.updateOneAuthInfoAddress = exports.updateOneAuthInfoLang = exports.updateOneAuthInfoBio = exports.updateOneAuthInfoProfession = exports.singleAccountName = exports.updateOneAuthInfoPhone = exports.updateOneAuthInfoContact = exports.updateOneAuthInfo = exports.readOneAuth = exports.readAllAuth = exports.createArtistAuth = exports.createAdminAuth = exports.createUserAuth = void 0;
+exports.updateBankName = exports.updateAccountNumber = exports.updateBankAccountName = exports.deleteOneAuth = exports.signInUser = exports.verifyUser = exports.updateOneAuthAvatar = exports.updateOneAuthInfoAddress = exports.updateOneAuthInfoLang = exports.updateOneAuthInfoBio = exports.updateOneAuthInfoProfession = exports.singleAccountName = exports.updateOneAuthInfoPhone = exports.updateOneAuthInfoContact = exports.updateOneAuthInfo = exports.readOneAuth = exports.readAllAuth = exports.createArtistAuth = exports.createAdminAuth = exports.createUserAuth = exports.createUserAuthFromGoogle = void 0;
 const statusEnums_1 = require("../utils/statusEnums");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const crypto_1 = __importDefault(require("crypto"));
@@ -20,6 +20,44 @@ const authModel_1 = __importDefault(require("../model/authModel"));
 const email_1 = require("../utils/email");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const streamifier_1 = require("../utils/streamifier");
+const createUserAuthFromGoogle = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { email, firstName, lastName, avatar, avatarID } = req.body;
+        const check = yield (authModel_1.default === null || authModel_1.default === void 0 ? void 0 : authModel_1.default.findOne({ email }));
+        if (check) {
+            const token = jsonwebtoken_1.default.sign({ id: check._id, email: check.email }, "thisIsAwesome");
+            return res.status(statusEnums_1.status.CREATED).json({
+                message: "account created but check your email for further verification",
+                data: token,
+                status: 201,
+            });
+        }
+        const user = yield authModel_1.default.create({
+            email,
+            verify: true,
+            verifyToken: "",
+            firstName,
+            lastName,
+            code: "",
+            status: "user",
+            avatar,
+            avatarID,
+        });
+        const token = jsonwebtoken_1.default.sign({ id: user._id, email: user.email }, "thisIsAwesome");
+        return res.status(statusEnums_1.status.CREATED).json({
+            message: "account created but check your email for further verification",
+            data: token,
+            status: 201,
+        });
+    }
+    catch (error) {
+        return res.status(statusEnums_1.status.BAD).json({
+            message: "Error creating user",
+            data: error.message,
+        });
+    }
+});
+exports.createUserAuthFromGoogle = createUserAuthFromGoogle;
 const createUserAuth = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password, firstName, lastName } = req.body;
@@ -312,6 +350,7 @@ const verifyUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const { code } = req.body;
         const user = yield authModel_1.default.findOne({ code });
+        console.log(code);
         if (user) {
             if (user.verifyToken !== "") {
                 yield authModel_1.default.findByIdAndUpdate(user._id, {
@@ -320,6 +359,7 @@ const verifyUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 }, { new: true });
                 return res.status(statusEnums_1.status.CREATED).json({
                     message: "Account verified",
+                    status: 201,
                 });
             }
             else {

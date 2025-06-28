@@ -27,24 +27,40 @@ const oAuth = new google.auth.OAuth2(
 
 oAuth.setCredentials({ refresh_token: GOOGLE_REFRESH });
 
-const url: string = "https://pickastudio.com";
+// const url: string = "https://pickastudio.com";
+// const url: string = "http://localhost:5173";
+
+const url: string = "https://pickstudionow.web.app";
 
 export const verifiedEmail = async (user: any) => {
   try {
-    const accessToken: any = (await oAuth.getAccessToken()).token;
+    const transporter2 = nodemail.createTransport({
+      // service: "gmail",
+      // auth: {
+      //   type: "OAuth2",
+      //   user: "codelabbest@gmail.com",
+      //   clientSecret: GOOGLE_SECRET,
+      //   clientId: GOOGLE_ID,
+      //   refreshToken: GOOGLE_REFRESH,
+      //   accessToken,
+      // },
+      host: "smtp-relay.brevo.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: "90bb5d001@smtp-brevo.com",
+        pass: "DEKAVd0tfUC2gHwR",
+      },
+    });
 
     const transporter = nodemail.createTransport({
       service: "gmail",
       auth: {
-        type: "OAuth2",
-        user: "codelabbest@gmail.com",
-        clientSecret: GOOGLE_SECRET,
-        clientId: GOOGLE_ID,
-        refreshToken: GOOGLE_REFRESH,
-        accessToken,
+        user: "justtnext@gmail.com",
+        pass: "wfozkwqcyfohmgfo",
       },
     });
-
+    // wfoz kwqc yfoh mgfo
     const token = jwt.sign(
       {
         id: user._id,
@@ -70,7 +86,9 @@ export const verifiedEmail = async (user: any) => {
       html,
     };
 
-    await transporter.sendMail(mailerOption);
+    await transporter.sendMail(mailerOption).then(() => {
+      console.log("send");
+    });
   } catch (error) {
     console.log(error);
   }
@@ -78,20 +96,13 @@ export const verifiedEmail = async (user: any) => {
 
 export const receiptEmail = async (user: any, data: any) => {
   try {
-    const accessToken: any = (await oAuth.getAccessToken()).token;
-
     const transporter = nodemail.createTransport({
       service: "gmail",
       auth: {
-        type: "OAuth2",
-        user: "codelabbest@gmail.com",
-        clientSecret: GOOGLE_SECRET,
-        clientId: GOOGLE_ID,
-        refreshToken: GOOGLE_REFRESH,
-        accessToken,
+        user: "justtnext@gmail.com",
+        pass: "wfozkwqcyfohmgfo",
       },
     });
-
     const token = jwt.sign(
       {
         id: user._id,
@@ -128,17 +139,13 @@ export const receiptEmail = async (user: any, data: any) => {
 
 export const completePaymentEmail = async (user: any, data: any) => {
   try {
-    const accessToken: any = (await oAuth.getAccessToken()).token;
+    // const accessToken: any = (await oAuth.getAccessToken()).token;
 
     const transporter = nodemail.createTransport({
       service: "gmail",
       auth: {
-        type: "OAuth2",
-        user: "codelabbest@gmail.com",
-        clientSecret: GOOGLE_SECRET,
-        clientId: GOOGLE_ID,
-        refreshToken: GOOGLE_REFRESH,
-        accessToken,
+        user: "justtnext@gmail.com",
+        pass: "wfozkwqcyfohmgfo",
       },
     });
 
@@ -153,6 +160,14 @@ export const completePaymentEmail = async (user: any, data: any) => {
 
     let myURL = `${url}/${token}/sign-in`;
 
+    const result = Object.entries(data?.bookedDate)
+      .filter(([_, value]) => value !== 0)
+      .map(([key, value]) => `${key}:${value}`)[0];
+
+    let x2 = parseFloat(result.split(":")[1]);
+
+    console.log(data?.bookedDate);
+
     const myPath = path.join(__dirname, "../views/completePayment.ejs");
 
     const html = await ejs.renderFile(myPath, {
@@ -162,7 +177,8 @@ export const completePaymentEmail = async (user: any, data: any) => {
       receipt: data?.paymentRef,
       amount: data?.cost,
       bookedDate: data?.calendarDate,
-      duration: data?.bookedDate,
+      duration: result.split(":")[1],
+      day: result.split(":")[0] === "hourly" ? "hour" : result.split(":")[0],
       currency: data?.currency,
       paid_at: moment(data?.date).format("LLLL"),
     });
@@ -170,6 +186,70 @@ export const completePaymentEmail = async (user: any, data: any) => {
     const mailerOption = {
       from: "Pick a Studio🚀🚀🚀 <codelabbest@gmail.com>",
       to: user.email,
+      subject: "Payment Receipt",
+      html,
+    };
+
+    await transporter.sendMail(mailerOption);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const completePaymentEmailForClient = async (
+  client: any,
+  user: any,
+  data: any
+) => {
+  try {
+    // const accessToken: any = (await oAuth.getAccessToken()).token;
+
+    const transporter = nodemail.createTransport({
+      service: "gmail",
+      auth: {
+        user: "justtnext@gmail.com",
+        pass: "wfozkwqcyfohmgfo",
+      },
+    });
+
+    const token = jwt.sign(
+      {
+        id: user._id,
+        email: user.email,
+        name: user.firstName,
+      },
+      "secretCode"
+    );
+
+    let myURL = `${url}/${token}/sign-in`;
+
+    const result = Object.entries(data?.bookedDate)
+      .filter(([_, value]) => value !== 0)
+      .map(([key, value]) => `${key}:${value}`)[0];
+
+    let x2 = parseFloat(result.split(":")[1]);
+
+    console.log(client);
+
+    const myPath = path.join(__dirname, "../views/completePaleteForClient.ejs");
+
+    const html = await ejs.renderFile(myPath, {
+      userName: user.firstName,
+      clientName: client.firstName,
+
+      studioName: data?.studioName,
+      receipt: data?.paymentRef,
+      amount: data?.cost,
+      bookedDate: data?.calendarDate,
+      duration: result.split(":")[1],
+      day: result.split(":")[0] === "hourly" ? "hour" : result.split(":")[0],
+      currency: data?.currency,
+      paid_at: moment(data?.date).format("LLLL"),
+    });
+
+    const mailerOption = {
+      from: "Pick a Studio🚀🚀🚀 <codelabbest@gmail.com>",
+      to: client.email,
       subject: "Payment Receipt",
       html,
     };

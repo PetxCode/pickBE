@@ -71,6 +71,7 @@ router.route("/sign-user").post(authController_1.signInUser);
  *         description: Success
  *
  */
+router.route("/login-with-google").post(authController_1.createUserAuthFromGoogle);
 router.route("/create-admin").post(authController_1.createAdminAuth);
 router.route("/create-artist").post(authController_1.createArtistAuth);
 router.route("/create-user").post(authController_1.createUserAuth);

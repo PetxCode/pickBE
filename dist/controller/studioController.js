@@ -26,31 +26,52 @@ const createStudio = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         // includeDiscount,
          } = req.body;
         const account = yield authModel_1.default.findById(accountID);
-        const options = {
-            method: "GET",
-            params: {
-                address: studioAddress,
-            },
-            headers: {
-                "x-rapidapi-key": "02dc23aea7msh5cc3022c747fdd7p160805jsn1378c2b79155",
-                "x-rapidapi-host": "address-from-to-latitude-longitude.p.rapidapi.com",
-            },
-        };
-        const location = yield axios_1.default
-            .get(`https://address-from-to-latitude-longitude.p.rapidapi.com/geolocationapi`, options)
-            .then((res) => {
-            var _a;
-            console.log(res.data.Results[0]);
-            return (_a = res === null || res === void 0 ? void 0 : res.data) === null || _a === void 0 ? void 0 : _a.Results[0];
+        // const options = {
+        //   method: "GET",
+        //   params: {
+        //     address: studioAddress,
+        //   },
+        //   headers: {
+        //     "x-rapidapi-key": "02dc23aea7msh5cc3022c747fdd7p160805jsn1378c2b79155",
+        //     "x-rapidapi-host": "address-from-to-latitude-longitude.p.rapidapi.com",
+        //   },
+        // };
+        // const location = await axios
+        //   .get(
+        //     `https://address-from-to-latitude-longitude.p.rapidapi.com/geolocationapi`,
+        //     options
+        //   )
+        //   .then((res: any | {}) => {
+        //     console.log(res.data.Results[0]);
+        //     return res?.data?.Results[0];
+        //   });
+        const apiKey = "pk.2f2af94b99b88d7bd8e3b3d1fdb89bb0";
+        const getCoordinates = (address) => __awaiter(void 0, void 0, void 0, function* () {
+            const url = `https://us1.locationiq.com/v1/search?key=${apiKey}&q=${encodeURIComponent(address)}&format=json`;
+            try {
+                const response = yield axios_1.default.get(url);
+                const location = response.data[0]; // get first result
+                console.log("Latitude:", location.lat);
+                console.log("Longitude:", location.lon);
+                return { lat: location.lat, long: location.lon };
+            }
+            catch (error) {
+                console.error("Error fetching coordinates:", error);
+            }
         });
+        let x = yield getCoordinates(studioAddress);
         if (account) {
             const studio = yield studioModel_1.default.create({
                 accountHolderID: account === null || account === void 0 ? void 0 : account._id,
                 studioContact,
                 studioCategory,
                 studioAddress,
-                longitude: location === null || location === void 0 ? void 0 : location.longitude,
-                latitude: location === null || location === void 0 ? void 0 : location.latitude,
+                latitude: x.lat,
+                longitude: x.long,
+                studioLat: {
+                    latitude: x.lat,
+                    longitude: x.long,
+                },
                 studioDescription,
                 studioFeatures,
                 studioImages: yield (0, streamifier_1.multiStreamifier)(req),
@@ -268,30 +289,49 @@ const editAccountStudioInfo = (req, res) => __awaiter(void 0, void 0, void 0, fu
         const { studioName, studioPrice, studioPriceDaily, studioAddress, studioDescription, discountPercent, } = req.body;
         const user = yield authModel_1.default.findById(userID);
         if (user) {
-            const options = {
-                method: "GET",
-                params: {
-                    address: studioAddress,
-                },
-                headers: {
-                    "x-rapidapi-key": "02dc23aea7msh5cc3022c747fdd7p160805jsn1378c2b79155",
-                    "x-rapidapi-host": "address-from-to-latitude-longitude.p.rapidapi.com",
-                },
-            };
-            const location = yield axios_1.default
-                .get(`https://address-from-to-latitude-longitude.p.rapidapi.com/geolocationapi`, options)
-                .then((res) => {
-                var _a;
-                console.log(res.data.Results[0]);
-                return (_a = res === null || res === void 0 ? void 0 : res.data) === null || _a === void 0 ? void 0 : _a.Results[0];
+            // const options = {
+            //   method: "GET",
+            //   params: {
+            //     address: studioAddress,
+            //   },
+            //   headers: {
+            //     "x-rapidapi-key":
+            //       "02dc23aea7msh5cc3022c747fdd7p160805jsn1378c2b79155",
+            //     "x-rapidapi-host":
+            //       "address-from-to-latitude-longitude.p.rapidapi.com",
+            //   },
+            // };
+            // const location = await axios
+            //   .get(
+            //     `https://address-from-to-latitude-longitude.p.rapidapi.com/geolocationapi`,
+            //     options
+            //   )
+            //   .then((res: any | {}) => {
+            //     console.log(res.data.Results[0]);
+            //     return res?.data?.Results[0];
+            //   });
+            const apiKey = "pk.2f2af94b99b88d7bd8e3b3d1fdb89bb0";
+            const getCoordinates = (address) => __awaiter(void 0, void 0, void 0, function* () {
+                const url = `https://us1.locationiq.com/v1/search?key=${apiKey}&q=${encodeURIComponent(address)}&format=json`;
+                try {
+                    const response = yield axios_1.default.get(url);
+                    const location = response.data[0]; // get first result
+                    console.log("Latitude:", location.lat);
+                    console.log("Longitude:", location.lon);
+                    return { lat: location.lat, long: location.lon };
+                }
+                catch (error) {
+                    console.error("Error fetching coordinates:", error);
+                }
             });
+            let x = yield getCoordinates(studioAddress);
             const account = yield studioModel_1.default.findByIdAndUpdate(studioID, {
                 studioName,
-                latitude: location.latitude,
-                longitude: location.longitude,
+                latitude: x.lat,
+                longitude: x.long,
                 studioLat: {
-                    latitude: location.latitude,
-                    longitude: location.longitude,
+                    latitude: x.lat,
+                    longitude: x.long,
                 },
                 studioPrice,
                 studioPriceDaily,

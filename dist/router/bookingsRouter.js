@@ -6,5 +6,6 @@ const router = (0, express_1.Router)();
 router.route("/create-booking/:userID/:studioID").post(bookingController_1.makeBookings);
 router.route("/view-user-booking/:userID").get(bookingController_1.viewUserHistory);
 router.route("/view-studio-booking/:studioID").get(bookingController_1.viewStudioHistory);
+router.route("/verify-studio-booking/:studioID").post(bookingController_1.verifyToBook);
 router.route("/view-studio-bookings").get(bookingController_1.viewAllStudioHBook);
 exports.default = router;

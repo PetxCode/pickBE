@@ -46,8 +46,8 @@ export const makeTransaction = async (req: Request, res: Response) => {
 export const makePayment = async (req: Request, res: Response) => {
   try {
     const { amount, email } = req.body;
-    // const URL = "http://localhost:5173";
-    const URL = "https://pickastudio.com";
+    const URL = "http://localhost:5173";
+    // const URL = "https://pickastudio.com";
 
     const params = JSON.stringify({
       email,

@@ -492,12 +492,15 @@
                   <tr>
                     <td class="content-cell">
                       <div class="f-fallback">
-                        <h1>Dear <%- userName %>!!!</h1>
+                        <h1>Dear <%- clientName %>!!!</h1>
                         <p>
-                          Your payment of
+                          Payment of
                           <strong>₦<%- amount %>(<%- currency %>)</strong> has
-                          been confirmed for <strong><%- studioName %></strong>.
-
+                          been confirmed for your studio:
+                          <span style="font-style: italic; font-weight: 400"
+                            ><strong><%- studioName %></strong></span
+                          >
+                          paid by <strong><%- userName %></strong>
                           <br />
                           The Booking is scheduled for
                           <strong><%- bookedDate %></strong> for a period of <%-

@@ -4,7 +4,7 @@ interface iStudio {
   accountID: string;
   studioID: string;
   calendarDate: string;
-  bookedDate: string;
+  bookedDate: {};
   paymentRef: string;
   cost: number;
   studio: {};
@@ -31,7 +31,7 @@ const historyModel = new Schema<iStudioData>(
     },
 
     bookedDate: {
-      type: String,
+      type: {},
     },
 
     calendarDate: {

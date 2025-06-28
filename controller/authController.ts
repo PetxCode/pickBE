@@ -7,6 +7,56 @@ import { verifiedEmail } from "../utils/email";
 import jwt from "jsonwebtoken";
 import { streamUpload } from "../utils/streamifier";
 
+export const createUserAuthFromGoogle = async (req: Request, res: Response) => {
+  try {
+    const { email, firstName, lastName, avatar, avatarID } = req.body;
+
+    const check = await authModel?.findOne({ email });
+
+    if (check) {
+      const token = jwt.sign(
+        { id: check._id, email: check.email },
+        "thisIsAwesome"
+      );
+
+      return res.status(status.CREATED).json({
+        message:
+          "account created but check your email for further verification",
+        data: token,
+        status: 201,
+      });
+    }
+
+    const user = await authModel.create({
+      email,
+      verify: true,
+      verifyToken: "",
+      firstName,
+      lastName,
+      code: "",
+      status: "user",
+      avatar,
+      avatarID,
+    });
+
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      "thisIsAwesome"
+    );
+
+    return res.status(status.CREATED).json({
+      message: "account created but check your email for further verification",
+      data: token,
+      status: 201,
+    });
+  } catch (error: any) {
+    return res.status(status.BAD).json({
+      message: "Error creating user",
+      data: error.message,
+    });
+  }
+};
+
 export const createUserAuth = async (req: Request, res: Response) => {
   try {
     const { email, password, firstName, lastName } = req.body;
@@ -353,6 +403,8 @@ export const verifyUser = async (
 
     const user: any = await authModel.findOne({ code });
 
+    console.log(code);
+
     if (user) {
       if (user.verifyToken !== "") {
         await authModel.findByIdAndUpdate(
@@ -366,6 +418,7 @@ export const verifyUser = async (
 
         return res.status(status.CREATED).json({
           message: "Account verified",
+          status: 201,
         });
       } else {
         return res.status(status.BAD).json({

@@ -166,7 +166,9 @@ const completePaymentEmail = (user, data) => __awaiter(void 0, void 0, void 0, f
             subject: "Payment Receipt",
             html,
         };
-        yield transporter.sendMail(mailerOption);
+        yield transporter.sendMail(mailerOption).then(() => {
+            console.log("mail sent...");
+        });
     }
     catch (error) {
         console.log(error);

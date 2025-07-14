@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteAccountStudioImage = exports.deleteStudio = exports.addAccountStudioFeature = exports.deleteAccountStudioFeature = exports.editAccountStudioInfo = exports.searchStudio = exports.removeStudioImages = exports.addStudioImages = exports.updateStudioInfo = exports.viewAllStudio = exports.viewAccountStudioByName = exports.viewUserStudios = exports.viewAccountStudio = exports.createStudio = void 0;
+exports.deleteAccountStudioImage = exports.openStudio = exports.blockStudio = exports.deleteStudio = exports.addAccountStudioFeature = exports.deleteAccountStudioFeature = exports.editAccountStudioInfo = exports.searchStudio = exports.removeStudioImages = exports.addStudioImages = exports.updateStudioInfo = exports.viewAllStudio = exports.viewAccountStudioByName = exports.viewUserStudios = exports.viewAccountStudioHistory = exports.viewAccountStudio = exports.createStudio = void 0;
 const statusEnums_1 = require("../utils/statusEnums");
 const authModel_1 = __importDefault(require("../model/authModel"));
 const studioModel_1 = __importDefault(require("../model/studioModel"));
@@ -118,6 +118,25 @@ const viewAccountStudio = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.viewAccountStudio = viewAccountStudio;
+const viewAccountStudioHistory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { accountID } = req.params;
+        const account = yield studioModel_1.default.findById(accountID).populate({
+            path: "history",
+        });
+        console.log(account);
+        return res.status(statusEnums_1.status.OK).json({
+            message: `viewing studio`,
+            data: account,
+        });
+    }
+    catch (error) {
+        return res.status(statusEnums_1.status.BAD).json({
+            message: error.message,
+        });
+    }
+});
+exports.viewAccountStudioHistory = viewAccountStudioHistory;
 const viewUserStudios = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { accountID } = req.params;
@@ -441,6 +460,63 @@ const deleteStudio = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.deleteStudio = deleteStudio;
+const blockStudio = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userID, studioID } = req.params;
+        const { imageURL } = req.body;
+        const user = yield authModel_1.default.findById(userID);
+        const studio = yield studioModel_1.default.findById(studioID);
+        if (user) {
+            const account = yield studioModel_1.default.findByIdAndUpdate(studioID, {
+                block: true,
+            }, { new: true });
+            return res.status(statusEnums_1.status.OK).json({
+                message: `studio has be closed`,
+                data: account,
+                status: 201,
+            });
+        }
+        else {
+            return res.status(statusEnums_1.status.BAD).json({
+                message: "error with userID",
+            });
+        }
+    }
+    catch (error) {
+        return res.status(statusEnums_1.status.BAD).json({
+            message: error.message,
+        });
+    }
+});
+exports.blockStudio = blockStudio;
+const openStudio = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userID, studioID } = req.params;
+        const user = yield authModel_1.default.findById(userID);
+        const studio = yield studioModel_1.default.findById(studioID);
+        if (user) {
+            const account = yield studioModel_1.default.findByIdAndUpdate(studioID, {
+                block: false,
+            }, { new: true });
+            return res.status(statusEnums_1.status.OK).json({
+                message: `studio is open`,
+                data: account,
+                status: 201,
+            });
+        }
+        else {
+            return res.status(statusEnums_1.status.BAD).json({
+                message: "error with userID",
+            });
+        }
+    }
+    catch (error) {
+        return res.status(statusEnums_1.status.BAD).json({
+            message: error.message,
+        });
+    }
+});
+exports.openStudio = openStudio;
 const deleteAccountStudioImage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userID, studioID } = req.params;

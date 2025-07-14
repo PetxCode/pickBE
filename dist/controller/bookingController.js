@@ -40,6 +40,22 @@ const makeBookings = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 const check = ref.some((el) => {
                     return el.paymentRef === paymentRef;
                 });
+                const start = {
+                    accountID: userID,
+                    studioID,
+                    date: Date.now(),
+                    // date: moment(Date.now()).format("LLLL"),
+                    calendarDate,
+                    bookedDate,
+                    currency: "NGN",
+                    cost: (parseInt(cost.replace(/,/g, ""), 10) + 500).toLocaleString(),
+                    paymentRef,
+                    studioName: getStudio === null || getStudio === void 0 ? void 0 : getStudio.studioName,
+                };
+                // completePaymentEmail(getUser, start).then(() => console.log("sent"));
+                // completePaymentEmailForClient(studioOwner, getUser, start).then(() =>
+                //   console.log("sentII")
+                // );
                 if (check) {
                     return res.status(201).json({
                         message: "Already Recorded",
@@ -144,11 +160,6 @@ const verifyToBook = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const requestEndDate = endDateTime.date;
         const startTime = startDateTime.time;
         const endTime = endDateTime.time;
-        console.log("=== DEBUGGING VERIFICATION ===");
-        console.log("Request start date:", requestStartDate);
-        console.log("Request end date:", requestEndDate);
-        console.log("Request start time:", startTime);
-        console.log("Request end time:", endTime);
         const getStudio = yield studioModel_1.default.findById(studioID);
         if (!getStudio) {
             return res.status(404).json({ message: "Can't find studio" });
@@ -190,7 +201,6 @@ const verifyToBook = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 return hours * 60 + (minutes || 0);
             }
         };
-        console.log("Existing bookings:", studioWithBookings.history.length);
         // Check for overlapping bookings
         const hasConflict = studioWithBookings.history.some((booking) => {
             console.log("\n--- Checking booking ---");

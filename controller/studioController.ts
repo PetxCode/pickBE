@@ -132,6 +132,26 @@ export const viewAccountStudio = async (req: Request, res: Response) => {
   }
 };
 
+export const viewAccountStudioHistory = async (req: Request, res: Response) => {
+  try {
+    const { accountID } = req.params;
+    const account = await studioModel.findById(accountID).populate({
+      path: "history",
+    });
+
+    console.log(account);
+
+    return res.status(status.OK).json({
+      message: `viewing studio`,
+      data: account,
+    });
+  } catch (error: any) {
+    return res.status(status.BAD).json({
+      message: error.message,
+    });
+  }
+};
+
 export const viewUserStudios = async (req: Request, res: Response) => {
   try {
     const { accountID } = req.params;
@@ -499,6 +519,70 @@ export const deleteStudio = async (req: Request, res: Response) => {
     } else {
       return res.status(status.BAD).json({
         message: "Account can't be found",
+      });
+    }
+  } catch (error: any) {
+    return res.status(status.BAD).json({
+      message: error.message,
+    });
+  }
+};
+
+export const blockStudio = async (req: Request, res: Response) => {
+  try {
+    const { userID, studioID } = req.params;
+    const { imageURL } = req.body;
+    const user = await authModel.findById(userID);
+    const studio: any = await studioModel.findById(studioID);
+
+    if (user) {
+      const account = await studioModel.findByIdAndUpdate(
+        studioID,
+        {
+          block: true,
+        },
+        { new: true }
+      );
+      return res.status(status.OK).json({
+        message: `studio has be closed`,
+        data: account,
+        status: 201,
+      });
+    } else {
+      return res.status(status.BAD).json({
+        message: "error with userID",
+      });
+    }
+  } catch (error: any) {
+    return res.status(status.BAD).json({
+      message: error.message,
+    });
+  }
+};
+
+export const openStudio = async (req: Request, res: Response) => {
+  try {
+    const { userID, studioID } = req.params;
+
+    const user = await authModel.findById(userID);
+    const studio: any = await studioModel.findById(studioID);
+
+    if (user) {
+      const account = await studioModel.findByIdAndUpdate(
+        studioID,
+        {
+          block: false,
+        },
+        { new: true }
+      );
+      return res.status(status.OK).json({
+        message: `studio is open`,
+        data: account,
+        status: 201,
+      });
+    } else {
+      return res.status(status.BAD).json({
+        message: "error with userID",
       });
     }
   } catch (error: any) {

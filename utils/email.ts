@@ -190,7 +190,9 @@ export const completePaymentEmail = async (user: any, data: any) => {
       html,
     };
 
-    await transporter.sendMail(mailerOption);
+    await transporter.sendMail(mailerOption).then(() => {
+      console.log("mail sent...");
+    });
   } catch (error) {
     console.log(error);
   }

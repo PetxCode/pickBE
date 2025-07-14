@@ -11,6 +11,7 @@ const uploadOne = (0, multer_1.default)().single("avatar");
 const router = (0, express_1.Router)();
 router.route("/view-all-studio/").get(studioController_1.viewAllStudio);
 router.route("/view-studio/:accountID").get(studioController_1.viewAccountStudio);
+router.route("/view-studio-history/:accountID").get(studioController_1.viewAccountStudioHistory);
 router.route("/view-user-studio/:accountID").get(studioController_1.viewUserStudios);
 router.route("/view-studio-one/:studioName").get(studioController_1.viewAccountStudioByName);
 router.route("/view-studio-category/").post(studioController_1.searchStudio);
@@ -30,6 +31,8 @@ router
 router
     .route("/delete-studio-image/:userID/:studioID")
     .patch(studioController_1.deleteAccountStudioImage);
+router.route("/open-studio/:userID/:studioID").patch(studioController_1.openStudio);
+router.route("/close-studio/:userID/:studioID").patch(studioController_1.blockStudio);
 router
     .route("/update-studio-info/:accountID/:studioID")
     .patch(studioController_1.updateStudioInfo);

@@ -16,6 +16,9 @@ import {
   addAccountStudioFeature,
   deleteAccountStudioImage,
   updateStudioInfo,
+  viewAccountStudioHistory,
+  openStudio,
+  blockStudio,
 } from "../controller/studioController";
 const upload = multer().array("avatar", 12);
 const uploadOne = multer().single("avatar");
@@ -24,6 +27,9 @@ const router = Router();
 
 router.route("/view-all-studio/").get(viewAllStudio);
 router.route("/view-studio/:accountID").get(viewAccountStudio);
+
+router.route("/view-studio-history/:accountID").get(viewAccountStudioHistory);
+
 router.route("/view-user-studio/:accountID").get(viewUserStudios);
 router.route("/view-studio-one/:studioName").get(viewAccountStudioByName);
 
@@ -48,6 +54,10 @@ router
 router
   .route("/delete-studio-image/:userID/:studioID")
   .patch(deleteAccountStudioImage);
+
+router.route("/open-studio/:userID/:studioID").patch(openStudio);
+
+router.route("/close-studio/:userID/:studioID").patch(blockStudio);
 
 router
   .route("/update-studio-info/:accountID/:studioID")

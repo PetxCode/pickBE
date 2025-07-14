@@ -18,6 +18,7 @@ interface iAuth {
   discountPercent: number;
   numberOfGuess: number;
   includeDiscount: boolean;
+  block: boolean;
   studioFeatures: Array<string>;
 
   studioRate: number;
@@ -87,6 +88,11 @@ const authModel = new Schema<iAuthData>(
     },
 
     includeDiscount: {
+      type: Boolean,
+      default: false,
+    },
+
+    block: {
       type: Boolean,
       default: false,
     },

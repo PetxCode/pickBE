@@ -492,18 +492,25 @@
                   <tr>
                     <td class="content-cell">
                       <div class="f-fallback">
-                        <h1>Welcome <%- userName %>!!!</h1>
+                        <h1>Dear <%- userName %>!!!</h1>
                         <p>
-                          Thanks for signing up. We’re thrilled to have you on
-                          board. To get the most out of this PickaStudio
-                          platform, Please use the Button below to verify,
-                          activate and finish up your Account Registration.
+                          Your payment of
+                          <strong>₦<%- amount %>(<%- currency %>)</strong> has
+                          been confirmed for <strong><%- studioName %></strong>.
+
+                          <br />
+                          The Booking is scheduled for
+                          <strong><%- bookedDate %></strong> for a period of <%-
+                          duration %> <%- day %>
+
+                          <br />
+                          <br />
+                          below is your referrence receipt token for any future
+                          claims
                         </p>
                         <!-- Action -->
 
-                        <p>
-                          use the CODE below to finish up your registration...
-                        </p>
+                        <p>The receipt token is</p>
                         <br />
 
                         <div
@@ -515,10 +522,20 @@
                             display: flex;
                             justify-content: center;
                             align-items: center;
-                            width: 70%;
+                            font-size: 25px;
                           "
                         >
-                          <%- code %>
+                          <%- receipt %>
+                        </div>
+
+                        <div
+                          style="
+                            color: black;
+                            font-size: 12px;
+                            margin-top: 10px;
+                          "
+                        >
+                          This payment is made on <%- paid_at %>
                         </div>
                         <table
                           class="body-action"
@@ -540,16 +557,7 @@
                                 role="presentation"
                               >
                                 <tr>
-                                  <td align="center">
-                                    <a
-                                      style="color: #fff; text-decoration: none"
-                                      href="<%- link %>"
-                                      class="f-fallback button"
-                                      target="_blank"
-                                    >
-                                      Verify My Account</a
-                                    >
-                                  </td>
+                                  <td align="center"></td>
                                 </tr>
                               </table>
                             </td>
@@ -567,17 +575,6 @@
                         </table>
 
                         <!-- Sub copy -->
-                        <table class="body-sub" role="presentation">
-                          <tr>
-                            <td>
-                              <p class="sub">
-                                If you’re having trouble with the button above,
-                                copy and paste the URL below into your web
-                                browser.
-                              </p>
-                            </td>
-                          </tr>
-                        </table>
                       </div>
                     </td>
                   </tr>

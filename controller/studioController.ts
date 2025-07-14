@@ -543,6 +543,7 @@ export const blockStudio = async (req: Request, res: Response) => {
         },
         { new: true }
       );
+
       return res.status(status.OK).json({
         message: `studio has be closed`,
         data: account,

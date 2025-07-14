@@ -27,10 +27,10 @@ const oAuth = new google.auth.OAuth2(
 
 oAuth.setCredentials({ refresh_token: GOOGLE_REFRESH });
 
-// const url: string = "https://pickastudio.com";
+const url: string = "https://pickastudio.com";
 // const url: string = "http://localhost:5173";
 
-const url: string = "https://pickstudionow.web.app";
+// const url: string = "https://pickstudionow.web.app";
 
 export const verifiedEmail = async (user: any) => {
   try {

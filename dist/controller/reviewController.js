@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteStudioReview = exports.getStudioReview = exports.createStudioReview = void 0;
+exports.deleteStudioReview = exports.getStudioReview = exports.clearNotification = exports.createStudioReview = void 0;
 const authModel_1 = __importDefault(require("../model/authModel"));
 const mongoose_1 = require("mongoose");
 const statusEnums_1 = require("../utils/statusEnums");
@@ -26,6 +26,7 @@ const createStudioReview = (req, res) => __awaiter(void 0, void 0, void 0, funct
         const studio = yield studioModel_1.default
             .findById(studioID)
             .populate({ path: "studioReview" });
+        const studioAccount = yield authModel_1.default.findById(studio === null || studio === void 0 ? void 0 : studio.accountHolderID);
         const studioHistory = yield studioModel_1.default
             .findById(studioID)
             .populate({ path: "history" });
@@ -44,8 +45,21 @@ const createStudioReview = (req, res) => __awaiter(void 0, void 0, void 0, funct
                     accountID: account._id,
                     review,
                 });
+                const x = yield authModel_1.default.findByIdAndUpdate(studio === null || studio === void 0 ? void 0 : studio.accountHolderID, {
+                    $push: {
+                        notificationData: {
+                            id: studioID,
+                            title: `You just got a review from ${account === null || account === void 0 ? void 0 : account.firstName}`,
+                            message: `${account === null || account === void 0 ? void 0 : account.firstName} just reviewed your studio ${studio === null || studio === void 0 ? void 0 : studio.studioName}`,
+                            review,
+                            time: studioRating === null || studioRating === void 0 ? void 0 : studioRating.createdAt,
+                        },
+                    },
+                }, { new: true });
                 studio.studioReview.push(new mongoose_1.Types.ObjectId(studioRating === null || studioRating === void 0 ? void 0 : studioRating._id));
                 studio.save();
+                account === null || account === void 0 ? void 0 : account.notifications.push(new mongoose_1.Types.ObjectId(studioRating === null || studioRating === void 0 ? void 0 : studioRating._id));
+                account.save();
                 return res.status(statusEnums_1.status.OK).json({
                     message: `studio has been reviewed`,
                     data: studioRating,
@@ -66,6 +80,23 @@ const createStudioReview = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.createStudioReview = createStudioReview;
+const clearNotification = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const { review } = req.body;
+        const studio = yield authModel_1.default.findByIdAndUpdate(id, { notificationData: [] }, { new: true });
+        return res.status(statusEnums_1.status.OK).json({
+            message: `studio has been reviewed`,
+            data: studio,
+        });
+    }
+    catch (error) {
+        return res.status(statusEnums_1.status.BAD).json({
+            message: error.message,
+        });
+    }
+});
+exports.clearNotification = clearNotification;
 const getStudioReview = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { studioID } = req.params;

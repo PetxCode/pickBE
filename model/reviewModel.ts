@@ -3,6 +3,7 @@ import mongoose, { Document, Schema, model } from "mongoose";
 interface iStudio {
   accountID: string;
   review: string;
+
   studio: {};
 }
 

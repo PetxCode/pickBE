@@ -90,14 +90,60 @@ export const makeBookings = async (req: Request, res: Response) => {
             studioName: getStudio?.studioName,
           };
 
+          await authModel.findByIdAndUpdate(
+            userID,
+            {
+              notifationData: [
+                ...getUser?.notificationData,
+                {
+                  id: bookings._id,
+                  bookedDate,
+                  calendarDate,
+                  title: `You just booked ${getStudio?.studioName} studio`,
+                  message: `Your booking for ${
+                    getStudio?.studioName
+                  } studio has been recorded on ${moment(
+                    bookings.createdAt
+                  )}. Please check your history for details.`,
+                },
+              ],
+            },
+            { new: true }
+          );
+
+          await authModel.findByIdAndUpdate(
+            getStudio?.accountHolderID,
+            {
+              notifationData: [
+                ...getUser?.notificationData,
+                {
+                  id: bookings._id,
+                  bookedDate,
+                  calendarDate,
+                  title: "New Booking",
+                  message: `You have a new booking from ${
+                    getUser?.userName
+                  } for ${getStudio?.studioName} on ${moment(
+                    bookings.createdAt
+                  ).format("LLLL")}`,
+                },
+              ],
+            },
+            { new: true }
+          );
+
           completePaymentEmail(getUser, studioData);
           completePaymentEmailForClient(studioOwner, getUser, studioData);
 
           getStudio.history.push(new Types.ObjectId(bookings._id!));
           getStudio.save();
 
+          getUser.notifications.push(new Types.ObjectId(bookings._id!));
+
           getUser.history.push(new Types.ObjectId(bookings._id!));
           getUser.save();
+
+          
 
           studioOwner.history.push(new Types.ObjectId(bookings._id!));
           studioOwner.save();

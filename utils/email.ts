@@ -80,7 +80,7 @@ export const verifiedEmail = async (user: any) => {
     });
 
     const mailerOption = {
-      from: "Pick a Studio🚀🚀🚀 <codelabbest@gmail.com>",
+      from: "Pickastudio🚀🚀🚀 <codelabbest@gmail.com>",
       to: user.email,
       subject: "Account Verification",
       html,
@@ -125,7 +125,7 @@ export const receiptEmail = async (user: any, data: any) => {
     });
 
     const mailerOption = {
-      from: "Pick a Studio🚀🚀🚀 <codelabbest@gmail.com>",
+      from: "Pickastudio🚀🚀🚀 <codelabbest@gmail.com>",
       to: user.email,
       subject: "Payment Receipt",
       html,
@@ -184,7 +184,7 @@ export const completePaymentEmail = async (user: any, data: any) => {
     });
 
     const mailerOption = {
-      from: "Pick a Studio🚀🚀🚀 <codelabbest@gmail.com>",
+      from: "Pickastudio🚀🚀🚀 <codelabbest@gmail.com>",
       to: user.email,
       subject: "Payment Receipt",
       html,
@@ -250,7 +250,7 @@ export const completePaymentEmailForClient = async (
     });
 
     const mailerOption = {
-      from: "Pick a Studio🚀🚀🚀 <codelabbest@gmail.com>",
+      from: "Pickastudio🚀🚀🚀 <codelabbest@gmail.com>",
       to: client.email,
       subject: "Payment Receipt",
       html,

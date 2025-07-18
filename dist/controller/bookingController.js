@@ -82,10 +82,35 @@ const makeBookings = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                         paymentRef,
                         studioName: getStudio === null || getStudio === void 0 ? void 0 : getStudio.studioName,
                     };
+                    yield authModel_1.default.findByIdAndUpdate(userID, {
+                        notifationData: [
+                            ...getUser === null || getUser === void 0 ? void 0 : getUser.notificationData,
+                            {
+                                id: bookings._id,
+                                bookedDate,
+                                calendarDate,
+                                title: `You just booked ${getStudio === null || getStudio === void 0 ? void 0 : getStudio.studioName} studio`,
+                                message: `Your booking for ${getStudio === null || getStudio === void 0 ? void 0 : getStudio.studioName} studio has been recorded on ${(0, moment_1.default)(bookings.createdAt)}. Please check your history for details.`,
+                            },
+                        ],
+                    }, { new: true });
+                    yield authModel_1.default.findByIdAndUpdate(getStudio === null || getStudio === void 0 ? void 0 : getStudio.accountHolderID, {
+                        notifationData: [
+                            ...getUser === null || getUser === void 0 ? void 0 : getUser.notificationData,
+                            {
+                                id: bookings._id,
+                                bookedDate,
+                                calendarDate,
+                                title: "New Booking",
+                                message: `You have a new booking from ${getUser === null || getUser === void 0 ? void 0 : getUser.userName} for ${getStudio === null || getStudio === void 0 ? void 0 : getStudio.studioName} on ${(0, moment_1.default)(bookings.createdAt).format("LLLL")}`,
+                            },
+                        ],
+                    }, { new: true });
                     (0, email_1.completePaymentEmail)(getUser, studioData);
                     (0, email_1.completePaymentEmailForClient)(studioOwner, getUser, studioData);
                     getStudio.history.push(new mongoose_1.Types.ObjectId(bookings._id));
                     getStudio.save();
+                    getUser.notifications.push(new mongoose_1.Types.ObjectId(bookings._id));
                     getUser.history.push(new mongoose_1.Types.ObjectId(bookings._id));
                     getUser.save();
                     studioOwner.history.push(new mongoose_1.Types.ObjectId(bookings._id));

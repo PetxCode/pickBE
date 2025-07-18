@@ -18,6 +18,9 @@ interface iAuth {
   bankAccount: string;
   accountName: string;
 
+  notifications: Array<{}>;
+  notificationData: Array<{}>;
+
   status: string;
   email: string;
   code: string;
@@ -57,6 +60,10 @@ const authModel = new Schema<iAuthData>(
 
     bankName: {
       type: String,
+    },
+
+    notificationData: {
+      type: [],
     },
 
     bankCode: {
@@ -129,6 +136,13 @@ const authModel = new Schema<iAuthData>(
       {
         type: mongoose.Types.ObjectId,
         ref: "histories",
+      },
+    ],
+
+    notifications: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "notifications",
       },
     ],
   },

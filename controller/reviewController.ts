@@ -17,6 +17,10 @@ export const createStudioReview = async (req: Request, res: Response) => {
       .findById(studioID)
       .populate({ path: "studioReview" });
 
+    const studioAccount: any = await authModel.findById(
+      studio?.accountHolderID
+    );
+
     const studioHistory = await studioModel
       .findById(studioID)
       .populate({ path: "history" });
@@ -40,8 +44,27 @@ export const createStudioReview = async (req: Request, res: Response) => {
           review,
         });
 
+        const x = await authModel.findByIdAndUpdate(
+          studio?.accountHolderID,
+          {
+            $push: {
+              notificationData: {
+                id: studioID,
+                title: `You just got a review from ${account?.firstName}`,
+                message: `${account?.firstName} just reviewed your studio ${studio?.studioName}`,
+                review,
+                time: studioRating?.createdAt,
+              },
+            },
+          },
+          { new: true }
+        );
+
         studio.studioReview.push(new Types.ObjectId(studioRating?._id));
         studio.save();
+
+        account?.notifications.push(new Types.ObjectId(studioRating?._id));
+        account.save();
 
         return res.status(status.OK).json({
           message: `studio has been reviewed`,
@@ -54,6 +77,28 @@ export const createStudioReview = async (req: Request, res: Response) => {
         message: "Account can't be found",
       });
     }
+  } catch (error: any) {
+    return res.status(status.BAD).json({
+      message: error.message,
+    });
+  }
+};
+
+export const clearNotification = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { review } = req.body;
+
+    const studio = await authModel.findByIdAndUpdate(
+      id,
+      { notificationData: [] },
+      { new: true }
+    );
+
+    return res.status(status.OK).json({
+      message: `studio has been reviewed`,
+      data: studio,
+    });
   } catch (error: any) {
     return res.status(status.BAD).json({
       message: error.message,

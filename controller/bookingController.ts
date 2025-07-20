@@ -461,6 +461,8 @@ export const viewStudioHistory = async (req: Request, res: Response) => {
           },
         },
       });
+    
+    console.log(history);
     return res.status(status.OK).json({
       message: `viewing studio bookings`,
       data: history,
@@ -475,6 +477,7 @@ export const viewStudioHistory = async (req: Request, res: Response) => {
 export const viewAllStudioHBook = async (req: Request, res: Response) => {
   try {
     const history = await historyModel.find({}).sort({ createdAt: -1 });
+
     return res.status(status.OK).json({
       message: `viewing all studio bookings`,
       data: history,

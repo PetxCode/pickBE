@@ -17,6 +17,7 @@ interface iAuth {
   bankName: string;
   bankAccount: string;
   accountName: string;
+  payableAmount: number;
 
   notifications: Array<{}>;
   notificationData: Array<{}>;
@@ -32,12 +33,18 @@ interface iAuth {
   accessStatus: string;
   studio: Array<{}>;
   history: Array<{}>;
+
+  payout: Array<{}>;
+  report: Array<{}>;
 }
 
 interface iAuthData extends iAuth, Document {}
 
 const authModel = new Schema<iAuthData>(
   {
+    payableAmount: {
+      type: Number,
+    },
     userName: {
       type: String,
     },
@@ -136,6 +143,20 @@ const authModel = new Schema<iAuthData>(
       {
         type: mongoose.Types.ObjectId,
         ref: "histories",
+      },
+    ],
+
+    payout: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "payouts",
+      },
+    ],
+
+    report: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "reports",
       },
     ],
 

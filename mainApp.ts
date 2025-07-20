@@ -9,6 +9,7 @@ import rating from "./router/studioRatingRouter";
 import review from "./router/reviewRouter";
 import booking from "./router/bookingsRouter";
 import article from "./router/articleRouter";
+import payout from "./router/payoutRouter";
 import payment from "./router/payment";
 import jwt from "jsonwebtoken";
 import passport from "passport";
@@ -25,6 +26,7 @@ export const mainApp = (app: Application) => {
     app.use("/api/v1", review);
     app.use("/api/v1", booking);
     app.use("/api/v1", article);
+    app.use("/api/v1", payout);
     app.use("/api/v1", payment);
 
     app.get(

@@ -1,19 +1,24 @@
 import mongoose, { Document, Schema, model } from "mongoose";
 
 interface iStudio {
-  name: string;
+  complain: string;
   studioName: string;
+  reporter: string;
   amount: string;
   status: string;
   action: string;
-    user: {};
+  user: {};
 }
 
 interface iStudioData extends iStudio, Document {}
 
 const reportModel = new Schema<iStudioData>(
   {
-    name: {
+    complain: {
+      type: String,
+    },
+
+    reporter: {
       type: String,
     },
 
@@ -31,14 +36,12 @@ const reportModel = new Schema<iStudioData>(
 
     action: {
       type: String,
-        },
-    
-        
-            user: {
-              type: mongoose.Types.ObjectId,
-              ref: "users",
-            },
-   
+    },
+
+    user: {
+      type: mongoose.Types.ObjectId,
+      ref: "users",
+    },
   },
   {
     timestamps: true,

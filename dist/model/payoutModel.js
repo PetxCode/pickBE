@@ -34,113 +34,40 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
-const authModel = new mongoose_1.Schema({
-    payableAmount: {
-        type: Number,
-    },
-    userName: {
+const payoutModel = new mongoose_1.Schema({
+    ownerID: {
         type: String,
     },
-    code: {
+    studioID: {
+        type: String,
+    },
+    requestID: {
+        type: String,
+    },
+    request: {
+        type: String,
+    },
+    name: {
+        type: String,
+    },
+    studioName: {
+        type: String,
+    },
+    amount: {
         type: String,
     },
     status: {
         type: String,
     },
-    accountName: {
+    action: {
         type: String,
+        default: "in-view"
     },
-    bankAccount: {
-        type: String,
+    user: {
+        type: mongoose_1.default.Types.ObjectId,
+        ref: "users",
     },
-    bankName: {
-        type: String,
-    },
-    notificationData: {
-        type: [],
-    },
-    bankCode: {
-        type: String,
-    },
-    lang: {
-        type: String,
-    },
-    phone: {
-        type: String,
-    },
-    address: {
-        type: String,
-    },
-    profession: {
-        type: String,
-    },
-    bio: {
-        type: String,
-    },
-    contact: {
-        type: String,
-    },
-    firstName: {
-        type: String,
-    },
-    lastName: {
-        type: String,
-    },
-    email: {
-        type: String,
-        unique: true,
-    },
-    password: {
-        type: String,
-    },
-    avatar: {
-        type: String,
-    },
-    avatarID: {
-        type: String,
-    },
-    accessStatus: {
-        type: String,
-        default: "user",
-    },
-    verifyToken: {
-        type: String,
-    },
-    verify: {
-        type: Boolean,
-        default: false,
-    },
-    studio: [
-        {
-            type: mongoose_1.default.Types.ObjectId,
-            ref: "studioes",
-        },
-    ],
-    history: [
-        {
-            type: mongoose_1.default.Types.ObjectId,
-            ref: "histories",
-        },
-    ],
-    payout: [
-        {
-            type: mongoose_1.default.Types.ObjectId,
-            ref: "payouts",
-        },
-    ],
-    report: [
-        {
-            type: mongoose_1.default.Types.ObjectId,
-            ref: "reports",
-        },
-    ],
-    notifications: [
-        {
-            type: mongoose_1.default.Types.ObjectId,
-            ref: "notifications",
-        },
-    ],
 }, {
     timestamps: true,
 });
-exports.default = (0, mongoose_1.model)("auths", authModel);
+exports.default = (0, mongoose_1.model)("payouts", payoutModel);

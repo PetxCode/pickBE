@@ -20,6 +20,7 @@ const statusEnums_1 = require("../utils/statusEnums");
 const studioModel_1 = __importDefault(require("../model/studioModel"));
 const email_1 = require("../utils/email");
 const moment_1 = __importDefault(require("moment"));
+const activityModel_1 = __importDefault(require("../model/activityModel"));
 const makeBookings = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userID, studioID } = req.params;
@@ -82,6 +83,12 @@ const makeBookings = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                         paymentRef,
                         studioName: getStudio === null || getStudio === void 0 ? void 0 : getStudio.studioName,
                     };
+                    yield activityModel_1.default.create({
+                        action: `A New Booking Action`,
+                        actionDetail: `${getUser === null || getUser === void 0 ? void 0 : getUser.firstName} ${getUser === null || getUser === void 0 ? void 0 : getUser.lastName} just booked ${getStudio === null || getStudio === void 0 ? void 0 : getStudio.studioName}`,
+                        actionInfo: `This is to Notify you that a new booking of ${getStudio === null || getStudio === void 0 ? void 0 : getStudio.studioName} has been recorded for ${bookings === null || bookings === void 0 ? void 0 : bookings.calendarDate} and made a payment of ${bookings === null || bookings === void 0 ? void 0 : bookings.cost}`,
+                        actionType: "Studio Booking",
+                    });
                     yield authModel_1.default.findByIdAndUpdate(userID, {
                         notifationData: [
                             ...getUser === null || getUser === void 0 ? void 0 : getUser.notificationData,
@@ -374,6 +381,7 @@ const viewStudioHistory = (req, res) => __awaiter(void 0, void 0, void 0, functi
                 },
             },
         });
+        console.log(history);
         return res.status(statusEnums_1.status.OK).json({
             message: `viewing studio bookings`,
             data: history,

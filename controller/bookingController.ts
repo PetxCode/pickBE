@@ -10,6 +10,7 @@ import {
   receiptEmail,
 } from "../utils/email";
 import moment from "moment";
+import activityModel from "../model/activityModel";
 
 export const makeBookings = async (req: Request, res: Response) => {
   try {
@@ -90,6 +91,13 @@ export const makeBookings = async (req: Request, res: Response) => {
             studioName: getStudio?.studioName,
           };
 
+          await activityModel.create({
+            action: `A New Booking Action`,
+            actionDetail: `${getUser?.firstName} ${getUser?.lastName} just booked ${getStudio?.studioName}`,
+            actionInfo: `This is to Notify you that a new booking of ${getStudio?.studioName} has been recorded for ${bookings?.calendarDate} and made a payment of ${bookings?.cost}`,
+            actionType: "Studio Booking",
+          });
+
           await authModel.findByIdAndUpdate(
             userID,
             {
@@ -142,8 +150,6 @@ export const makeBookings = async (req: Request, res: Response) => {
 
           getUser.history.push(new Types.ObjectId(bookings._id!));
           getUser.save();
-
-          
 
           studioOwner.history.push(new Types.ObjectId(bookings._id!));
           studioOwner.save();

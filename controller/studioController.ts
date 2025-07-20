@@ -5,6 +5,7 @@ import studioModel from "../model/studioModel";
 import { Types } from "mongoose";
 import { multiStreamifier, streamUpload } from "../utils/streamifier";
 import axios from "axios";
+import activityModel from "../model/activityModel";
 
 export const createStudio = async (req: Request, res: Response) => {
   try {
@@ -95,6 +96,13 @@ export const createStudio = async (req: Request, res: Response) => {
         includeDiscount: true,
         discountPercent,
         studioName,
+      });
+
+      await activityModel.create({
+        action: `A New Booking Action`,
+        actionDetail: `${account?.firstName} ${account?.lastName} just listed a new studio named: ${studio?.studioName}`,
+        actionInfo: `This is to Notify you that a new studio ${studio?.studioName} has been added to collections of studios`,
+        actionType: "Studio Listing",
       });
 
       account.studio.push(new Types.ObjectId(studio._id));

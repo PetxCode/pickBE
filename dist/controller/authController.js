@@ -20,6 +20,7 @@ const authModel_1 = __importDefault(require("../model/authModel"));
 const email_1 = require("../utils/email");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const streamifier_1 = require("../utils/streamifier");
+const activityModel_1 = __importDefault(require("../model/activityModel"));
 const createUserAuthFromGoogle = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, firstName, lastName, avatar, avatarID } = req.body;
@@ -42,6 +43,17 @@ const createUserAuthFromGoogle = (req, res) => __awaiter(void 0, void 0, void 0,
             status: "user",
             avatar,
             avatarID,
+        });
+        // action: string;
+        // actionInfo: string;
+        // actionType: string;
+        // actionDetail: string;
+        // amount: string;
+        yield activityModel_1.default.create({
+            action: `A New Account Created`,
+            actionDetail: `${user === null || user === void 0 ? void 0 : user.firstName} ${user === null || user === void 0 ? void 0 : user.lastName} created a new Account`,
+            actionInfo: `This is to Notify you that a new user just join our platform`,
+            actionType: "user signup using Google Provider",
         });
         const token = jsonwebtoken_1.default.sign({ id: user._id, email: user.email }, "thisIsAwesome");
         return res.status(statusEnums_1.status.CREATED).json({
@@ -74,6 +86,14 @@ const createUserAuth = (req, res) => __awaiter(void 0, void 0, void 0, function*
             code,
             status: "user",
         });
+        const x = yield activityModel_1.default.create({
+            action: `A New Account Created`,
+            actionDetail: `${user === null || user === void 0 ? void 0 : user.firstName} ${user === null || user === void 0 ? void 0 : user.lastName} created a new Account`,
+            actionInfo: `This is to Notify you that a new user just join our platform`,
+            actionType: "user signup using Email Provider",
+        });
+        console.log("this!!");
+        console.log(x);
         (0, email_1.verifiedEmail)(user);
         return res.status(statusEnums_1.status.CREATED).json({
             message: "account created but check your email for further verification",
@@ -350,13 +370,19 @@ const verifyUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const { code } = req.body;
         const user = yield authModel_1.default.findOne({ code });
-        console.log(code);
         if (user) {
             if (user.verifyToken !== "") {
                 yield authModel_1.default.findByIdAndUpdate(user._id, {
                     verifyToken: "",
                     verify: true,
                 }, { new: true });
+                const x = yield activityModel_1.default.create({
+                    action: `A New Account is Just Verifified`,
+                    actionDetail: `${user === null || user === void 0 ? void 0 : user.firstName} ${user === null || user === void 0 ? void 0 : user.lastName} account has been verified`,
+                    actionInfo: `This is to Notify you that this new user's just has been verified`,
+                    actionType: "Account Verification",
+                });
+                console.log(x);
                 return res.status(statusEnums_1.status.CREATED).json({
                     message: "Account verified",
                     status: 201,

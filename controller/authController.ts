@@ -6,6 +6,7 @@ import authModel from "../model/authModel";
 import { verifiedEmail } from "../utils/email";
 import jwt from "jsonwebtoken";
 import { streamUpload } from "../utils/streamifier";
+import activityModel from "../model/activityModel";
 
 export const createUserAuthFromGoogle = async (req: Request, res: Response) => {
   try {
@@ -37,6 +38,20 @@ export const createUserAuthFromGoogle = async (req: Request, res: Response) => {
       status: "user",
       avatar,
       avatarID,
+    });
+
+    // action: string;
+    // actionInfo: string;
+    // actionType: string;
+    // actionDetail: string;
+
+    // amount: string;
+
+    await activityModel.create({
+      action: `A New Account Created`,
+      actionDetail: `${user?.firstName} ${user?.lastName} created a new Account`,
+      actionInfo: `This is to Notify you that a new user just join our platform`,
+      actionType: "user signup using Google Provider",
     });
 
     const token = jwt.sign(
@@ -76,8 +91,15 @@ export const createUserAuth = async (req: Request, res: Response) => {
       status: "user",
     });
 
+    const x = await activityModel.create({
+      action: `A New Account Created`,
+      actionDetail: `${user?.firstName} ${user?.lastName} created a new Account`,
+      actionInfo: `This is to Notify you that a new user just join our platform`,
+      actionType: "user signup using Email Provider",
+    });
+    console.log("this!!");
+    console.log(x);
     verifiedEmail(user);
-
     return res.status(status.CREATED).json({
       message: "account created but check your email for further verification",
       status: 201,
@@ -403,8 +425,6 @@ export const verifyUser = async (
 
     const user: any = await authModel.findOne({ code });
 
-    console.log(code);
-
     if (user) {
       if (user.verifyToken !== "") {
         await authModel.findByIdAndUpdate(
@@ -415,6 +435,15 @@ export const verifyUser = async (
           },
           { new: true }
         );
+
+        const x = await activityModel.create({
+          action: `A New Account is Just Verifified`,
+          actionDetail: `${user?.firstName} ${user?.lastName} account has been verified`,
+          actionInfo: `This is to Notify you that this new user's just has been verified`,
+          actionType: "Account Verification",
+        });
+
+        console.log(x);
 
         return res.status(status.CREATED).json({
           message: "Account verified",

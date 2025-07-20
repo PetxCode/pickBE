@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const payoutController_1 = require("../controller/payoutController");
+const router = (0, express_1.Router)();
+router.route("/create-payout/:userID/:studioID").post(payoutController_1.createPayout);
+router.route("/read-payout").get(payoutController_1.viewPayouts);
+router.route("/read-activities").get(payoutController_1.viewActivities);
+router.route("/read-one-payout/:payoutID").get(payoutController_1.viewOnePayload);
+router.route("/update-one-payout/:payoutID").patch(payoutController_1.viewOnePayloadUpdate);
+exports.default = router;

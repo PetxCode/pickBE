@@ -19,6 +19,7 @@ const studioModel_1 = __importDefault(require("../model/studioModel"));
 const mongoose_1 = require("mongoose");
 const streamifier_1 = require("../utils/streamifier");
 const axios_1 = __importDefault(require("axios"));
+const activityModel_1 = __importDefault(require("../model/activityModel"));
 const createStudio = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { accountID } = req.params;
@@ -81,6 +82,12 @@ const createStudio = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 includeDiscount: true,
                 discountPercent,
                 studioName,
+            });
+            yield activityModel_1.default.create({
+                action: `A New Booking Action`,
+                actionDetail: `${account === null || account === void 0 ? void 0 : account.firstName} ${account === null || account === void 0 ? void 0 : account.lastName} just listed a new studio named: ${studio === null || studio === void 0 ? void 0 : studio.studioName}`,
+                actionInfo: `This is to Notify you that a new studio ${studio === null || studio === void 0 ? void 0 : studio.studioName} has been added to collections of studios`,
+                actionType: "Studio Listing",
             });
             account.studio.push(new mongoose_1.Types.ObjectId(studio._id));
             account.save();

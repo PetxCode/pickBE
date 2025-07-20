@@ -14,6 +14,7 @@ const studioRatingRouter_1 = __importDefault(require("./router/studioRatingRoute
 const reviewRouter_1 = __importDefault(require("./router/reviewRouter"));
 const bookingsRouter_1 = __importDefault(require("./router/bookingsRouter"));
 const articleRouter_1 = __importDefault(require("./router/articleRouter"));
+const payoutRouter_1 = __importDefault(require("./router/payoutRouter"));
 const payment_1 = __importDefault(require("./router/payment"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const passport_1 = __importDefault(require("passport"));
@@ -28,6 +29,7 @@ const mainApp = (app) => {
         app.use("/api/v1", reviewRouter_1.default);
         app.use("/api/v1", bookingsRouter_1.default);
         app.use("/api/v1", articleRouter_1.default);
+        app.use("/api/v1", payoutRouter_1.default);
         app.use("/api/v1", payment_1.default);
         app.get("/api/v1/auth/google/", passport_1.default.authenticate("google", { scope: ["profile", "email"] }));
         app.get("/api/v1/sign-in/success", (req, res) => {

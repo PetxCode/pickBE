@@ -569,6 +569,62 @@ export const blockStudio = async (req: Request, res: Response) => {
   }
 };
 
+export const banStudio = async (req: Request, res: Response) => {
+  try {
+    const { studioID } = req.params;
+    const { imageURL } = req.body;
+
+    const studio: any = await studioModel.findById(studioID);
+
+    const account = await studioModel.findByIdAndUpdate(
+      studioID,
+      {
+        block: true,
+        ban: true,
+      },
+      { new: true }
+    );
+
+    return res.status(status.OK).json({
+      message: `studio has be closed`,
+      data: account,
+      status: 201,
+    });
+  } catch (error: any) {
+    return res.status(status.BAD).json({
+      message: error.message,
+    });
+  }
+};
+
+export const unbanStudio = async (req: Request, res: Response) => {
+  try {
+    const { studioID } = req.params;
+    const { imageURL } = req.body;
+
+    const studio: any = await studioModel.findById(studioID);
+
+    const account = await studioModel.findByIdAndUpdate(
+      studioID,
+      {
+        block: false,
+        ban: false,
+      },
+      { new: true }
+    );
+
+    return res.status(status.OK).json({
+      message: `studio has be closed`,
+      data: account,
+      status: 201,
+    });
+  } catch (error: any) {
+    return res.status(status.BAD).json({
+      message: error.message,
+    });
+  }
+};
+
 export const openStudio = async (req: Request, res: Response) => {
   try {
     const { userID, studioID } = req.params;

@@ -33,6 +33,8 @@ router
     .patch(studioController_1.deleteAccountStudioImage);
 router.route("/open-studio/:userID/:studioID").patch(studioController_1.openStudio);
 router.route("/close-studio/:userID/:studioID").patch(studioController_1.blockStudio);
+router.route("/unban-studio/:studioID").patch(studioController_1.unbanStudio);
+router.route("/ban-studio/:studioID").patch(studioController_1.banStudio);
 router
     .route("/update-studio-info/:accountID/:studioID")
     .patch(studioController_1.updateStudioInfo);

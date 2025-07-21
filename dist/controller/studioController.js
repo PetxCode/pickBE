@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteAccountStudioImage = exports.openStudio = exports.blockStudio = exports.deleteStudio = exports.addAccountStudioFeature = exports.deleteAccountStudioFeature = exports.editAccountStudioInfo = exports.searchStudio = exports.removeStudioImages = exports.addStudioImages = exports.updateStudioInfo = exports.viewAllStudio = exports.viewAccountStudioByName = exports.viewUserStudios = exports.viewAccountStudioHistory = exports.viewAccountStudio = exports.createStudio = void 0;
+exports.deleteAccountStudioImage = exports.openStudio = exports.unbanStudio = exports.banStudio = exports.blockStudio = exports.deleteStudio = exports.addAccountStudioFeature = exports.deleteAccountStudioFeature = exports.editAccountStudioInfo = exports.searchStudio = exports.removeStudioImages = exports.addStudioImages = exports.updateStudioInfo = exports.viewAllStudio = exports.viewAccountStudioByName = exports.viewUserStudios = exports.viewAccountStudioHistory = exports.viewAccountStudio = exports.createStudio = void 0;
 const statusEnums_1 = require("../utils/statusEnums");
 const authModel_1 = __importDefault(require("../model/authModel"));
 const studioModel_1 = __importDefault(require("../model/studioModel"));
@@ -496,6 +496,50 @@ const blockStudio = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.blockStudio = blockStudio;
+const banStudio = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { studioID } = req.params;
+        const { imageURL } = req.body;
+        const studio = yield studioModel_1.default.findById(studioID);
+        const account = yield studioModel_1.default.findByIdAndUpdate(studioID, {
+            block: true,
+            ban: true,
+        }, { new: true });
+        return res.status(statusEnums_1.status.OK).json({
+            message: `studio has be closed`,
+            data: account,
+            status: 201,
+        });
+    }
+    catch (error) {
+        return res.status(statusEnums_1.status.BAD).json({
+            message: error.message,
+        });
+    }
+});
+exports.banStudio = banStudio;
+const unbanStudio = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { studioID } = req.params;
+        const { imageURL } = req.body;
+        const studio = yield studioModel_1.default.findById(studioID);
+        const account = yield studioModel_1.default.findByIdAndUpdate(studioID, {
+            block: false,
+            ban: false,
+        }, { new: true });
+        return res.status(statusEnums_1.status.OK).json({
+            message: `studio has be closed`,
+            data: account,
+            status: 201,
+        });
+    }
+    catch (error) {
+        return res.status(statusEnums_1.status.BAD).json({
+            message: error.message,
+        });
+    }
+});
+exports.unbanStudio = unbanStudio;
 const openStudio = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userID, studioID } = req.params;

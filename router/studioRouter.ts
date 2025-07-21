@@ -19,6 +19,8 @@ import {
   viewAccountStudioHistory,
   openStudio,
   blockStudio,
+  unbanStudio,
+  banStudio,
 } from "../controller/studioController";
 const upload = multer().array("avatar", 12);
 const uploadOne = multer().single("avatar");
@@ -58,6 +60,8 @@ router
 router.route("/open-studio/:userID/:studioID").patch(openStudio);
 
 router.route("/close-studio/:userID/:studioID").patch(blockStudio);
+router.route("/unban-studio/:studioID").patch(unbanStudio);
+router.route("/ban-studio/:studioID").patch(banStudio);
 
 router
   .route("/update-studio-info/:accountID/:studioID")

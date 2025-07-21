@@ -80,6 +80,10 @@ const authModel = new mongoose_1.Schema({
         type: Boolean,
         default: false,
     },
+    ban: {
+        type: Boolean,
+        default: false,
+    },
     block: {
         type: Boolean,
         default: false,

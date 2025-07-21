@@ -19,6 +19,7 @@ interface iAuth {
   numberOfGuess: number;
   includeDiscount: boolean;
   block: boolean;
+  ban: boolean;
   studioFeatures: Array<string>;
 
   studioRate: number;
@@ -88,6 +89,11 @@ const authModel = new Schema<iAuthData>(
     },
 
     includeDiscount: {
+      type: Boolean,
+      default: false,
+    },
+
+    ban: {
       type: Boolean,
       default: false,
     },
